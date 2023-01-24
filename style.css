@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+}
+
+body, html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    display: flex;
+    padding:  0px 4px 4px 4px;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: rgb(200,200,200);
+    z-index: 1;
+}
+
+#infos {
+    display: flex;
+    justify-content: space-between;
+}
+#infos > * {
+    padding: 0 5px;
+    margin: 0 5px;
+    border: solid 2px;
+    border-color:rgb(0, 0, 0);
+}
+
+#main_window {
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+    flex:1;
+}
+
+#side_menu {
+    display: flex;
+    position: absolute;
+    left: 0%;
+    box-shadow: 3px 2px 5px 0px #a3a3a3;
+    height: -webkit-fill-available;
+    width: 25%;
+    background-color:rgb(104, 176, 235);
+    justify-content: space-between;
+    transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
+}
+
+#game_window {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(224, 224, 224);
+    width: 75%;
+    margin-left: 25%;
+    transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
+}
+
+#real_menu {
+    display: flex;
+}
+
+
+#shrink_container {
+    display: flex;
+    align-items: center;
+}
+#shrink_button {
+    height: 50px;
+    translate: 95%;
+}
+
+#game_display {
+    display: flex;
+    flex: 1;
+}
+
+#timeline_div {
+    height: 100px;
+}
+
+#game_part {
+    align-items: center;
+    flex: 1;
+
+}
+
+#water_bar {
+    width: 100px;
+}
+
