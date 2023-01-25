@@ -11,23 +11,46 @@ html {
 
 #header {
     display: flex;
-    padding: 0px 4px 4px 4px;
+    padding: 0 15px;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     background: rgb(200, 200, 200);
     z-index: 1;
+    height: 6%;
 }
+
+#Title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.5em;
+    color: rgb(39, 106, 161);
+    font-style: italic;
+}
+
 
 #infos {
     display: flex;
     justify-content: space-between;
 }
 
-#infos>* {
-    padding: 0 5px;
+.compteur_div {
+    display: flex;
     margin: 0 5px;
+    padding: 1px 5px;
     border: solid 2px;
-    border-color: rgb(0, 0, 0);
+    border-radius: 8px;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+}
+
+.compteurs_img {
+    width: 30px;
+    padding-top: 2px;
+}
+
+.top_buttons_img {
+    align-self: center;
+    width: 30px;
 }
 
 #main_window {
@@ -70,7 +93,7 @@ html {
 
 #shrink_button {
     height: 50px;
-    translate: 95%;
+    translate: 99%;
 }
 
 #game_display {

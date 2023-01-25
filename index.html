@@ -12,18 +12,39 @@
 
 <body>
     <div id="header">
-        <h1>Nafrea</h1>
+        <h1 id="Title">Nafrea</h1>
         <div id="infos">
-            <p>Habitants</p>
-            <p>Sorties</p>
-            <p>Entrées</p>
+            <div id="Habitants_div" class="compteur_div">
+                <div id="Habitants_counter">
+                    1000
+                </div>
+                <div id="Habitants_img">
+                    <img class="compteurs_img" src="Images/person.svg">
+                </div>
+            </div>
+            <div id="Entrées_div" class="compteur_div">
+                <div id="Entrées_counter">
+                    400 Ml/j
+                </div>
+                <div id="Entrées_img">
+                    <img class="compteurs_img" src="Images/arrow_downward.svg">
+                </div>
+            </div>
+            <div id="Sorties_div" class="compteur_div">
+                <div id="Sorties_counter">
+                    300 Ml/j
+                </div>
+                <div id="Sorties_img">
+                    <img class="compteurs_img" src="Images/arrow_upward.svg">
+                </div>
+            </div>
         </div>
         <div id="top_buttons">
-            <button onclick = "new_frame()">heure</button>
-            <button>info</button>
-            <button>plus</button>
-            <button>upload</button>
-            <button>download</button>
+            <button class="top_button" onclick = ""><img class="top_buttons_img" src="Images/clock.svg"></button>
+            <button class="top_button" style="margin-right: 20px;"><img class="top_buttons_img" src="Images/info.svg"></button>
+            <button class="top_button"><img class="top_buttons_img" src="Images/add.svg"></button>
+            <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg"></button>
+            <button class="top_button"><img class="top_buttons_img" src="Images/download.svg"></button>
         </div>
     </div>
     <div id="main_window">
