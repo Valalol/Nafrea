@@ -76,7 +76,7 @@ body, html {
 }
 
 #timeline_div {
-    height: 100px;
+    height: 140px;
 }
 
 #game_part {
@@ -89,3 +89,8 @@ body, html {
     width: 100px;
 }
 
+#timeline {
+    margin-left: 1%;
+    height: 100%;
+    width: 90%;
+}
