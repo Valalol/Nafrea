@@ -83,9 +83,14 @@ html {
 }
 
 #game_part {
+    display: flex;
     align-items: center;
+    justify-content: center;
     flex: 1;
+}
 
+#game_part > canvas {
+    width: min(75%,850px);
 }
 
 #water_bar {
