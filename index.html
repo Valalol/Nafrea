@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href = "style.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <script defer src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Nafrea</title>
 </head>
+
 <body>
     <div id="header">
         <h1>Nafrea</h1>
@@ -17,7 +19,7 @@
             <p>Entrées</p>
         </div>
         <div id="top_buttons">
-            <button>heure</button>
+            <button onclick = "new_frame()">heure</button>
             <button>info</button>
             <button>plus</button>
             <button>upload</button>
@@ -27,7 +29,11 @@
     <div id="main_window">
         <div id="side_menu">
             <div id="real_menu">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel eaque blanditiis non ipsum obcaecati ex modi corrupti, repellendus odio rem magni tempora, cumque reiciendis deserunt odit illo delectus dolores praesentium? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quas consequatur laboriosam nobis ipsum aperiam, eligendi nostrum, blanditiis voluptatem nemo tenetur temporibus enim tempora nihil, excepturi eveniet ex officia impedit!</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel eaque blanditiis non ipsum obcaecati ex
+                    modi corrupti, repellendus odio rem magni tempora, cumque reiciendis deserunt odit illo delectus
+                    dolores praesentium? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quas
+                    consequatur laboriosam nobis ipsum aperiam, eligendi nostrum, blanditiis voluptatem nemo tenetur
+                    temporibus enim tempora nihil, excepturi eveniet ex officia impedit!</p>
             </div>
             <div id="shrink_container">
                 <button id="shrink_button" onclick="shrink_menu()">↔</button>
@@ -39,7 +45,10 @@
                     <p>jeu</p>
                 </div>
                 <div id="water_bar">
-                    <p>water bar</p>
+                    <div id="water_bar_container">
+                        <div id="water_bar_colored">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="timeline_div">
@@ -50,4 +59,5 @@
         </div>
     </div>
 </body>
+
 </html>
