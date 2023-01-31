@@ -51,11 +51,25 @@
     <div id="main_window">
         <div id="side_menu">
             <div id="real_menu">
+                <div class="search_bar">
+                    <img src="Images/search.svg" class="search_icon">
+                    <input type="text" class="search_form">
+                </div>
+                <button id="preconfig">Ouvrir une préconfiguration</button>
+                
+                <div class="category">
+                    <p class="category_title">Exploitation agricole</p>
+                    <p class="parameter_name">Consommation</p>
+                </div>
+                <div class="category">
+                    <p class="category_title">Exploitation agricole</p>
+                    <p class="parameter_name">Consommation</p>
+                </div>
                 <p>Hey :)</p>
                 <input type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
             </div>
             <div id="shrink_container">
-                <button id="shrink_button" onclick="shrink_menu()">↔</button>
+                <button id="shrink_button" onclick="shrink_menu()"></button>
             </div>
         </div>
         <div id="game_window">
@@ -69,6 +83,7 @@
                     </div>
                 </div>
                 <div id="water_bar">
+                    <p id="water_bar_quantity">XX%</p>
                     <div id="water_bar_container">
                         <div id="water_bar_colored">
                             <div id="vagues"></div>

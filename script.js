@@ -1,28 +1,33 @@
 const menu = document.getElementById("side_menu");
-const game = document.getElementById("game_window")
+const shrink_button = document.getElementById("shrink_button")
+const shrink_container = document.getElementById("shrink_container")
+const game = document.getElementById("game_window");
 const timeline = document.getElementById('water_timeline');
-const water_bar = document.getElementById("water_bar_colored")
-
+const water_bar = document.getElementById("water_bar_colored");
+const water_bar_quantity = document.getElementById("water_bar_quantity");
 
 function shrink_menu() {
     if (menu.style.left == "-25%") {
         menu.style.left = "0";
+        shrink_button.style.transform = "rotateY(0deg)"
         game.style.width = "75%";
         game.style.marginLeft = "25%";
     } else {
         menu.style.left = "-25%";
         game.style.width = "100%";
         game.style.marginLeft = "0";
+        shrink_button.style.transform = "rotateY(180deg)"
     }
 }
 
 function new_frame() {
-    new_value = 0.5;
+    new_value = Math.random().toFixed(2);
 
     date_fin = date_fin + 1;
     water_data.push(new_value);
 
     water_bar.style.height = new_value*100+"%";
+    water_bar_quantity.innerHTML = (Math.round(new_value*100)).toString() +"%";
     console.log("bah là normalement y'a des trucs mis à jour")
 }
 
