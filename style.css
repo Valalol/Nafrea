@@ -181,9 +181,10 @@ html {
     width: 100%;
 }
 
-/* #game_part > canvas {
-    width: min(75%,850px);
-} */
+#game_part {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
 
 #grid_3d_div {
     display: grid;
@@ -195,6 +196,8 @@ html {
 .case_grid {
     border: solid 2px rgb(0, 43, 160);
     box-sizing:border-box;
+    perspective: 200px;
+
 }
 
 .case_grid:hover {
