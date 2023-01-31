@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 body,
@@ -20,7 +21,6 @@ html {
 }
 
 #Title {
-    font-family: 'Roboto', sans-serif;
     font-size: 2.5em;
     color: rgb(39, 106, 161);
     font-style: italic;
@@ -83,17 +83,19 @@ html {
 
 #real_menu {
     display: flex;
+    flex-direction: column;
+    padding: 10px;
 }
 
 
 #shrink_container {
     display: flex;
     align-items: center;
+    width: 0;
 }
 
 #shrink_button {
     height: 50px;
-    translate: 99%;
 }
 
 #game_display {
@@ -110,10 +112,6 @@ html {
     align-items: center;
     justify-content: center;
     flex: 1;
-}
-
-#game_part > canvas {
-    width: min(75%,850px);
 }
 
 #water_bar {
@@ -182,3 +180,31 @@ html {
     height: 100%;
     width: 100%;
 }
+
+/* #game_part > canvas {
+    width: min(75%,850px);
+} */
+
+#grid_3d_div {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    transform: rotateX(60deg) rotateZ(-45deg);
+}
+
+.case_grid {
+    border: solid 2px rgb(0, 43, 160);
+    box-sizing:border-box;
+}
+
+.case_grid:hover {
+    border-color: red;
+    background-color: #c4c4c4;
+}
+
+/* .case_img {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(45deg);
+    width: 120%;
+    height: 240%;
+    translate: 20% -42%;
+} */

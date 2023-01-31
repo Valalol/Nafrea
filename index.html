@@ -40,8 +40,9 @@
             </div>
         </div>
         <div id="top_buttons">
-            <button class="top_button" onclick = ""><img class="top_buttons_img" src="Images/clock.svg"></button>
-            <button class="top_button" style="margin-right: 20px;"><img class="top_buttons_img" src="Images/info.svg"></button>
+            <button class="top_button" onclick=""><img class="top_buttons_img" src="Images/clock.svg"></button>
+            <button class="top_button" style="margin-right: 20px;"><img class="top_buttons_img"
+                    src="Images/info.svg"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/add.svg"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/download.svg"></button>
@@ -50,11 +51,8 @@
     <div id="main_window">
         <div id="side_menu">
             <div id="real_menu">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel eaque blanditiis non ipsum obcaecati ex
-                    modi corrupti, repellendus odio rem magni tempora, cumque reiciendis deserunt odit illo delectus
-                    dolores praesentium? Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates quas
-                    consequatur laboriosam nobis ipsum aperiam, eligendi nostrum, blanditiis voluptatem nemo tenetur
-                    temporibus enim tempora nihil, excepturi eveniet ex officia impedit!</p>
+                <p>Hey :)</p>
+                <input type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
             </div>
             <div id="shrink_container">
                 <button id="shrink_button" onclick="shrink_menu()">↔</button>
@@ -63,9 +61,12 @@
         <div id="game_window">
             <div id="game_display">
                 <div id="game_part">
-                    <canvas id="game_canvas" width="850" height="700">
+                    <!-- <canvas id="game_canvas" width="850" height="700">
                         Si ce message s'affiche, alors votre navigateur ne peux pas afficher la simulation. Essayez de changer de navigateur. 
-                    </canvas>
+                    </canvas> -->
+                    <div id="grid_3d_div">
+
+                    </div>
                 </div>
                 <div id="water_bar">
                     <div id="water_bar_container">

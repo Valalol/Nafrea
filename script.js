@@ -80,57 +80,89 @@ new Chart(timeline, {
     }
 });
 
+// tentative 1
+var gridsize = 8;
+const grid_3d_div = document.getElementById("grid_3d_div");
 
-var cvWidth = 850;
-var cvHeight = 700;
-var baseHeight = 350;
-var gridWidth = cvWidth-20;
-var gridHeight = Math.floor(gridWidth/2); 
-var gridSize = 5;
-var canvas = document.getElementById("game_canvas");
-var ctx = canvas.getContext("2d");
+function redraw_grid(size) {
+    console.log(size)
+    grid_3d_div.textContent = '';
+    draw_grid(size);
+}
+
+
+function draw_grid(size) {
+    grid_3d_div.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    grid_3d_div.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    
+    for(let i = 1; i <= size; i++){
+        for(let j = 1; j <= size; j++){
+            let div = document.createElement('div');
+            div.className = 'case_grid';
+            div.id = `case${i}${j}`;
+            div.style.width = `${600/size}px`;
+            div.style.height = `${600/size}px`;
+            grid_3d_div.appendChild(div);
+        }
+    }
+}
+
+draw_grid(gridsize);
+
+
+
+
+
+// var cvWidth = 850;
+// var cvHeight = 700;
+// var baseHeight = 350;
+// var gridWidth = cvWidth-20;
+// var gridHeight = Math.floor(gridWidth/2); 
+// var gridSize = 5;
+// var canvas = document.getElementById("game_canvas");
+// var ctx = canvas.getContext("2d");
 
 //Contour
-ctx.beginPath();
-ctx.strokeStyle = 'black';
-ctx.lineWidth = 3;
-ctx.moveTo(10, baseHeight);
-ctx.lineTo(Math.floor(cvWidth/2), Math.floor(baseHeight-gridHeight/2));
-ctx.lineTo(cvWidth-10, baseHeight);
-ctx.lineTo(Math.floor(cvWidth/2), Math.floor(baseHeight+gridHeight/2));
-ctx.lineTo(10, baseHeight);
+// ctx.beginPath();
+// ctx.strokeStyle = 'black';
+// ctx.lineWidth = 3;
+// ctx.moveTo(10, baseHeight);
+// ctx.lineTo(Math.floor(cvWidth/2), Math.floor(baseHeight-gridHeight/2));
+// ctx.lineTo(cvWidth-10, baseHeight);
+// ctx.lineTo(Math.floor(cvWidth/2), Math.floor(baseHeight+gridHeight/2));
+// ctx.lineTo(10, baseHeight);
 
-//ctx.moveTo(10, baseHeight);
-ctx.lineTo(10,baseHeight+(cvHeight-gridHeight)/2)
+// //ctx.moveTo(10, baseHeight);
+// ctx.lineTo(10,baseHeight+(cvHeight-gridHeight)/2)
 
-ctx.moveTo(Math.floor(cvWidth/2), Math.floor(baseHeight+gridHeight/2));
-ctx.lineTo(Math.floor(cvWidth/2),baseHeight+gridHeight/2+(cvHeight-gridHeight)/2)
+// ctx.moveTo(Math.floor(cvWidth/2), Math.floor(baseHeight+gridHeight/2));
+// ctx.lineTo(Math.floor(cvWidth/2),baseHeight+gridHeight/2+(cvHeight-gridHeight)/2)
 
-ctx.moveTo(cvWidth-10, baseHeight)
-ctx.lineTo(cvWidth-10,baseHeight+(cvHeight-gridHeight)/2)
+// ctx.moveTo(cvWidth-10, baseHeight)
+// ctx.lineTo(cvWidth-10,baseHeight+(cvHeight-gridHeight)/2)
 
-ctx.lineTo(Math.floor(cvWidth/2),baseHeight+gridHeight/2+(cvHeight-gridHeight)/2)
-ctx.lineTo(10,baseHeight+(cvHeight-gridHeight)/2)
+// ctx.lineTo(Math.floor(cvWidth/2),baseHeight+gridHeight/2+(cvHeight-gridHeight)/2)
+// ctx.lineTo(10,baseHeight+(cvHeight-gridHeight)/2)
 
-ctx.stroke();
+// ctx.stroke();
 
-//Quadrillage
-ctx.lineWidth = 1;
+// //Quadrillage
+// ctx.lineWidth = 1;
 
-for(let i = 1; i < gridSize; i++){
-    ctx.beginPath();
-    ctx.strokeStyle = 'black';
-    ctx.moveTo(10 + i*(gridWidth/(gridSize*2)), baseHeight - i*(gridHeight/(gridSize*2)));
-    ctx.lineTo(10 + i*(gridWidth/(gridSize*2)) + gridWidth/2, baseHeight - i*(gridHeight/(gridSize*2)) + gridHeight/2);
+// for(let i = 1; i < gridSize; i++){
+//     ctx.beginPath();
+//     ctx.strokeStyle = 'black';
+//     ctx.moveTo(10 + i*(gridWidth/(gridSize*2)), baseHeight - i*(gridHeight/(gridSize*2)));
+//     ctx.lineTo(10 + i*(gridWidth/(gridSize*2)) + gridWidth/2, baseHeight - i*(gridHeight/(gridSize*2)) + gridHeight/2);
 
-    ctx.stroke();
-}
+//     ctx.stroke();
+// }
 
-for(let i = 1; i < gridSize; i++){
-    ctx.beginPath();
-    ctx.strokeStyle = 'black';
-    ctx.moveTo(10 + i*(gridWidth/(gridSize*2)), baseHeight + i*(gridHeight/(gridSize*2)));
-    ctx.lineTo(10 + i*(gridWidth/(gridSize*2)) + gridWidth/2, baseHeight + i*(gridHeight/(gridSize*2)) - gridHeight/2);
+// for(let i = 1; i < gridSize; i++){
+//     ctx.beginPath();
+//     ctx.strokeStyle = 'black';
+//     ctx.moveTo(10 + i*(gridWidth/(gridSize*2)), baseHeight + i*(gridHeight/(gridSize*2)));
+//     ctx.lineTo(10 + i*(gridWidth/(gridSize*2)) + gridWidth/2, baseHeight + i*(gridHeight/(gridSize*2)) - gridHeight/2);
 
-    ctx.stroke();
-}
+//     ctx.stroke();
+// }
