@@ -67,7 +67,7 @@ html {
     box-shadow: 3px 2px 5px 0px #a3a3a3;
     height: -webkit-fill-available;
     width: 25%;
-    background-color: rgb(104, 176, 235);
+    background-color: rgb(200, 200, 200);
     justify-content: space-between;
     transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
 }
@@ -84,19 +84,86 @@ html {
 #real_menu {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 0 10px 10px;
+    width:100%;
+    align-items:center;
 }
 
 
 #shrink_container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     width: 0;
+
 }
 
 #shrink_button {
-    height: 50px;
+    height : 0;
+    width : 0;
+    border-top : 29px solid transparent;
+    border-right : 30px solid rgb(163, 163, 163);
+    border-bottom : 29px solid transparent;
+    border-left: 0;
+    background: transparent;
     z-index: 2;
+    transform-origin: right;
+    transition: transform .5s;
+}
+
+.search_bar {
+    display:flex;
+    width:80%;
+    height:30px;
+    background-color:white;
+    padding: 0 5px;
+    border-radius:2px;
+    margin: 0 0 10px 0;
+}
+
+
+.search_icon {
+    width:20px;
+}
+
+.search_form {
+    border: 0px;
+    width:100%;
+    padding: 0 5px;
+    font-size: max(.5vw,16px);
+}
+
+.search_form:focus {
+    outline: none;
+}
+
+#preconfig {
+    width: 80%;
+    height: auto;
+    padding: 0 5px;
+    margin: 10px 0;
+    border-radius:2px;
+    border: solid 1px black;
+    padding: 5px;
+    overflow: hidden;
+    background-color: lightgrey;
+    font-size: max(.5vw,16px);
+    transition: ease-in-out 0.1s;
+}
+#preconfig:hover {
+    background-color: rgb(184, 184, 184);
+    cursor: pointer;
+}
+
+.category {
+    width: 90%;
+    margin: 20px 0;
+}
+
+.category_title {
+    font-size: max(2vw,24px);
+    align-self: flex-start;
+    margin-bottom: 10px;
 }
 
 #game_display {
@@ -118,9 +185,15 @@ html {
 
 #water_bar {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 7%;
+}
+#water_bar_quantity {
+    content: '50%';
+    font-size: 24px; 
+    font-weight: bolder;
 }
 
 #water_bar_container {
@@ -134,6 +207,7 @@ html {
     overflow: hidden;
 }
 
+
 #water_bar_colored {
     display: flex;
     flex-direction: column;
@@ -143,6 +217,7 @@ html {
     border-top: 2px;
     animation: grow 1.3s ease-out forwards;
     transform-origin: bottom;
+    transition: height .5s;
 }
 
 #vagues {
