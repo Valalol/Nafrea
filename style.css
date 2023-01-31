@@ -1,5 +1,6 @@
 * {
     margin: 0;
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -56,7 +57,6 @@ html {
 #main_window {
     display: flex;
     height: 100%;
-    box-sizing: border-box;
     flex: 1;
 }
 
@@ -96,6 +96,7 @@ html {
 
 #shrink_button {
     height: 50px;
+    z-index: 2;
 }
 
 #game_display {
@@ -112,6 +113,7 @@ html {
     align-items: center;
     justify-content: center;
     flex: 1;
+    /* perspective: 1800px; */
 }
 
 #water_bar {
@@ -139,7 +141,6 @@ html {
     width: 100%;
     height: 65%;
     border-top: 2px;
-    box-sizing: border-box;
     animation: grow 1.3s ease-out forwards;
     transform-origin: bottom;
 }
@@ -181,23 +182,24 @@ html {
     width: 100%;
 }
 
-#game_part {
-    perspective: 1200px;
+#pave_3d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
     transform-style: preserve-3d;
+    transform: rotateX(50deg) rotateZ(-45deg);
 }
 
 #grid_3d_div {
     display: grid;
-    justify-items: center;
-    align-items: center;
-    transform: rotateX(60deg) rotateZ(-45deg);
+    transform: rotateY(0deg) translateZ(75px);
+    background:hsla(202, 100%, 50%, 0.6);
 }
 
 .case_grid {
     border: solid 2px rgb(0, 43, 160);
-    box-sizing:border-box;
-    perspective: 200px;
-
 }
 
 .case_grid:hover {
@@ -205,9 +207,23 @@ html {
     background-color: #c4c4c4;
 }
 
-/* .case_img {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(45deg);
-    width: 120%;
-    height: 240%;
-    translate: 20% -42%;
-} */
+
+.cube_face {
+    position: absolute;
+}
+
+#cube_face_left {
+    background: hsla(128, 100%, 50%, 0.6);
+    transform: rotateY(-90deg) translateZ(300px);
+    height: 600px;
+    width: 150px;
+    border: solid 2px black;
+}
+
+#cube_face_right {
+    background: hsla(0, 100%, 50%, 0.6);
+    transform: rotateX(-90deg) translateZ(300px);
+    height: 150px;
+    width: 600px;
+    border: solid 2px black;
+}
