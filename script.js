@@ -105,12 +105,34 @@ function draw_grid(size) {
             let div = document.createElement('div');
             div.className = 'case_grid';
             div.id = `case${i}${j}`;
+            div.onclick = function () {div_selected(this)};
             div.style.width = `${600/size}px`;
             div.style.height = `${600/size}px`;
             grid_3d_div.appendChild(div);
         }
     }
 }
-
 draw_grid(gridsize);
+
+var selected_case = null;
+occupied_list = [];
+
+function div_selected(item) {
+    if (selected_case != null) {
+        if (occupied_list.includes(selected_case) == false) {
+            document.getElementById(selected_case).style.backgroundColor = '';
+        }
+    }
+    selected_case = item.id;
+    console.log(selected_case);
+    item.style.backgroundColor = 'red';
+}
+
+
+function place_building() {
+    if (selected_case != null) {
+        occupied_list.push(selected_case);
+        document.getElementById(selected_case).style.backgroundColor = 'yellow';
+    }
+}
 

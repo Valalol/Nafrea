@@ -70,6 +70,7 @@ html {
     background-color: rgb(200, 200, 200);
     justify-content: space-between;
     transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
+    z-index: 1;
 }
 
 #game_window {
@@ -109,6 +110,7 @@ html {
     z-index: 2;
     transform-origin: right;
     transition: transform .5s;
+    cursor: pointer;
 }
 
 .search_bar {
@@ -270,7 +272,7 @@ html {
 #grid_3d_div {
     display: grid;
     transform: rotateY(0deg) translateZ(75px);
-    background:hsla(202, 100%, 50%, 0.6);
+    background-color:hsla(202, 100%, 50%, 0.6);
 }
 
 .case_grid {
@@ -278,8 +280,7 @@ html {
 }
 
 .case_grid:hover {
-    border-color: red;
-    background-color: #c4c4c4;
+    background-color: #00eeff;
 }
 
 
