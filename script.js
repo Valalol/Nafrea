@@ -119,13 +119,19 @@ occupied_list = [];
 
 function div_selected(item) {
     if (selected_case != null) {
-        if (occupied_list.includes(selected_case) == false) {
+        if (!occupied_list.includes(selected_case)) {
             document.getElementById(selected_case).style.backgroundColor = '';
+        } else {
+            document.getElementById(selected_case).style.backgroundColor = 'yellow';
         }
     }
     selected_case = item.id;
     console.log(selected_case);
-    item.style.backgroundColor = 'red';
+    if (!occupied_list.includes(selected_case)) {
+        item.style.backgroundColor = 'red';
+    } else {
+        item.style.backgroundColor = 'orange';
+    }
 }
 
 
