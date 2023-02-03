@@ -49,6 +49,10 @@ html {
     padding-top: 2px;
 }
 
+.top_button {
+    cursor: pointer;
+}
+
 .top_buttons_img {
     align-self: center;
     width: 30px;
@@ -268,7 +272,8 @@ html {
     aspect-ratio: 1 / 1;
     /* background-color: #b5258f54; */
     transform-style: preserve-3d;
-    transform: rotateX(50deg) rotateZ(-45deg);
+    transform: rotateX(50deg) rotateZ(315deg);
+    transition: 2s ease-out;
 }
 
 #grid_3d_div {
@@ -279,6 +284,8 @@ html {
 }
 
 .case_grid {
+    width: 100%;
+    height: 100%;
     border: solid 2px rgb(0, 43, 160);
 }
 

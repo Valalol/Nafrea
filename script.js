@@ -107,8 +107,6 @@ function draw_grid(size) {
             div.className = 'case_grid';
             div.id = `case${i}${j}`;
             div.onclick = function () {div_selected(this)};
-            div.style.width = `${100}%`;
-            div.style.height = `${100}%`;
             grid_3d_div.appendChild(div);
         }
     }
