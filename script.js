@@ -95,7 +95,13 @@ function place_cube_side_faces() {
     cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight/2}px)`;
 }
 place_cube_side_faces();
-window.addEventListener('resize', function() {place_cube_side_faces();});
+const resizeObserver_cube = new ResizeObserver(entries => {
+    for (let entry of entries) {
+        place_cube_side_faces();
+    }
+});
+resizeObserver_cube.observe(pave_3d);
+
 
 var gridsize = 8;
 const grid_3d_div = document.getElementById("grid_3d_div");

@@ -264,7 +264,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 40%;
     aspect-ratio: 1 / 1;
     /* background-color: #b5258f54; */
     transform-style: preserve-3d;
