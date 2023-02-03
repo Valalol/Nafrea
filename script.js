@@ -85,7 +85,18 @@ new Chart(timeline, {
     }
 });
 
-// tentative 1
+
+pave_3d = document.getElementById("pave_3d");
+cube_face_right = document.getElementById("cube_face_right");
+cube_face_left = document.getElementById("cube_face_left");
+
+function place_cube_side_faces() {
+    cube_face_left.style.transform = `rotateY(-90deg) translateZ(${pave_3d.offsetWidth/2}px)`;
+    cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight/2}px)`;
+}
+place_cube_side_faces();
+window.addEventListener('resize', function() {place_cube_side_faces();});
+
 var gridsize = 8;
 const grid_3d_div = document.getElementById("grid_3d_div");
 
@@ -106,13 +117,15 @@ function draw_grid(size) {
             div.className = 'case_grid';
             div.id = `case${i}${j}`;
             div.onclick = function () {div_selected(this)};
-            div.style.width = `${600/size}px`;
-            div.style.height = `${600/size}px`;
+            div.style.width = `${100}%`;
+            div.style.height = `${100}%`;
             grid_3d_div.appendChild(div);
         }
     }
 }
 draw_grid(gridsize);
+
+
 
 var selected_case = null;
 occupied_list = [];
