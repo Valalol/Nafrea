@@ -86,22 +86,6 @@ new Chart(timeline, {
 });
 
 
-pave_3d = document.getElementById("pave_3d");
-cube_face_right = document.getElementById("cube_face_right");
-cube_face_left = document.getElementById("cube_face_left");
-
-function place_cube_side_faces() {
-    cube_face_left.style.transform = `rotateY(-90deg) translateZ(${pave_3d.offsetWidth/2}px)`;
-    cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight/2}px)`;
-}
-place_cube_side_faces();
-const resizeObserver_cube = new ResizeObserver(entries => {
-    for (let entry of entries) {
-        place_cube_side_faces();
-    }
-});
-resizeObserver_cube.observe(pave_3d);
-
 
 var gridsize = 8;
 const grid_3d_div = document.getElementById("grid_3d_div");
@@ -130,6 +114,26 @@ function draw_grid(size) {
     }
 }
 draw_grid(gridsize);
+
+
+
+pave_3d = document.getElementById("pave_3d");
+cube_face_right = document.getElementById("cube_face_right");
+cube_face_left = document.getElementById("cube_face_left");
+
+function place_cube_side_faces() {
+    grid_3d_div.style.transform = `translateZ(${pave_3d.offsetWidth/8}px)`;
+    cube_face_left.style.transform = `rotateY(-90deg) translateZ(${pave_3d.offsetWidth/2}px)`;
+    cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight/2}px)`;
+}
+place_cube_side_faces();
+const resizeObserver_cube = new ResizeObserver(entries => {
+    for (let entry of entries) {
+        place_cube_side_faces();
+    }
+});
+resizeObserver_cube.observe(pave_3d);
+
 
 
 
