@@ -106,6 +106,7 @@ function draw_grid(size) {
             let div = document.createElement('div');
             div.className = 'case_grid';
             div.id = `case${i}${j}`;
+            div.style.zIndex = i-j + parseInt(size) + 1
             div.onclick = function () {div_selected(this)};
             grid_3d_div.appendChild(div);
         }
@@ -159,7 +160,12 @@ function div_selected(item) {
 function place_building() {
     if (selected_case != null) {
         occupied_list.push(selected_case);
-        document.getElementById(selected_case).style.backgroundColor = 'yellow';
+        div = document.getElementById(selected_case);
+        div.style.backgroundColor = 'yellow';
+        let maison_image = document.createElement('img');
+        maison_image.src = "Images/test_image.png";
+        maison_image.classList.add("sprite_cool");
+        div.appendChild(maison_image);
     }
 }
 

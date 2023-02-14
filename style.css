@@ -268,7 +268,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 35%;
     aspect-ratio: 1 / 1;
     /* background-color: #b5258f54; */
     transform-style: preserve-3d;
@@ -280,13 +280,13 @@ html {
     display: grid;
     width: 100%;
     height: 100%;
-    background-color:hsla(202, 100%, 50%, 0.6);
+    background-color:hsl(108, 46%, 62%);
 }
 
 .case_grid {
     width: 100%;
     height: 100%;
-    border: solid 2px rgb(0, 43, 160);
+    border: solid 1.5px rgb(0, 43, 160);
 }
 
 .case_grid:hover {
@@ -299,15 +299,25 @@ html {
 }
 
 #cube_face_left {
-    background: hsla(128, 100%, 50%, 0.6);
+    background: rgb(143, 86, 29);
     height: 100%;
     width: 25%;
-    border: solid 2px black;
+    border: solid 1.5px black;
 }
 
 #cube_face_right {
-    background: hsla(0, 100%, 50%, 0.6);
+    background: rgb(124, 71, 19);
     height: 25%;
     width: 100%;
-    border: solid 2px black;
+    border: solid 1.5px black;
+}
+
+.sprite_cool {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 150%;
+    transform: rotateZ(45deg);
+    translate: 18% -27%;
+    pointer-events: none
 }
