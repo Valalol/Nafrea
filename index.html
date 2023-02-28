@@ -67,8 +67,12 @@
                     <p class="category_title">Exploitation agricole</p>
                     <p class="parameter_name">Consommation</p>
                 </div>
-                <input type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
-                <button onclick="place_building()">Place building</button>
+                <div class="category" style="display: grid;">
+                    <p class="category_title">Debug</p>
+                    <input type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
+                    <button onclick="place_building()" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="new_frame()" style="height: 35px; margin: 10px 50px;">Move forward one time</button>
+                </div>
             </div>
             <div id="shrink_container">
                 <button id="shrink_button" onclick="shrink_menu()"></button>
@@ -84,7 +88,7 @@
                     </div>
                 </div>
                 <div id="water_bar">
-                    <p id="water_bar_quantity">XX%</p>
+                    <p id="water_bar_quantity">65%</p>
                     <div id="water_bar_container">
                         <div id="water_bar_colored">
                             <div id="vagues"></div>

@@ -20,34 +20,16 @@ function shrink_menu() {
     }
 }
 
-function new_frame() {
-    new_value = Math.random().toFixed(2);
-
-    date_fin = date_fin + 1;
-    water_data.push(new_value);
-
-    water_bar.style.height = new_value*100+"%";
-    water_bar_quantity.innerHTML = (Math.round(new_value*100)).toString() +"%";
-    console.log("bah là normalement y'a des trucs mis à jour")
-}
-
-
-
+var old_value = 0.65;
 
 const date_debut = 2023;
-var date_fin = 2033;
+var date_fin = date_debut;
 
-var years = [];
-for (var i = date_debut; i <= date_fin; i++) {
-    years.push(i);
-}
+var years = [date_debut];
 
-var water_data = [];
-for (var i = date_debut; i <= date_fin; i++) {
-    water_data.push(Math.random());
-}
+var water_data = [0.65];
 
-new Chart(timeline, {
+var water_chart = new Chart(timeline, {
     type: 'line',
     data: {
         labels: years,
@@ -167,5 +149,24 @@ function place_building() {
         maison_image.classList.add("sprite_cool");
         div.appendChild(maison_image);
     }
+}
+
+
+function new_frame() {
+    // new_value = Math.random().toFixed(2);
+    new_value = old_value + (Math.random() - 0.5)*old_value;
+    water_data.push(new_value);
+    
+    date_fin = date_fin;
+    years.push(date_fin);
+    
+    water_chart.data.datasets.data = water_data;
+    water_chart.data.labels = years;
+    water_chart.update();
+    
+    water_bar.style.height = new_value*100+"%";
+    water_bar_quantity.innerHTML = (Math.round(new_value*100)).toString() +"%";
+    
+    old_value = new_value
 }
 
