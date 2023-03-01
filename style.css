@@ -319,5 +319,5 @@ html {
     height: 150%;
     transform: rotateZ(45deg);
     translate: 18% -27%;
-    pointer-events: none
+    pointer-events: none;
 }

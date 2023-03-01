@@ -22,17 +22,21 @@ function shrink_menu() {
 
 var old_value = 0.65;
 
-const date_debut = 2023;
-var date_fin = date_debut;
+const annee_debut = 2023;
+const mois_debut = 01;
+var annee_actuelle = annee_debut;
+var mois_actuel = mois_debut;
 
-var years = [date_debut];
+var new_data_label = mois_actuel.toLocaleString(undefined, {minimumIntegerDigits: 2}) + "/" + annee_actuelle;
+
+var time_labels = [new_data_label];
 
 var water_data = [0.65];
 
 var water_chart = new Chart(timeline, {
     type: 'line',
     data: {
-        labels: years,
+        labels: time_labels,
         datasets: [{
             data: water_data,
             borderColor: 'rgb(104, 176, 235)',
@@ -46,7 +50,7 @@ var water_chart = new Chart(timeline, {
                 // display: false,
                 ticks: {
                     callback: function (val, index) {
-                        return index % 3 === 0 ? this.getLabelForValue(val) : '';
+                        return index % 2 === 0 ? this.getLabelForValue(val) : '';
                     },
                 },
             },
@@ -82,14 +86,14 @@ function redraw_grid(size) {
 function draw_grid(size) {
     grid_3d_div.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
     grid_3d_div.style.gridTemplateRows = `repeat(${size}, 1fr)`;
-    
-    for(let i = 1; i <= size; i++){
-        for(let j = 1; j <= size; j++){
+
+    for (let i = 1; i <= size; i++) {
+        for (let j = 1; j <= size; j++) {
             let div = document.createElement('div');
             div.className = 'case_grid';
             div.id = `case${i}${j}`;
-            div.style.zIndex = i-j + parseInt(size) + 1
-            div.onclick = function () {div_selected(this)};
+            div.style.zIndex = i - j + parseInt(size) + 1
+            div.onclick = function () { div_selected(this) };
             grid_3d_div.appendChild(div);
         }
     }
@@ -103,9 +107,9 @@ cube_face_right = document.getElementById("cube_face_right");
 cube_face_left = document.getElementById("cube_face_left");
 
 function place_cube_side_faces() {
-    grid_3d_div.style.transform = `translateZ(${pave_3d.offsetWidth/8}px)`;
-    cube_face_left.style.transform = `rotateY(-90deg) translateZ(${pave_3d.offsetWidth/2}px)`;
-    cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight/2}px)`;
+    grid_3d_div.style.transform = `translateZ(${pave_3d.offsetWidth / 8}px)`;
+    cube_face_left.style.transform = `rotateY(-90deg) translateZ(${pave_3d.offsetWidth / 2}px)`;
+    cube_face_right.style.transform = `rotateX(-90deg) translateZ(${pave_3d.offsetHeight / 2}px)`;
 }
 place_cube_side_faces();
 const resizeObserver_cube = new ResizeObserver(entries => {
@@ -140,7 +144,7 @@ function div_selected(item) {
 
 
 function place_building() {
-    if (selected_case != null) {
+    if (selected_case != null && !occupied_list.includes(selected_case)) {
         occupied_list.push(selected_case);
         div = document.getElementById(selected_case);
         div.style.backgroundColor = 'yellow';
@@ -153,20 +157,39 @@ function place_building() {
 
 
 function new_frame() {
+    mois_actuel = mois_actuel+1;
+    if (mois_actuel == 13) {
+        mois_actuel = 1;
+        annee_actuelle = annee_actuelle + 1;
+    }
+    new_data_label = mois_actuel.toLocaleString(undefined, {minimumIntegerDigits: 2}) + "/" + annee_actuelle;
+    time_labels.push(new_data_label);
+
     // new_value = Math.random().toFixed(2);
-    new_value = old_value + (Math.random() - 0.5)*old_value;
+    new_value = (Math.random()*0.5 + 0.5)*(Math.sin(((annee_actuelle - 2023)*12 + mois_actuel) * 2*Math.PI/12) + 1)/2 * Math.exp(-((annee_actuelle - 2023)*12 + mois_actuel)/100);
     water_data.push(new_value);
-    
-    date_fin = date_fin;
-    years.push(date_fin);
-    
+
+
     water_chart.data.datasets.data = water_data;
-    water_chart.data.labels = years;
+    water_chart.data.labels = time_labels;
     water_chart.update();
-    
-    water_bar.style.height = new_value*100+"%";
-    water_bar_quantity.innerHTML = (Math.round(new_value*100)).toString() +"%";
-    
+
+    water_bar.style.height = new_value * 100 + "%";
+    water_bar_quantity.innerHTML = (Math.round(new_value * 100)).toString() + "%";
+
     old_value = new_value
 }
 
+
+var run = 1;
+function myLoop() {
+    setTimeout(function () {
+        new_frame();
+        run++;
+        if (run < 500) {
+            myLoop();
+        }
+    }, 250)
+}
+
+myLoop(); 
