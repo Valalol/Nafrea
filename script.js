@@ -75,9 +75,11 @@ var water_chart = new Chart(timeline, {
 
 var gridsize = 8;
 const grid_3d_div = document.getElementById("grid_3d_div");
+const map_size_label = document.getElementById("map_size_label");
 
 function redraw_grid(size) {
     console.log(size)
+    map_size_label.textContent = "Taille de la carte (" + size + ")";
     grid_3d_div.textContent = '';
     draw_grid(size);
 }
@@ -99,6 +101,25 @@ function draw_grid(size) {
     }
 }
 draw_grid(gridsize);
+
+const depth_label = document.getElementById("depth_label")
+const permeability_coeff_label = document.getElementById("permeability_coeff_label")
+const capacity_label = document.getElementById("capacity_label")
+
+function setting_changed(setting, value) {
+    switch (setting) {
+        case "depth":
+            depth_label.textContent = "Profondeur de la nappe (" + value + " km)";
+            break;
+        case "permeability_coeff":
+            permeability_coeff_label.textContent = "Coefficient de perméabilité (" + value + "m/s)";
+            break;
+        case "capacity":
+            capacity_label.textContent = "Capacité de la nappe ("+ value + "e9 m³)";
+            break;
+    }
+}
+
 
 
 
@@ -149,7 +170,7 @@ function place_building() {
         div = document.getElementById(selected_case);
         div.style.backgroundColor = 'yellow';
         let maison_image = document.createElement('img');
-        maison_image.src = "Images/test_image.png";
+        maison_image.src = "Images/test_image3.png";
         maison_image.classList.add("sprite_cool");
         div.appendChild(maison_image);
     }

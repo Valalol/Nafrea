@@ -60,8 +60,23 @@
                 <button id="preconfig">Ouvrir une préconfiguration</button>
                 
                 <div class="category">
-                    <p class="category_title">Exploitation agricole</p>
-                    <p class="parameter_name">Consommation</p>
+                    <p class="category_title">Paramètres généraux</p>
+                    <div class="parameter_div">
+                        <p class="parameter_name" id="map_size_label">Taille de la carte (8)</p>
+                        <input class="settings_range" type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
+                    </div>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="depth_label">Profondeur de la nappe (1 km)</p>
+                        <input class="settings_range" type="range" min="0.5" max="10" value="1" step="0.5" oninput="setting_changed('depth', this.value)">
+                    </div>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (0.01 m/s)</p>
+                        <input class="settings_range" type="range" min="0" max="1" value="0.01" step="0.001" oninput="setting_changed('permeability_coeff', this.value)">
+                    </div>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                        <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                    </div>
                 </div>
                 <div class="category">
                     <p class="category_title">Exploitation agricole</p>
@@ -69,7 +84,7 @@
                 </div>
                 <div class="category" style="display: grid;">
                     <p class="category_title">Debug</p>
-                    <input type="range" min="3" max="20" value="8" step="1" oninput="redraw_grid(this.value)">
+                    
                     <button onclick="place_building()" style="height: 35px; margin: 10px 50px;">Place building</button>
                     <button onclick="new_frame()" style="height: 35px; margin: 10px 50px;">Move forward one time</button>
                 </div>
@@ -99,6 +114,11 @@
             <div id="timeline_div">
                 <div id="timeline">
                     <canvas id="water_timeline"></canvas>
+                </div>
+                <div id="time_buttons_div">
+                    <img class="player_button" src="Images/slow_down.svg">
+                    <img class="player_button" src="Images/play.svg">
+                    <img class="player_button" src="Images/speed_up.svg">
                 </div>
             </div>
         </div>
