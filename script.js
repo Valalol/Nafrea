@@ -27,7 +27,7 @@ const mois_debut = 01;
 var annee_actuelle = annee_debut;
 var mois_actuel = mois_debut;
 
-var new_data_label = mois_actuel.toLocaleString(undefined, {minimumIntegerDigits: 2}) + "/" + annee_actuelle;
+var new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
 
 var time_labels = [new_data_label];
 
@@ -115,7 +115,7 @@ function setting_changed(setting, value) {
             permeability_coeff_label.textContent = "Coefficient de perméabilité (" + value + "m/s)";
             break;
         case "capacity":
-            capacity_label.textContent = "Capacité de la nappe ("+ value + "e9 m³)";
+            capacity_label.textContent = "Capacité de la nappe (" + value + "e9 m³)";
             break;
     }
 }
@@ -164,13 +164,13 @@ function div_selected(item) {
 }
 
 
-function place_building() {
+function place_building(src) {
     if (selected_case != null && !occupied_list.includes(selected_case)) {
         occupied_list.push(selected_case);
         div = document.getElementById(selected_case);
         div.style.backgroundColor = 'yellow';
         let maison_image = document.createElement('img');
-        maison_image.src = "Images/test_image3.png";
+        maison_image.src = src;
         maison_image.classList.add("sprite_cool");
         div.appendChild(maison_image);
     }
@@ -178,16 +178,16 @@ function place_building() {
 
 
 function new_frame() {
-    mois_actuel = mois_actuel+1;
+    mois_actuel = mois_actuel + 1;
     if (mois_actuel == 13) {
         mois_actuel = 1;
         annee_actuelle = annee_actuelle + 1;
     }
-    new_data_label = mois_actuel.toLocaleString(undefined, {minimumIntegerDigits: 2}) + "/" + annee_actuelle;
+    new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
     time_labels.push(new_data_label);
 
-    // new_value = Math.random().toFixed(2);
-    new_value = (Math.random()*0.5 + 0.5)*(Math.sin(((annee_actuelle - 2023)*12 + mois_actuel) * 2*Math.PI/12) + 1)/2 * Math.exp(-((annee_actuelle - 2023)*12 + mois_actuel)/100);
+    // Écoulement latéral souterrain Q = K*S*DeltaH/L = K*S*tan(alpha)
+    new_value = (Math.random() * 0.5 + 0.5) * (Math.sin(((annee_actuelle - 2023) * 12 + mois_actuel) * 2 * Math.PI / 12) + 1) / 2 * Math.exp(-((annee_actuelle - 2023) * 12 + mois_actuel) / 100);
     water_data.push(new_value);
 
 
@@ -202,15 +202,34 @@ function new_frame() {
 }
 
 
-var run = 1;
-function myLoop() {
-    setTimeout(function () {
-        new_frame();
-        run++;
-        if (run < 500) {
-            myLoop();
-        }
-    }, 250)
-}
 
-myLoop(); 
+var simulation_speed = 1;
+var play_pause_button = document.getElementById("play_pause_button");
+var main_simulation;
+
+function slow_down() {
+    if (simulation_speed > 0.125) {
+        simulation_speed = simulation_speed / 2;
+        clearInterval(main_simulation);
+        main_simulation = setInterval(new_frame, 500/simulation_speed);
+        console.log(simulation_speed);
+    }
+}
+function speed_up() {
+    if (simulation_speed < 128) {
+        simulation_speed = simulation_speed * 2;
+        clearInterval(main_simulation);
+        main_simulation = setInterval(new_frame, 500/simulation_speed);
+        console.log(simulation_speed);
+    }
+}
+function resume() {
+    main_simulation = setInterval(new_frame, 500/simulation_speed);
+    play_pause_button.src = "Images/pause.svg";
+    play_pause_button.onclick =  function () { pause() };
+}
+function pause() {
+    clearInterval(main_simulation);
+    play_pause_button.src = "Images/play.svg";
+    play_pause_button.onclick =  function () { resume() };
+}

@@ -8,6 +8,7 @@
     <script defer src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
     <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
 
     <title>Nafrea</title>
@@ -85,8 +86,15 @@
                 <div class="category" style="display: grid;">
                     <p class="category_title">Debug</p>
                     
-                    <button onclick="place_building()" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="new_frame()" style="height: 35px; margin: 10px 50px;">Move forward one time</button>
+                    <button onclick="place_building('Images/test_image5.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
                 </div>
             </div>
             <div id="shrink_container">
@@ -116,9 +124,9 @@
                     <canvas id="water_timeline"></canvas>
                 </div>
                 <div id="time_buttons_div">
-                    <img class="player_button" src="Images/slow_down.svg">
-                    <img class="player_button" src="Images/play.svg">
-                    <img class="player_button" src="Images/speed_up.svg">
+                    <img class="player_button" src="Images/slow_down.svg" onclick="slow_down()">
+                    <img class="player_button" id="play_pause_button" src="Images/play.svg" onclick="resume()">
+                    <img class="player_button" src="Images/speed_up.svg" onclick="speed_up()">
                 </div>
             </div>
         </div>
