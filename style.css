@@ -4,6 +4,16 @@
     font-family: 'Roboto', sans-serif;
 }
 
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 body,
 html {
     height: 100%;
@@ -90,11 +100,15 @@ html {
     display: flex;
     flex-direction: column;
     padding: 10px 0 10px 10px;
-    width:100%;
-    align-items:center;
+    width: 100%;
+    align-items: center;
     overflow-y: scroll;
+    transform: scaleX(-1);
 }
 
+#real_menu>* {
+    transform: scaleX(-1);
+}
 
 #shrink_container {
     display: flex;
@@ -105,11 +119,11 @@ html {
 }
 
 #shrink_button {
-    height : 0;
-    width : 0;
-    border-top : 29px solid transparent;
-    border-right : 30px solid rgb(163, 163, 163);
-    border-bottom : 29px solid transparent;
+    height: 0;
+    width: 0;
+    border-top: 29px solid transparent;
+    border-right: 30px solid rgb(163, 163, 163);
+    border-bottom: 29px solid transparent;
     border-left: 0;
     background: transparent;
     z-index: 2;
@@ -119,25 +133,25 @@ html {
 }
 
 .search_bar {
-    display:flex;
-    width:80%;
-    height:30px;
-    background-color:white;
+    display: flex;
+    width: 80%;
+    height: 30px;
+    background-color: white;
     padding: 0 5px;
-    border-radius:2px;
+    border-radius: 2px;
     margin: 0 0 10px 0;
 }
 
 
 .search_icon {
-    width:20px;
+    width: 20px;
 }
 
 .search_form {
     border: 0px;
-    width:100%;
+    width: 100%;
     padding: 0 5px;
-    font-size: max(.5vw,16px);
+    font-size: max(.5vw, 16px);
 }
 
 .search_form:focus {
@@ -148,14 +162,15 @@ html {
     width: 80%;
     height: 40px;
     margin: 5px 0;
-    border-radius:2px;
+    border-radius: 2px;
     border: solid 1px black;
     padding: 2px;
     overflow: hidden;
     background-color: lightgrey;
-    font-size: max(.5vw,16px);
+    font-size: max(.5vw, 16px);
     transition: ease-in-out 0.1s;
 }
+
 #preconfig:hover {
     background-color: rgb(184, 184, 184);
     cursor: pointer;
@@ -167,7 +182,7 @@ html {
 }
 
 .category_title {
-    font-size: max(2vw,24px);
+    font-size: max(2vw, 24px);
     align-self: flex-start;
     margin-bottom: 10px;
 }
@@ -212,9 +227,10 @@ html {
     width: 7%;
     z-index: 2;
 }
+
 #water_bar_quantity {
     content: '50%';
-    font-size: 24px; 
+    font-size: 24px;
     font-weight: bolder;
 }
 
@@ -243,14 +259,14 @@ html {
 }
 
 #vagues {
-    z-index:3;
-    min-height:150px;
-    min-width:150px;
+    z-index: 3;
+    min-height: 150px;
+    min-width: 150px;
     border-radius: 40%;
     background-color: rgb(104, 176, 235);
     animation: rotation 7s linear infinite;
     translate: 0 -2%;
-    align-self:center;
+    align-self: center;
 }
 
 @keyframes grow {
@@ -263,6 +279,7 @@ html {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -309,7 +326,7 @@ html {
     display: grid;
     width: 100%;
     height: 100%;
-    background-color:hsl(108, 46%, 62%);
+    background-color: hsl(108, 46%, 62%);
 }
 
 .case_grid {

@@ -81,6 +81,26 @@
                 </div>
                 <div class="category">
                     <p class="category_title">Sélection</p>
+                    <div id="selection_display_menu">
+                        <div id="City_menu_div">
+                            <p class="parameter_name"  id="nb_hab_label">Nombre d'habitants (100000)</p>
+                            <input class="settings_range" id="nb_hab_input" type="range" min="10000" max="1000000" value="100000" step="10000" oninput="setting_changed('city_nb_hab', this.value)">
+                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                        </div>
+                        <div id="Farm_menu_div">
+                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                        </div>
+                        <div id="Forest_menu_div">
+                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
+                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                        </div>
+                    </div>
                 </div>
                 <div class="category">
                     <p class="category_title">Exploitation agricole</p>
@@ -91,13 +111,10 @@
                     
                     <button onclick="place_building('Images/test_image5.png','city')" style="height: 35px; margin: 10px 50px;">Place building</button>
                     <button onclick="place_building('Images/test_image6.png','farm')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    <button onclick="place_building('Images/test_image7.png','forest')" style="height: 35px; margin: 10px 50px;">Place building</button>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum amet inventore quo culpa veritatis accusamus incidunt corrupti quod fugit doloremque, sint, ea assumenda maxime, dolorem voluptatibus hic porro labore illo!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus accusantium, accusamus saepe labore voluptate optio molestiae? Commodi ratione exercitationem impedit laboriosam molestiae illo numquam, quos nobis maiores nemo quas quis.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum temporibus accusantium eum consectetur labore? Aliquam alias, dolor voluptates excepturi ut officiis impedit sapiente repudiandae asperiores nemo, suscipit unde, est ipsum.
                 </div>
             </div>
             <div id="shrink_container">
