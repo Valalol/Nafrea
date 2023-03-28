@@ -156,7 +156,7 @@ function setting_changed(setting, value) {
             break;
         case "city_nb_hab":
             nb_hab_label.textContent = "Nombre d'habitants (" + value + ")";
-            buildings[selected_case].nb_hab = value;
+            buildings[selected_case].nb_hab = value; 
             break;
         case "city_conso_hab":
             conso_hab_label.textContent = "Consommation par habitant (" + value + " m³/an)";
