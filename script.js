@@ -109,6 +109,7 @@ const map_size_label = document.getElementById("map_size_label");
 
 function redraw_grid(size) {
     console.log(size)
+    gridsize = size;
     map_size_label.textContent = "Taille de la carte (" + size + ")";
     grid_3d_div.textContent = '';
     draw_grid(size);
@@ -387,4 +388,18 @@ function restart() {
         clearInterval(main_simulation);
         main_simulation = setInterval(new_frame, 500 / simulation_speed);
     }
+}
+
+const stats_window_div = document.getElementById("stats_window_div");
+
+function open_stats() {
+    stats_window_div.classList.remove("disparition");
+    stats_window_div.style.display = "flex";
+}
+
+function close_stats() {
+    stats_window_div.classList.add("disparition");
+    setTimeout(() => {
+        stats_window_div.style.display = "none"; // set display to "none" after the animation has completed
+    }, 300);
 }
