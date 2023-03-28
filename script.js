@@ -13,7 +13,7 @@ var rain_data = { '1850-01': { 'WCE': '1.889', 'World': '2.296' }, '1850-02': { 
 const square_size = 10000 //m de côté
 
 class City {
-    constructor(nb_hab = 100000, conso = 4500) {
+    constructor(nb_hab = 100000, conso = 54) {
         this.buildingtype = "City";
         this.nb_hab = nb_hab;
         this.conso_hab = conso;
@@ -21,10 +21,10 @@ class City {
 }
 
 class Farm {
-    constructor(plante = "Blé", intensity = 70) {
+    constructor(plante = "Blé", cover = 1000) {
         this.buildingtype = "Farm";
         this.plante = plante;
-        this.intensity = intensity;
+        this.cover = cover;
     }
 }
 
@@ -138,13 +138,17 @@ const permeability_coeff_label = document.getElementById("permeability_coeff_lab
 const capacity_label = document.getElementById("capacity_label")
 const nb_hab_label = document.getElementById("nb_hab_label");
 const conso_hab_label = document.getElementById("conso_hab_label");
-const farm_intensity_label = document.getElementById("farm_intensity_label");
+const farm_cover_label = document.getElementById("farm_cover_label");
 const forest_density_label = document.getElementById("forest_density_label");
 
 var capacity = 15 * 10 ** 9;
 
 function setting_changed(setting, value) {
     switch (setting) {
+        case "size":
+            gridsize = parseInt(value);
+            redraw_grid(gridsize);
+            break;
         case "depth":
             depth_label.textContent = "Profondeur de la nappe (" + value + " km)";
             break;
@@ -166,9 +170,9 @@ function setting_changed(setting, value) {
         case "farm_plante":
             buildings[selected_case].plante = value;
             break;
-        case "farm_intensity":
-            farm_intensity_label.textContent = "Intensité des cultures (" + value + " %)";
-            buildings[selected_case].intensity = value;
+        case "farm_cover":
+            farm_cover_label.textContent = "Couverture des plantations (" + value + " ha)";
+            buildings[selected_case].cover = value;
             break;
         case "forest_density":
             forest_density_label.textContent = "Densité de la forêt (" + value + " %)";
@@ -210,7 +214,7 @@ const conso_hab_input = document.getElementById("conso_hab_input");
 
 const Farm_menu_div = document.getElementById("Farm_menu_div");
 const plantation_type_select = document.getElementById("plantation_type_select");
-const farm_intensity_input = document.getElementById("farm_intensity_input");
+const farm_cover_input = document.getElementById("farm_cover_input");
 
 const Forest_menu_div = document.getElementById("Forest_menu_div");
 const tree_type_select = document.getElementById("tree_type_select");
@@ -257,8 +261,8 @@ function div_selected(item) {
                 Selected_building_parameters_div.style.display = "block";
                 
                 plantation_type_select.value = buildings[selected_case].plante;
-                farm_intensity_input.value = buildings[selected_case].intensity;
-                setting_changed("farm_intensity", buildings[selected_case].intensity);
+                farm_cover_input.value = buildings[selected_case].cover;
+                setting_changed("farm_cover", buildings[selected_case].cover);
                 Farm_menu_div.style.display = "block";
                 break;
             case "Forest":
@@ -315,7 +319,48 @@ function remove_building() {
     div_selected(div);
 }
 
+function calc_conso() {
+    let total_city_conso = 0;
+    let agri_conso = 0;
+    let forets_conso = 0;
 
+    for (var key of Object.keys(buildings)){
+        if (buildings[key].buildingtype === 'City'){
+            total_city_conso = total_city_conso + buildings[key].nb_hab*(buildings[key].conso_hab/12);
+        }
+        if (buildings[key].buildingtype === 'Farm'){
+            switch (buildings[key].plante) {
+                case "Blé":
+                    agri_conso = agri_conso + 5500 * buildings[key].cover;
+                    break;
+                case "Maïs":
+                    agri_conso = agri_conso + 5500 * buildings[key].cover;
+                    break;
+                case "PDT":
+                    agri_conso = agri_conso + 5500 * buildings[key].cover;
+                    break;
+                case "Soja":
+                    agri_conso = agri_conso + 5500 * buildings[key].cover;
+                    break;
+                case "Tournesol":
+                    agri_conso = agri_conso + 5500 * buildings[key].cover;
+                    break;
+            };
+        }
+        if (buildings[key].buildingtype === 'Forest'){
+            switch (buildings[key].tree_type) {
+                case "Chêne":
+                    forets_conso = forets_conso + 6000 * (buildings[key].density/100) * (square_size**2 / 10000);
+                    break;
+            };
+        }
+    }
+    total_city_conso = total_city_conso / capacity;
+    agri_conso = agri_conso / capacity;
+    forets_conso = forets_conso / capacity;
+    var total_conso = total_city_conso + agri_conso + forets_conso;
+    return total_conso;
+}
 
 function new_frame() {
     mois_actuel = mois_actuel + 1;
@@ -328,12 +373,16 @@ function new_frame() {
 
     // Écoulement latéral souterrain Q = K*S*DeltaH/L = K*S*tan(alpha)
     //new_value = (Math.random() * 0.5 + 0.5) * (Math.sin(((annee_actuelle - 2023) * 12 + mois_actuel) * 2 * Math.PI / 12) + 1) / 2 * Math.exp(-((annee_actuelle - 2023) * 12 + mois_actuel) / 100);
-    var key = annee_actuelle.toString() + "-";
+
+    let conso = calc_conso();
+
+    let key = annee_actuelle.toString() + "-";
     if (mois_actuel < 10) {
         key = key + "0";
     }
     key = key + mois_actuel.toString();
-    new_value = old_value + ((parseFloat(rain_data[key]['WCE']) * (square_size ** 2)) / capacity);
+    new_value = old_value + ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
+    new_value = new_value - conso;
     if (new_value < 0) { new_value = 0; }
     if (new_value > 1) { new_value = 1; }
     water_data.push(new_value);
