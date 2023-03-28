@@ -21,7 +21,7 @@ class City {
 }
 
 class Farm {
-    constructor(plante = "blé", intensity = "high") {
+    constructor(plante = "Blé", intensity = 70) {
         this.buildingtype = "Farm";
         this.plante = plante;
         this.intensity = intensity;
@@ -29,9 +29,9 @@ class Farm {
 }
 
 class Forest {
-    constructor(arbres = "Chene", density = 0.5) {
+    constructor(tree_type = "Chêne", density = 50) {
         this.buildingtype = "Forest";
-        this.arbres = arbres;
+        this.tree_type = tree_type;
         this.density = density;
     }
 }
@@ -136,6 +136,9 @@ const depth_label = document.getElementById("depth_label")
 const permeability_coeff_label = document.getElementById("permeability_coeff_label")
 const capacity_label = document.getElementById("capacity_label")
 const nb_hab_label = document.getElementById("nb_hab_label");
+const conso_hab_label = document.getElementById("conso_hab_label");
+const farm_intensity_label = document.getElementById("farm_intensity_label");
+const forest_density_label = document.getElementById("forest_density_label");
 
 var capacity = 15 * 10 ** 9;
 
@@ -155,6 +158,23 @@ function setting_changed(setting, value) {
             nb_hab_label.textContent = "Nombre d'habitants (" + value + ")";
             buildings[selected_case].nb_hab = value;
             break;
+        case "city_conso_hab":
+            conso_hab_label.textContent = "Consommation par habitant (" + value + " m³/an)";
+            buildings[selected_case].conso_hab = value;
+            break;
+        case "farm_plante":
+            buildings[selected_case].plante = value;
+            break;
+        case "farm_intensity":
+            farm_intensity_label.textContent = "Intensité des cultures (" + value + " %)";
+            buildings[selected_case].intensity = value;
+            break;
+        case "forest_density":
+            forest_density_label.textContent = "Densité de la forêt (" + value + " %)";
+            buildings[selected_case].density = value;
+            break;
+        case "forest_tree_type":
+            buildings[selected_case].tree_type = value;
     }
 }
 
@@ -182,15 +202,20 @@ resizeObserver_cube.observe(pave_3d);
 
 
 var selected_case = null;
-var City_menu_div = document.getElementById("City_menu_div");
-var nb_hab_input = document.getElementById("nb_hab_input");
+const City_menu_div = document.getElementById("City_menu_div");
+const nb_hab_input = document.getElementById("nb_hab_input");
+const conso_hab_input = document.getElementById("conso_hab_input");
 
-var Farm_menu_div = document.getElementById("Farm_menu_div");
+const Farm_menu_div = document.getElementById("Farm_menu_div");
+const plantation_type_select = document.getElementById("plantation_type_select");
+const farm_intensity_input = document.getElementById("farm_intensity_input");
 
-var Forest_menu_div = document.getElementById("Forest_menu_div");
+const Forest_menu_div = document.getElementById("Forest_menu_div");
+const tree_type_select = document.getElementById("tree_type_select");
+const forest_density_input = document.getElementById("forest_density_input");
 
-var occupied_list = [];
-var buildings = {};
+const occupied_list = [];
+const buildings = {};
 
 
 function div_selected(item) {
@@ -218,12 +243,20 @@ function div_selected(item) {
             case "City":
                 nb_hab_input.value = buildings[selected_case].nb_hab;
                 setting_changed("city_nb_hab", buildings[selected_case].nb_hab);
+                conso_hab_input.value = buildings[selected_case].conso_hab;
+                setting_changed("city_conso_hab", buildings[selected_case].conso_hab);
                 City_menu_div.style.display = "block";
                 break;
             case "Farm":
+                plantation_type_select.value = buildings[selected_case].plante;
+                farm_intensity_input.value = buildings[selected_case].intensity;
+                setting_changed("farm_intensity", buildings[selected_case].intensity);
                 Farm_menu_div.style.display = "block";
                 break;
             case "Forest":
+                tree_type_select.value = buildings[selected_case].tree_type;
+                forest_density_input.value = buildings[selected_case].density;
+                setting_changed("forest_density", buildings[selected_case].density);
                 Forest_menu_div.style.display = "block";
                 break;
             default:

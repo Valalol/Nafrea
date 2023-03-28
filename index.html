@@ -85,20 +85,30 @@
                         <div id="City_menu_div">
                             <p class="parameter_name"  id="nb_hab_label">Nombre d'habitants (100000)</p>
                             <input class="settings_range" id="nb_hab_input" type="range" min="10000" max="1000000" value="100000" step="10000" oninput="setting_changed('city_nb_hab', this.value)">
-                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
-                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                            <p class="parameter_name"  id="conso_hab_label">Consommation par habitant (1500 m³/an)</p>
+                            <input class="settings_range" id="conso_hab_input" type="range" min="1000" max="10000" value="4500" step="500" oninput="setting_changed('city_conso_hab', this.value)">
                         </div>
                         <div id="Farm_menu_div">
-                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
-                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
-                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
-                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                            <p class="parameter_name">Type de plantation</p>
+                            <select class="settings_range" id="plantation_type_select" onchange="setting_changed('farm_plante', this.value)">
+                                <option value="Blé">Blé</option>
+                                <option value="Maïs">Maïs</option>
+                                <option value="Vignes">Vignes</option>
+                                <option value="Palmiers">Palmiers</option>
+                            </select>
+                            <p class="parameter_name"  id="farm_intensity_label">Intensité de culture (70 %)</p>
+                            <input class="settings_range" id="farm_intensity_input" type="range" min="1" max="100" value="70" step="1" oninput="setting_changed('farm_intensity', this.value)">
                         </div>
                         <div id="Forest_menu_div">
-                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
-                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
-                            <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
-                            <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                            <p class="parameter_name">Type d'arbres</p>
+                            <select class="settings_range" id="tree_type_select" onchange="setting_changed('forest_tree_type', this.value)">
+                                <option value="Chêne">Chêne</option>
+                                <option value="Hêtre">Hêtre</option>
+                                <option value="Pin">Pin</option>
+                                <option value="Sapin">Sapin</option>
+                            </select>
+                            <p class="parameter_name"  id="forest_density_label">Densité de la forêt (50 %)</p>
+                            <input class="settings_range" id="forest_density_input" type="range" min="1" max="100" value="70" step="1" oninput="setting_changed('forest_density', this.value)">
                         </div>
                     </div>
                 </div>
