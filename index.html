@@ -79,7 +79,15 @@
                         <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
                     </div>
                 </div>
-                <div class="category">
+                <div class="category" style="display: grid;">
+                    <p class="category_title">Buildings</p>
+                    
+                    <button class="buildings_button" onclick="place_building('Images/test_image5.png','city')">Place City</button>
+                    <button class="buildings_button" onclick="place_building('Images/test_image6.png','farm')">Place Farm</button>
+                    <button class="buildings_button" onclick="place_building('Images/test_image7.png','forest')">Place Forest</button>
+                    <button class="buildings_button" onclick="remove_building()">Remove Building</button>
+                </div>
+                <div class="category" id="Selected_building_parameters_div">
                     <p class="category_title">Sélection</p>
                     <div id="selection_display_menu">
                         <div id="City_menu_div">
@@ -111,20 +119,6 @@
                             <input class="settings_range" id="forest_density_input" type="range" min="1" max="100" value="70" step="1" oninput="setting_changed('forest_density', this.value)">
                         </div>
                     </div>
-                </div>
-                <div class="category">
-                    <p class="category_title">Exploitation agricole</p>
-                    <p class="parameter_name">Consommation</p>
-                </div>
-                <div class="category" style="display: grid;">
-                    <p class="category_title">Debug</p>
-                    
-                    <button onclick="place_building('Images/test_image5.png','city')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image6.png','farm')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    <button onclick="place_building('Images/test_image7.png','forest')" style="height: 35px; margin: 10px 50px;">Place building</button>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum amet inventore quo culpa veritatis accusamus incidunt corrupti quod fugit doloremque, sint, ea assumenda maxime, dolorem voluptatibus hic porro labore illo!
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus accusantium, accusamus saepe labore voluptate optio molestiae? Commodi ratione exercitationem impedit laboriosam molestiae illo numquam, quos nobis maiores nemo quas quis.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum temporibus accusantium eum consectetur labore? Aliquam alias, dolor voluptates excepturi ut officiis impedit sapiente repudiandae asperiores nemo, suscipit unde, est ipsum.
                 </div>
             </div>
             <div id="shrink_container">

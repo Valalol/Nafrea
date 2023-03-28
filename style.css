@@ -178,7 +178,7 @@ html {
 
 .category {
     width: 90%;
-    margin: 20px 0;
+    margin: 10px 0 0 0;
 }
 
 .category_title {
@@ -188,7 +188,7 @@ html {
 }
 
 .parameter_div {
-    margin: 8px 0px;
+    margin: 6px 0px;
 }
 
 
@@ -366,4 +366,13 @@ html {
     transform: rotateZ(45deg);
     translate: -19.7% -27.5%;
     pointer-events: none;
+}
+
+.buildings_button {
+    height: 40px;
+    margin: 8px 10%;
+}
+
+#Selected_building_parameters_div {
+    display: none;
 }

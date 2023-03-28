@@ -202,6 +202,7 @@ resizeObserver_cube.observe(pave_3d);
 
 
 var selected_case = null;
+const Selected_building_parameters_div = document.getElementById("Selected_building_parameters_div");
 const City_menu_div = document.getElementById("City_menu_div");
 const nb_hab_input = document.getElementById("nb_hab_input");
 const conso_hab_input = document.getElementById("conso_hab_input");
@@ -234,6 +235,8 @@ function div_selected(item) {
         item.style.backgroundColor = 'orange';
     }
 
+    
+    Selected_building_parameters_div.style.display = "none";
     City_menu_div.style.display = "none";
     Farm_menu_div.style.display = "none";
     Forest_menu_div.style.display = "none";
@@ -241,6 +244,8 @@ function div_selected(item) {
     if (selected_case in buildings) {
         switch (buildings[selected_case].buildingtype) {
             case "City":
+                Selected_building_parameters_div.style.display = "block";
+
                 nb_hab_input.value = buildings[selected_case].nb_hab;
                 setting_changed("city_nb_hab", buildings[selected_case].nb_hab);
                 conso_hab_input.value = buildings[selected_case].conso_hab;
@@ -248,12 +253,16 @@ function div_selected(item) {
                 City_menu_div.style.display = "block";
                 break;
             case "Farm":
+                Selected_building_parameters_div.style.display = "block";
+                
                 plantation_type_select.value = buildings[selected_case].plante;
                 farm_intensity_input.value = buildings[selected_case].intensity;
                 setting_changed("farm_intensity", buildings[selected_case].intensity);
                 Farm_menu_div.style.display = "block";
                 break;
             case "Forest":
+                Selected_building_parameters_div.style.display = "block";
+                
                 tree_type_select.value = buildings[selected_case].tree_type;
                 forest_density_input.value = buildings[selected_case].density;
                 setting_changed("forest_density", buildings[selected_case].density);
@@ -276,7 +285,6 @@ function place_building(src, type) {
         maison_image.classList.add("sprite_cool");
         div.appendChild(maison_image);
 
-        //Ajout au dictionnaire 
         var build;
         switch (type) {
             case "city":
@@ -293,7 +301,19 @@ function place_building(src, type) {
         }
         buildings[selected_case] = build;
     }
+    div_selected(div);
 }
+
+function remove_building() {
+    if (selected_case != null && occupied_list.includes(selected_case)) {
+        occupied_list.splice(occupied_list.indexOf(selected_case), 1);
+        div = document.getElementById(selected_case);
+        div.removeChild(div.childNodes[0]);
+        delete buildings[selected_case];
+    }
+    div_selected(div);
+}
+
 
 
 function new_frame() {
