@@ -298,7 +298,7 @@ html {
     width: 85%;
 }
 
-#water_timeline {
+#water_timeline, #water_timeline_stats {
     height: 100%;
     width: 100%;
 }
@@ -397,7 +397,7 @@ html {
     padding: 10px;
     z-index: 10;
 
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 
@@ -405,7 +405,7 @@ html {
 }
 
 #stats_window_div.disparition {
-    animation: stats_window_div_close 0.3s cubic-bezier(1, -0.15, 0.95, 0.47) forwards;
+    animation: stats_window_div_close 0.3s cubic-bezier(0.22,-0.06, 0.8,-0.02) forwards;
 }
 
 @keyframes stats_window_div_open {
@@ -426,3 +426,39 @@ html {
     height: 40px;
     cursor: pointer;
 }
+
+#timeline_stats {
+    display: flex;
+    height: 75%;
+    width: 60%;
+}
+
+#stats_right_div {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 40px;
+    background-color: rgb(238, 238, 238);
+    padding-top: 20px;
+}
+
+.stats_texts {
+    width: fit-content;
+    border: 1px solid black;
+    /* background-color: rgba(255, 105, 180, 0.562); */
+    padding: 10px 10px;
+    margin: 0px 0px 10px 20px;
+    border-radius: 15px;
+}
+
+#pie_chart_conso_canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#pie_chart_conso_div {
+    width: 500px;
+    height: 500px;
+}
+

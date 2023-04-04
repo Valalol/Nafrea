@@ -3,6 +3,7 @@ const shrink_button = document.getElementById("shrink_button")
 const shrink_container = document.getElementById("shrink_container")
 const game = document.getElementById("game_window");
 const timeline = document.getElementById('water_timeline');
+const timeline_stats = document.getElementById('water_timeline_stats');
 const water_bar = document.getElementById("water_bar_colored");
 const water_bar_quantity = document.getElementById("water_bar_quantity");
 
@@ -63,44 +64,67 @@ var time_labels = [new_data_label];
 
 var water_data = [0.65];
 
-var water_chart = new Chart(timeline, {
-    type: 'line',
-    data: {
-        labels: time_labels,
-        datasets: [{
-            data: water_data,
-            borderColor: 'rgb(104, 176, 235)',
-            tension: 0.25
-        }]
-    },
-    options: {
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                // display: false,
-                ticks: {
-                    callback: function (val, index) {
-                        return index % 2 === 0 ? this.getLabelForValue(val) : '';
+
+function create_chart(canvas_used) {
+    return new Chart(canvas_used, {
+        type: 'line',
+        data: {
+            labels: time_labels,
+            datasets: [{
+                data: water_data,
+                borderColor: 'rgb(104, 176, 235)',
+                tension: 0.25
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    // display: false,
+                    ticks: {
+                        callback: function (val, index) {
+                            return index % 2 === 0 ? this.getLabelForValue(val) : '';
+                        },
                     },
                 },
+                y: {
+                    ticks: {
+                        display: false,
+                    },
+                }
             },
-            y: {
-                ticks: {
+            plugins: {
+                legend: {
                     display: false,
                 },
-            }
-        },
-        plugins: {
-            legend: {
-                display: false,
-            },
-            subtitle: {
-                display: false,
+                subtitle: {
+                    display: false,
+                }
             }
         }
-    }
-});
+    });
+}
 
+var water_chart = create_chart(timeline)
+var water_chart_stats = create_chart(timeline_stats)
+
+const pie_chart_conso_canvas = document.getElementById("pie_chart_conso_canvas");
+var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
+    type: 'pie',
+    data: {
+        labels: [
+            'Villes',
+            'Fermes',
+            'Forêts',
+            'Évapotranspiration',
+            'Écoulement latéral souterrain',
+            'Rivières',
+        ],
+        datasets: [{
+            data: [300, 50, 100, 100, 200, 150],
+        }]
+    },
+});
 
 
 var gridsize = 8;
@@ -161,7 +185,7 @@ function setting_changed(setting, value) {
             break;
         case "city_nb_hab":
             nb_hab_label.textContent = "Nombre d'habitants (" + value + ")";
-            buildings[selected_case].nb_hab = value; 
+            buildings[selected_case].nb_hab = value;
             break;
         case "city_conso_hab":
             conso_hab_label.textContent = "Consommation par habitant (" + value + " m³/an)";
@@ -240,7 +264,7 @@ function div_selected(item) {
         item.style.backgroundColor = 'orange';
     }
 
-    
+
     Selected_building_parameters_div.style.display = "none";
     City_menu_div.style.display = "none";
     Farm_menu_div.style.display = "none";
@@ -259,7 +283,7 @@ function div_selected(item) {
                 break;
             case "Farm":
                 Selected_building_parameters_div.style.display = "block";
-                
+
                 plantation_type_select.value = buildings[selected_case].plante;
                 farm_cover_input.value = buildings[selected_case].cover;
                 setting_changed("farm_cover", buildings[selected_case].cover);
@@ -267,7 +291,7 @@ function div_selected(item) {
                 break;
             case "Forest":
                 Selected_building_parameters_div.style.display = "block";
-                
+
                 tree_type_select.value = buildings[selected_case].tree_type;
                 forest_density_input.value = buildings[selected_case].density;
                 setting_changed("forest_density", buildings[selected_case].density);
@@ -324,11 +348,11 @@ function calc_conso() {
     let agri_conso = 0;
     let forets_conso = 0;
 
-    for (var key of Object.keys(buildings)){
-        if (buildings[key].buildingtype === 'City'){
-            total_city_conso = total_city_conso + buildings[key].nb_hab*(buildings[key].conso_hab/12);
+    for (var key of Object.keys(buildings)) {
+        if (buildings[key].buildingtype === 'City') {
+            total_city_conso = total_city_conso + buildings[key].nb_hab * (buildings[key].conso_hab / 12);
         }
-        if (buildings[key].buildingtype === 'Farm'){
+        if (buildings[key].buildingtype === 'Farm') {
             switch (buildings[key].plante) {
                 case "Blé":
                     agri_conso = agri_conso + 5500 * buildings[key].cover;
@@ -347,10 +371,10 @@ function calc_conso() {
                     break;
             };
         }
-        if (buildings[key].buildingtype === 'Forest'){
+        if (buildings[key].buildingtype === 'Forest') {
             switch (buildings[key].tree_type) {
                 case "Chêne":
-                    forets_conso = forets_conso + 6000 * (buildings[key].density/100) * (square_size**2 / 10000);
+                    forets_conso = forets_conso + 6000 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
                     break;
             };
         }
@@ -362,12 +386,15 @@ function calc_conso() {
     return total_conso;
 }
 
+const stats_time_past = document.getElementById("stats_time_past");
+
 function new_frame() {
     mois_actuel = mois_actuel + 1;
     if (mois_actuel == 13) {
         mois_actuel = 1;
         annee_actuelle = annee_actuelle + 1;
     }
+    stats_time_past.textContent = "Durée écoulée : " + (annee_actuelle - annee_debut) + " ans " + (mois_actuel - 1) + " mois"
     new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
     time_labels.push(new_data_label);
 
@@ -381,7 +408,7 @@ function new_frame() {
         key = key + "0";
     }
     key = key + mois_actuel.toString();
-    new_value = old_value + ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
+    new_value = old_value + ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000 * capacity));
     new_value = new_value - conso;
     if (new_value < 0) { new_value = 0; }
     if (new_value > 1) { new_value = 1; }
@@ -391,6 +418,12 @@ function new_frame() {
     water_chart.data.datasets.data = water_data;
     water_chart.data.labels = time_labels;
     water_chart.update();
+    water_chart_stats.data.datasets.data = water_data;
+    water_chart_stats.data.labels = time_labels;
+    water_chart_stats.update();
+
+    pie_chart_conso.data.datasets[0].data = [Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100)];
+    pie_chart_conso.update();
 
     water_bar.style.height = new_value * 100 + "%";
     water_bar_quantity.innerHTML = (Math.round(new_value * 100)).toString() + "%";
@@ -440,15 +473,19 @@ function restart() {
 }
 
 const stats_window_div = document.getElementById("stats_window_div");
+const info_top_button = document.getElementById("info_top_button");
 
 function open_stats() {
+    info_top_button.onclick = function () { close_stats() }
     stats_window_div.classList.remove("disparition");
     stats_window_div.style.display = "flex";
 }
 
 function close_stats() {
+    info_top_button.onclick = function () { open_stats() }
     stats_window_div.classList.add("disparition");
     setTimeout(() => {
         stats_window_div.style.display = "none"; // set display to "none" after the animation has completed
     }, 300);
 }
+
