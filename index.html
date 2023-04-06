@@ -80,12 +80,12 @@
                         <input class="settings_range" type="range" min="3" max="20" value="8" step="1" oninput="setting_changed('size',this.value)">
                     </div>
                     <div class="parameter_div">
-                        <p class="parameter_name"  id="depth_label">Profondeur de la nappe (1 km)</p>
-                        <input class="settings_range" type="range" min="0.5" max="10" value="1" step="0.5" oninput="setting_changed('depth', this.value)">
+                        <p class="parameter_name"  id="depth_label">Profondeur de la nappe (10 m)</p>
+                        <input class="settings_range" type="range" min="5" max="100" value="10" step="5" oninput="setting_changed('depth', this.value)">
                     </div>
                     <div class="parameter_div">
-                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (0.01 m/s)</p>
-                        <input class="settings_range" type="range" min="0" max="1" value="0.01" step="0.001" oninput="setting_changed('permeability_coeff', this.value)">
+                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (100e-7 m/s)</p>
+                        <input class="settings_range" type="range" min="1" max="1001" value="100" step="10" oninput="setting_changed('permeability_coeff', this.value)">
                     </div>
                     <div class="parameter_div">
                         <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>

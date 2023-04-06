@@ -165,7 +165,9 @@ const conso_hab_label = document.getElementById("conso_hab_label");
 const farm_cover_label = document.getElementById("farm_cover_label");
 const forest_density_label = document.getElementById("forest_density_label");
 
-var capacity = 15 * 10 ** 9;
+var capacity = 15 * 10 ** 9;// m^3
+var depth = 10; //m
+var permeability = 100; //m.s^-1
 
 function setting_changed(setting, value) {
     switch (setting) {
@@ -174,10 +176,12 @@ function setting_changed(setting, value) {
             redraw_grid(gridsize);
             break;
         case "depth":
-            depth_label.textContent = "Profondeur de la nappe (" + value + " km)";
+            depth_label.textContent = "Profondeur de la nappe (" + value + " m)";
+            depth = parseInt(value);
             break;
         case "permeability_coeff":
-            permeability_coeff_label.textContent = "Coefficient de perméabilité (" + value + "m/s)";
+            permeability_coeff_label.textContent = "Coefficient de perméabilité (" + value + "e-7 m/s)";
+            permeability = parseInt(value);
             break;
         case "capacity":
             capacity_label.textContent = "Capacité de la nappe (" + value + "e9 m³)";
@@ -343,7 +347,82 @@ function remove_building() {
     div_selected(div);
 }
 
-function calc_conso() {
+function calc_delay(date) {
+    Q = (permeability*10**-7) * (parseFloat(rain_data[date]['WCE'])*0.001+depth)/(depth);
+    return Math.floor((depth/Q)/2629800); // conversion secondes -> mois
+}
+
+function evapotranspiration(date){
+    Ta = parseFloat(temp_data[date]['WCE']);
+    delta = (2504*Math.exp(17.27*(Ta-273.15)/(Ta-35.85)))/((Ta-35.85)**2);
+    console.log(delta)
+
+    deltae = 0.6108*Math.exp(17.27*(Ta-273.15)/(Ta-35.85));
+
+    e = soleil[mois_actuel];
+    Rg = 295*e+197.5*(1-e);
+    Ra = 492;
+    alpha = 0.23;
+    epsilon = 1;
+    sigma = 5.67*10**8;
+    Rn = (1-alpha)*Rg + epsilon*Ra - epsilon*sigma*(Ta**4)
+
+    console.log(Rn)
+
+    zom = 0.015;
+    zm = 50;
+    zh = 50;
+    zoh = 0.0015;
+    d = 0.08;
+    k = 0.41;
+    v = 6.9;
+    ra = (Math.log((zm-d)/zom)*Math.log((zh-d)/zoh))/((k**2)*v);
+
+    rho = 1.2;
+    Cp = 1013;
+    lambda = 2.45106;
+    gamma = 0.000665;
+    Rs = 70;
+    G = 0.3;
+
+    ETP = (delta*(Rn-G)+rho*Cp*deltae/ra)/(lambda*(delta+gamma*(1+Rs/ra)))
+    return ETP
+}
+
+function evapotranspiration2(date){
+    T = 283.15;
+    delta = 0.145;
+    //delta = delta*10**-3 + 273.15;
+
+    Rn = 7.6;
+    //Rn = (Rn*10**-6);
+
+    //G = 0.1*Rn;
+    G = 0.3; //valeur officielle
+
+
+    v = 5.4;
+    deltae = 0.91;
+    gamma = 0.067;
+    //gamma = gamma/(10**3) + 273.15;
+
+    ETP = (0.408*delta*(Rn-G)+(900/T)*gamma*v*deltae)/(delta+gamma*(1+0.34*v));
+
+    return ETP
+}
+
+function evapotranspiration3(date) {
+    p = rain_data[date]["WCE"];
+    t = temp_data[date]["WCE"];
+    l = 300 + 25*t + 0.05*t**3;
+    ETR = p/((0.9+p**2/l**2))**1/2;
+    return ETR
+}
+
+var conso_plantes = {"Blé" : {"1": 0, "2": 0, "3": 0, "4": 25, "5" : 90, "6": 60, "7": 0, "8": 0, "9": 0, "10": 0, "11":0, "12": 0},"Maïs" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 10, "6": 80, "7": 200, "8": 120, "9": 25, "10": 0, "11":0, "12": 0},"PDT" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 20, "7": 70, "8": 120, "9": 30, "10": 0, "11":0, "12": 0}, "Soja" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 35, "7": 110, "8": 120, "9": 35, "10": 0, "11":0, "12": 0},"Tournesol" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 60, "7": 180, "8": 75, "9": 0, "10": 0, "11":0, "12": 0}} //mm / mois
+
+
+function calc_conso(date) {
     let total_city_conso = 0;
     let agri_conso = 0;
     let forets_conso = 0;
@@ -353,23 +432,7 @@ function calc_conso() {
             total_city_conso = total_city_conso + buildings[key].nb_hab * (buildings[key].conso_hab / 12);
         }
         if (buildings[key].buildingtype === 'Farm') {
-            switch (buildings[key].plante) {
-                case "Blé":
-                    agri_conso = agri_conso + 5500 * buildings[key].cover;
-                    break;
-                case "Maïs":
-                    agri_conso = agri_conso + 5500 * buildings[key].cover;
-                    break;
-                case "PDT":
-                    agri_conso = agri_conso + 5500 * buildings[key].cover;
-                    break;
-                case "Soja":
-                    agri_conso = agri_conso + 5500 * buildings[key].cover;
-                    break;
-                case "Tournesol":
-                    agri_conso = agri_conso + 5500 * buildings[key].cover;
-                    break;
-            };
+            agri_conso += conso_plantes[buildings[key].plante][mois_actuel] * 10 * buildings[key].cover;
         }
         if (buildings[key].buildingtype === 'Forest') {
             switch (buildings[key].tree_type) {
@@ -382,11 +445,36 @@ function calc_conso() {
     total_city_conso = total_city_conso / capacity;
     agri_conso = agri_conso / capacity;
     forets_conso = forets_conso / capacity;
-    var total_conso = total_city_conso + agri_conso + forets_conso;
+    etp = evapotranspiration3(date); // mm/an
+    etp = (etp * (square_size ** 2) * (gridsize ** 2))/(1000*capacity); // conversion en %/mois
+    var total_conso = total_city_conso + agri_conso + forets_conso + etp;
     return total_conso;
 }
 
 const stats_time_past = document.getElementById("stats_time_past");
+
+var future_rain = {}
+
+function update_future_rain(delay){
+    let annee_futur = annee_actuelle;
+    let mois_futur = mois_actuel + delay;
+    if (mois_futur > 12) {
+        mois_futur = (mois_actuel+delay) % 12;
+        annee_futur = annee_actuelle + Math.floor((mois_actuel+delay)/12);
+    }
+
+    let key = annee_futur.toString() + "-";
+    if (mois_futur < 10) {
+        key = key + "0";
+    }
+
+    key = key + mois_futur.toString();
+    if (!(key in future_rain)){
+        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
+    } else { 
+        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
+    }
+}
 
 function new_frame() {
     mois_actuel = mois_actuel + 1;
@@ -394,21 +482,33 @@ function new_frame() {
         mois_actuel = 1;
         annee_actuelle = annee_actuelle + 1;
     }
-    stats_time_past.textContent = "Durée écoulée : " + (annee_actuelle - annee_debut) + " ans " + (mois_actuel - 1) + " mois"
     new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
     time_labels.push(new_data_label);
 
     // Écoulement latéral souterrain Q = K*S*DeltaH/L = K*S*tan(alpha)
     //new_value = (Math.random() * 0.5 + 0.5) * (Math.sin(((annee_actuelle - 2023) * 12 + mois_actuel) * 2 * Math.PI / 12) + 1) / 2 * Math.exp(-((annee_actuelle - 2023) * 12 + mois_actuel) / 100);
 
-    let conso = calc_conso();
-
+    
     let key = annee_actuelle.toString() + "-";
     if (mois_actuel < 10) {
         key = key + "0";
     }
     key = key + mois_actuel.toString();
-    new_value = old_value + ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000 * capacity));
+
+    let conso = calc_conso(key);
+
+    var delay = calc_delay(key);
+    
+    update_future_rain(delay);
+
+    
+    if (key in future_rain){
+        new_value = old_value + future_rain[key];
+    } else {
+        new_value = old_value;
+    }
+
+    delete future_rain[key];
     new_value = new_value - conso;
     if (new_value < 0) { new_value = 0; }
     if (new_value > 1) { new_value = 1; }
