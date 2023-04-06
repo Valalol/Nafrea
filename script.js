@@ -482,6 +482,7 @@ function new_frame() {
         mois_actuel = 1;
         annee_actuelle = annee_actuelle + 1;
     }
+    stats_time_past.textContent = "Durée écoulée : " + (annee_actuelle - annee_debut) + " ans " + (mois_actuel - 1) + " mois"
     new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
     time_labels.push(new_data_label);
 
