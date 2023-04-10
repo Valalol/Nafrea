@@ -397,7 +397,7 @@ html {
     padding: 10px;
     z-index: 10;
 
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 

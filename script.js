@@ -107,6 +107,7 @@ function create_chart(canvas_used) {
 
 var water_chart = create_chart(timeline)
 var water_chart_stats = create_chart(timeline_stats)
+var water_consumption = [0, 0, 0, 0, 0, 0]
 
 const pie_chart_conso_canvas = document.getElementById("pie_chart_conso_canvas");
 var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
@@ -121,7 +122,7 @@ var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
             'Rivières',
         ],
         datasets: [{
-            data: [300, 50, 100, 100, 200, 150],
+            data: water_consumption,
         }]
     },
 });
@@ -442,11 +443,17 @@ function calc_conso(date) {
             };
         }
     }
+    water_consumption[0] += total_city_conso;
+    water_consumption[1] += agri_conso;
+    water_consumption[2] += forets_conso;
+
     total_city_conso = total_city_conso / capacity;
     agri_conso = agri_conso / capacity;
     forets_conso = forets_conso / capacity;
     etp = evapotranspiration3(date); // mm/an
-    etp = (etp * (square_size ** 2) * (gridsize ** 2))/(1000*capacity); // conversion en %/mois
+    etp = (etp * (square_size ** 2) * (gridsize ** 2)); // conversion en %/mois
+    water_consumption[3] += etp;
+    etp = etp/(1000*capacity); // conversion en %/mois
     var total_conso = total_city_conso + agri_conso + forets_conso + etp;
     return total_conso;
 }
@@ -508,22 +515,23 @@ function new_frame() {
     } else {
         new_value = old_value;
     }
-
     delete future_rain[key];
+
+
     new_value = new_value - conso;
     if (new_value < 0) { new_value = 0; }
     if (new_value > 1) { new_value = 1; }
     water_data.push(new_value);
 
-
-    water_chart.data.datasets.data = water_data;
-    water_chart.data.labels = time_labels;
+    // Bon ça marche pas, je voulais afficher genre les 2 dernières années
+    water_chart.data.datasets.data = water_data.slice(-48);
+    water_chart.data.labels = time_labels.slice(-48);
     water_chart.update();
     water_chart_stats.data.datasets.data = water_data;
     water_chart_stats.data.labels = time_labels;
     water_chart_stats.update();
 
-    pie_chart_conso.data.datasets[0].data = [Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100), Math.floor(Math.random()*100)];
+    pie_chart_conso.data.datasets[0].data = water_consumption;
     pie_chart_conso.update();
 
     water_bar.style.height = new_value * 100 + "%";
