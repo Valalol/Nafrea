@@ -94,11 +94,16 @@
                 </div>
                 <div class="category" style="display: grid;">
                     <p class="category_title">Buildings</p>
-                    
-                    <button class="buildings_button" onclick="place_building('Images/test_image5.png','city')">Place City</button>
-                    <button class="buildings_button" onclick="place_building('Images/test_image6.png','farm')">Place Farm</button>
-                    <button class="buildings_button" onclick="place_building('Images/test_image7.png','forest')">Place Forest</button>
-                    <button class="buildings_button" onclick="remove_building()">Remove Building</button>
+                    <div id="building_buttons_div">
+                        <div id="copy_paste_div">
+                            <button class="buildings_button copy_paste_button" id="copy_button" onclick="copy_building()">Copy</button>
+                            <button class="buildings_button copy_paste_button" id="paste_button" onclick="paste_building()">Paste</button>
+                        </div>
+                        <button class="buildings_button" onclick="place_building('city')">Place City</button>
+                        <button class="buildings_button" onclick="place_building('farm')">Place Farm</button>
+                        <button class="buildings_button" onclick="place_building('forest')">Place Forest</button>
+                        <button class="buildings_button" onclick="remove_building()">Remove Building</button>
+                    </div>
                 </div>
                 <div class="category" id="Selected_building_parameters_div">
                     <p class="category_title">Sélection</p>

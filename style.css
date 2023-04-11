@@ -374,10 +374,34 @@ html {
     pointer-events: none;
 }
 
+#building_buttons_div {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    margin: 0 10%;
+}
+
 .buildings_button {
     height: 40px;
-    margin: 8px 10%;
+    width: 100%;
+    margin: 5px 0px;
 }
+
+#copy_paste_div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.copy_paste_button {
+    width: 48%;
+}
+/* #copy_button {
+    margin-right: 8px;
+}
+#paste_button {
+    margin-left: 8px;
+} */
 
 #Selected_building_parameters_div {
     display: none;
@@ -458,7 +482,7 @@ html {
 }
 
 #pie_chart_conso_div {
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    height: 60%;
 }
 

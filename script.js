@@ -15,7 +15,7 @@ const square_size = 10000 //m de côté
 
 class City {
     constructor(nb_hab = 100000, conso = 54) {
-        this.buildingtype = "City";
+        this.buildingtype = "city";
         this.nb_hab = nb_hab;
         this.conso_hab = conso;
     }
@@ -23,7 +23,7 @@ class City {
 
 class Farm {
     constructor(plante = "Blé", cover = 1000) {
-        this.buildingtype = "Farm";
+        this.buildingtype = "farm";
         this.plante = plante;
         this.cover = cover;
     }
@@ -31,7 +31,7 @@ class Farm {
 
 class Forest {
     constructor(tree_type = "Chêne", density = 50) {
-        this.buildingtype = "Forest";
+        this.buildingtype = "forest";
         this.tree_type = tree_type;
         this.density = density;
     }
@@ -107,7 +107,7 @@ function create_chart(canvas_used) {
 
 var water_chart = create_chart(timeline)
 var water_chart_stats = create_chart(timeline_stats)
-var water_consumption = [0, 0, 0, 0, 0, 0]
+var water_consumption = [100, 200, 300, 150, 400, 250]
 
 const pie_chart_conso_canvas = document.getElementById("pie_chart_conso_canvas");
 var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
@@ -125,6 +125,11 @@ var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
             data: water_consumption,
         }]
     },
+    options: {
+        animation: {
+            animateRotate: false
+        }
+    }
 });
 
 
@@ -277,7 +282,7 @@ function div_selected(item) {
 
     if (selected_case in buildings) {
         switch (buildings[selected_case].buildingtype) {
-            case "City":
+            case "city":
                 Selected_building_parameters_div.style.display = "block";
 
                 nb_hab_input.value = buildings[selected_case].nb_hab;
@@ -286,7 +291,7 @@ function div_selected(item) {
                 setting_changed("city_conso_hab", buildings[selected_case].conso_hab);
                 City_menu_div.style.display = "block";
                 break;
-            case "Farm":
+            case "farm":
                 Selected_building_parameters_div.style.display = "block";
 
                 plantation_type_select.value = buildings[selected_case].plante;
@@ -294,7 +299,7 @@ function div_selected(item) {
                 setting_changed("farm_cover", buildings[selected_case].cover);
                 Farm_menu_div.style.display = "block";
                 break;
-            case "Forest":
+            case "forest":
                 Selected_building_parameters_div.style.display = "block";
 
                 tree_type_select.value = buildings[selected_case].tree_type;
@@ -308,65 +313,86 @@ function div_selected(item) {
     }
 }
 
-
-function place_building(src, type) {
-    if (selected_case != null && !occupied_list.includes(selected_case)) {
-        occupied_list.push(selected_case);
-        div = document.getElementById(selected_case);
-        div.style.backgroundColor = 'yellow';
-        let maison_image = document.createElement('img');
-        maison_image.src = src;
-        maison_image.classList.add("sprite_cool");
-        div.appendChild(maison_image);
-
-        var build;
-        switch (type) {
-            case "city":
-                build = new City();
-                break;
-            case "farm":
-                build = new Farm();
-                break;
-            case "forest":
-                build = new Forest();
-                break;
-            default:
-                break;
-        }
-        buildings[selected_case] = build;
-    }
-    div_selected(div);
-}
-
 function remove_building() {
+    div = document.getElementById(selected_case);
     if (selected_case != null && occupied_list.includes(selected_case)) {
         occupied_list.splice(occupied_list.indexOf(selected_case), 1);
-        div = document.getElementById(selected_case);
         div.removeChild(div.childNodes[0]);
         delete buildings[selected_case];
     }
     div_selected(div);
 }
 
-function calc_delay(date) {
-    Q = (permeability*10**-7) * (parseFloat(rain_data[date]['WCE'])*0.001+depth)/(depth);
-    return Math.floor((depth/Q)/2629800); // conversion secondes -> mois
+const sprites = {
+    "city": "Images/test_image5.png",
+    "farm": "Images/test_image6.png",
+    "forest": "Images/test_image7.png",
+}
+var copied_building = false
+
+function place_building(type, template = false) {
+    if (selected_case != null && !occupied_list.includes(selected_case)) {
+        occupied_list.push(selected_case);
+        div = document.getElementById(selected_case);
+        div.style.backgroundColor = 'yellow';
+        let maison_image = document.createElement('img');
+        maison_image.src = sprites[type];
+        maison_image.classList.add("sprite_cool");
+        div.appendChild(maison_image);
+
+        var build;
+        if (!template) {
+            switch (type) {
+                case "city":
+                    build = new City();
+                    break;
+                case "farm":
+                    build = new Farm();
+                    break;
+                case "forest":
+                    build = new Forest();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            build = Object.assign(Object.create(Object.getPrototypeOf(copied_building)), copied_building)
+        }
+        buildings[selected_case] = build;
+    }
+    div_selected(div);
 }
 
-function evapotranspiration(date){
+function copy_building() {
+    if (selected_case != null && occupied_list.includes(selected_case)) {
+        copied_building = buildings[selected_case];
+    }
+}
+
+function paste_building() {
+    place_building(copied_building.buildingtype, template = true)
+}
+
+
+function calc_delay(date) {
+    Q = (permeability * 10 ** -7) * (parseFloat(rain_data[date]['WCE']) * 0.001 + depth) / (depth);
+    return Math.floor((depth / Q) / 2629800); // conversion secondes -> mois
+}
+
+function evapotranspiration(date) {
     Ta = parseFloat(temp_data[date]['WCE']);
-    delta = (2504*Math.exp(17.27*(Ta-273.15)/(Ta-35.85)))/((Ta-35.85)**2);
+    delta = (2504 * Math.exp(17.27 * (Ta - 273.15) / (Ta - 35.85))) / ((Ta - 35.85) ** 2);
     console.log(delta)
 
-    deltae = 0.6108*Math.exp(17.27*(Ta-273.15)/(Ta-35.85));
+    deltae = 0.6108 * Math.exp(17.27 * (Ta - 273.15) / (Ta - 35.85));
 
     e = soleil[mois_actuel];
-    Rg = 295*e+197.5*(1-e);
+    Rg = 295 * e + 197.5 * (1 - e);
     Ra = 492;
     alpha = 0.23;
     epsilon = 1;
-    sigma = 5.67*10**8;
-    Rn = (1-alpha)*Rg + epsilon*Ra - epsilon*sigma*(Ta**4)
+    sigma = 5.67 * 10 ** 8;
+    Rn = (1 - alpha) * Rg + epsilon * Ra - epsilon * sigma * (Ta ** 4)
 
     console.log(Rn)
 
@@ -377,7 +403,7 @@ function evapotranspiration(date){
     d = 0.08;
     k = 0.41;
     v = 6.9;
-    ra = (Math.log((zm-d)/zom)*Math.log((zh-d)/zoh))/((k**2)*v);
+    ra = (Math.log((zm - d) / zom) * Math.log((zh - d) / zoh)) / ((k ** 2) * v);
 
     rho = 1.2;
     Cp = 1013;
@@ -386,11 +412,11 @@ function evapotranspiration(date){
     Rs = 70;
     G = 0.3;
 
-    ETP = (delta*(Rn-G)+rho*Cp*deltae/ra)/(lambda*(delta+gamma*(1+Rs/ra)))
+    ETP = (delta * (Rn - G) + rho * Cp * deltae / ra) / (lambda * (delta + gamma * (1 + Rs / ra)))
     return ETP
 }
 
-function evapotranspiration2(date){
+function evapotranspiration2(date) {
     T = 283.15;
     delta = 0.145;
     //delta = delta*10**-3 + 273.15;
@@ -407,7 +433,7 @@ function evapotranspiration2(date){
     gamma = 0.067;
     //gamma = gamma/(10**3) + 273.15;
 
-    ETP = (0.408*delta*(Rn-G)+(900/T)*gamma*v*deltae)/(delta+gamma*(1+0.34*v));
+    ETP = (0.408 * delta * (Rn - G) + (900 / T) * gamma * v * deltae) / (delta + gamma * (1 + 0.34 * v));
 
     return ETP
 }
@@ -415,12 +441,12 @@ function evapotranspiration2(date){
 function evapotranspiration3(date) {
     p = rain_data[date]["WCE"];
     t = temp_data[date]["WCE"];
-    l = 300 + 25*t + 0.05*t**3;
-    ETR = p/((0.9+p**2/l**2))**1/2;
+    l = 300 + 25 * t + 0.05 * t ** 3;
+    ETR = p / ((0.9 + p ** 2 / l ** 2)) ** 1 / 2;
     return ETR
 }
 
-var conso_plantes = {"Blé" : {"1": 0, "2": 0, "3": 0, "4": 25, "5" : 90, "6": 60, "7": 0, "8": 0, "9": 0, "10": 0, "11":0, "12": 0},"Maïs" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 10, "6": 80, "7": 200, "8": 120, "9": 25, "10": 0, "11":0, "12": 0},"PDT" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 20, "7": 70, "8": 120, "9": 30, "10": 0, "11":0, "12": 0}, "Soja" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 35, "7": 110, "8": 120, "9": 35, "10": 0, "11":0, "12": 0},"Tournesol" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 60, "7": 180, "8": 75, "9": 0, "10": 0, "11":0, "12": 0}} //mm / mois
+var conso_plantes = { "Blé": { "1": 0, "2": 0, "3": 0, "4": 25, "5": 90, "6": 60, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0 }, "Maïs": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 10, "6": 80, "7": 200, "8": 120, "9": 25, "10": 0, "11": 0, "12": 0 }, "PDT": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 20, "7": 70, "8": 120, "9": 30, "10": 0, "11": 0, "12": 0 }, "Soja": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 35, "7": 110, "8": 120, "9": 35, "10": 0, "11": 0, "12": 0 }, "Tournesol": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 60, "7": 180, "8": 75, "9": 0, "10": 0, "11": 0, "12": 0 } } //mm / mois
 
 
 function calc_conso(date) {
@@ -429,13 +455,13 @@ function calc_conso(date) {
     let forets_conso = 0;
 
     for (var key of Object.keys(buildings)) {
-        if (buildings[key].buildingtype === 'City') {
+        if (buildings[key].buildingtype === 'city') {
             total_city_conso = total_city_conso + buildings[key].nb_hab * (buildings[key].conso_hab / 12);
         }
-        if (buildings[key].buildingtype === 'Farm') {
+        if (buildings[key].buildingtype === 'farm') {
             agri_conso += conso_plantes[buildings[key].plante][mois_actuel] * 10 * buildings[key].cover;
         }
-        if (buildings[key].buildingtype === 'Forest') {
+        if (buildings[key].buildingtype === 'forest') {
             switch (buildings[key].tree_type) {
                 case "Chêne":
                     forets_conso = forets_conso + 6000 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
@@ -453,7 +479,7 @@ function calc_conso(date) {
     etp = evapotranspiration3(date); // mm/an
     etp = (etp * (square_size ** 2) * (gridsize ** 2)); // conversion en %/mois
     water_consumption[3] += etp;
-    etp = etp/(1000*capacity); // conversion en %/mois
+    etp = etp / (1000 * capacity); // conversion en %/mois
     var total_conso = total_city_conso + agri_conso + forets_conso + etp;
     return total_conso;
 }
@@ -462,12 +488,12 @@ const stats_time_past = document.getElementById("stats_time_past");
 
 var future_rain = {}
 
-function update_future_rain(delay){
+function update_future_rain(delay) {
     let annee_futur = annee_actuelle;
     let mois_futur = mois_actuel + delay;
     if (mois_futur > 12) {
-        mois_futur = (mois_actuel+delay) % 12;
-        annee_futur = annee_actuelle + Math.floor((mois_actuel+delay)/12);
+        mois_futur = (mois_actuel + delay) % 12;
+        annee_futur = annee_actuelle + Math.floor((mois_actuel + delay) / 12);
     }
 
     let key = annee_futur.toString() + "-";
@@ -476,10 +502,10 @@ function update_future_rain(delay){
     }
 
     key = key + mois_futur.toString();
-    if (!(key in future_rain)){
-        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
-    } else { 
-        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000*capacity));
+    if (!(key in future_rain)) {
+        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000 * capacity));
+    } else {
+        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * (square_size ** 2) * (gridsize ** 2)) / (1000 * capacity));
     }
 }
 
@@ -496,7 +522,7 @@ function new_frame() {
     // Écoulement latéral souterrain Q = K*S*DeltaH/L = K*S*tan(alpha)
     //new_value = (Math.random() * 0.5 + 0.5) * (Math.sin(((annee_actuelle - 2023) * 12 + mois_actuel) * 2 * Math.PI / 12) + 1) / 2 * Math.exp(-((annee_actuelle - 2023) * 12 + mois_actuel) / 100);
 
-    
+
     let key = annee_actuelle.toString() + "-";
     if (mois_actuel < 10) {
         key = key + "0";
@@ -506,11 +532,11 @@ function new_frame() {
     let conso = calc_conso(key);
 
     var delay = calc_delay(key);
-    
+
     update_future_rain(delay);
 
-    
-    if (key in future_rain){
+
+    if (key in future_rain) {
         new_value = old_value + future_rain[key];
     } else {
         new_value = old_value;
@@ -524,8 +550,10 @@ function new_frame() {
     water_data.push(new_value);
 
     // Bon ça marche pas, je voulais afficher genre les 2 dernières années
-    water_chart.data.datasets.data = water_data.slice(-48);
-    water_chart.data.labels = time_labels.slice(-48);
+    // water_chart.data.datasets.data = water_data.slice(-48);
+    // water_chart.data.labels = time_labels.slice(-48);
+    water_chart.data.datasets.data = water_data;
+    water_chart.data.labels = time_labels;
     water_chart.update();
     water_chart_stats.data.datasets.data = water_data;
     water_chart_stats.data.labels = time_labels;
