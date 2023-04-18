@@ -8,7 +8,7 @@
     <script defer src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
+    
     <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
 
     <title>Nafrea</title>
@@ -46,9 +46,9 @@
         <div id="top_buttons">
             <button class="top_button"><img class="top_buttons_img" src="Images/clock.svg"></button>
             <button class="top_button" id="info_top_button" onclick="open_stats()"><img class="top_buttons_img" src="Images/info.svg"></button>
-            <button class="top_button" onclick="hey()"><img class="top_buttons_img" src="Images/add.svg"></button>
+            <button class="top_button" onclick=""><img class="top_buttons_img" src="Images/add.svg"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg"></button>
-            <button class="top_button"><img class="top_buttons_img" src="Images/download.svg"></button>
+            <button class="top_button" onclick="export_water_data()"><img class="top_buttons_img" src="Images/download.svg"></button>
         </div>
     </div>
     <div id="stats_window_div">
@@ -58,7 +58,6 @@
         </div>
         <div id="stats_right_div">
             <div id="stats_time_past" class="stats_texts">Durée écoulée : 0 ans 0 mois</div>
-            <div id="stats_hey" class="stats_texts">Durée écoulée : 0 ans 0 mois</div>
             <div id="pie_chart_conso_div">
                 <canvas id="pie_chart_conso_canvas"></canvas>
             </div>

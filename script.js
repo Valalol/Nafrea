@@ -107,7 +107,7 @@ function create_chart(canvas_used) {
 
 var water_chart = create_chart(timeline)
 var water_chart_stats = create_chart(timeline_stats)
-var water_consumption = [100, 200, 300, 150, 400, 250]
+var water_consumption = [0, 0, 0, 0, 0, 0]
 
 const pie_chart_conso_canvas = document.getElementById("pie_chart_conso_canvas");
 var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
@@ -138,7 +138,6 @@ const grid_3d_div = document.getElementById("grid_3d_div");
 const map_size_label = document.getElementById("map_size_label");
 
 function redraw_grid(size) {
-    console.log(size)
     gridsize = size;
     map_size_label.textContent = "Taille de la carte (" + size + ")";
     grid_3d_div.textContent = '';
@@ -147,8 +146,8 @@ function redraw_grid(size) {
 
 
 function draw_grid(size) {
-    grid_3d_div.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-    grid_3d_div.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    grid_3d_div.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+    grid_3d_div.style.gridTemplateRows = `repeat(${size}, minmax(0, 1fr))`;
 
     for (let i = 1; i <= size; i++) {
         for (let j = 1; j <= size; j++) {
@@ -260,19 +259,13 @@ const buildings = {};
 
 function div_selected(item) {
     if (selected_case != null) {
-        if (!occupied_list.includes(selected_case)) {
-            document.getElementById(selected_case).style.backgroundColor = '';
-        } else {
-            document.getElementById(selected_case).style.backgroundColor = 'yellow';
-        }
+        document.getElementById(selected_case).style.backgroundColor = '';
+        document.getElementById(selected_case).classList.remove("grid_case_selected");
     }
     selected_case = item.id;
-    console.log(selected_case);
-    if (!occupied_list.includes(selected_case)) {
-        item.style.backgroundColor = 'red';
-    } else {
-        item.style.backgroundColor = 'orange';
-    }
+    
+    item.style.backgroundColor = 'red';
+    item.classList.add("grid_case_selected");
 
 
     Selected_building_parameters_div.style.display = "none";
@@ -324,9 +317,9 @@ function remove_building() {
 }
 
 const sprites = {
-    "city": "Images/test_image5.png",
-    "farm": "Images/test_image6.png",
-    "forest": "Images/test_image7.png",
+    "city": "Images/Ville.png",
+    "farm": "Images/Ferme 2.png",
+    "forest": "Images/Ferme 4.png",
 }
 var copied_building = false
 
@@ -370,7 +363,9 @@ function copy_building() {
 }
 
 function paste_building() {
-    place_building(copied_building.buildingtype, template = true)
+    if (copied_building) {
+        place_building(copied_building.buildingtype, template = true)
+    }
 }
 
 
@@ -550,8 +545,6 @@ function new_frame() {
     water_data.push(new_value);
 
     // Bon ça marche pas, je voulais afficher genre les 2 dernières années
-    // water_chart.data.datasets.data = water_data.slice(-48);
-    // water_chart.data.labels = time_labels.slice(-48);
     water_chart.data.datasets.data = water_data;
     water_chart.data.labels = time_labels;
     water_chart.update();
@@ -626,3 +619,20 @@ function close_stats() {
     }, 300);
 }
 
+function export_water_data() {
+    var output_data = [];
+    for (let i=0; i<water_data.length; i++) {
+        output_data.push([time_labels[i],water_data[i]])
+    }
+    var csv = 'Date,Water_level\n';
+    output_data.forEach(function(row) {
+        csv += row.join(',');
+        csv += "\n";
+    });
+    console.log(csv);
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'Water_data.csv';
+    hiddenElement.click();
+}
