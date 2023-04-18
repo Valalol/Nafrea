@@ -402,6 +402,7 @@ html {
     margin-left: 8px;
 } */
 
+
 #Selected_building_parameters_div {
     display: none;
 }
@@ -487,4 +488,8 @@ html {
 
 .grid_case_selected {
     filter: brightness(1.4);
+}
+
+.city_size_choice {
+    margin: 10px 0;
 }

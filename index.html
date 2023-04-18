@@ -90,28 +90,52 @@
                         <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
                         <input class="settings_range" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
                     </div>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="inclinaison_label">Inclinaison (5°)</p>
+                        <input class="settings_range" type="range" min="0" max="50" value="5" step="1" oninput="setting_changed('inclinaison', this.value)">
+                    </div>
                 </div>
                 <div class="category" style="display: grid;">
-                    <p class="category_title">Buildings</p>
+                    <p class="category_title">Bâtiments</p>
+                    
                     <div id="building_buttons_div">
                         <div id="copy_paste_div">
-                            <button class="buildings_button copy_paste_button" id="copy_button" onclick="copy_building()">Copy</button>
-                            <button class="buildings_button copy_paste_button" id="paste_button" onclick="paste_building()">Paste</button>
+                            <button class="buildings_button copy_paste_button" id="copy_button" onclick="copy_building()">Copier</button>
+                            <button class="buildings_button copy_paste_button" id="paste_button" onclick="paste_building()">Coller</button>
                         </div>
-                        <button class="buildings_button" onclick="place_building('city')">Place City</button>
-                        <button class="buildings_button" onclick="place_building('farm')">Place Farm</button>
-                        <button class="buildings_button" onclick="place_building('forest')">Place Forest</button>
-                        <button class="buildings_button" onclick="remove_building()">Remove Building</button>
+                        <button class="buildings_button" onclick="place_building('city')">Placer une ville</button>
+                        <button class="buildings_button" onclick="place_building('farm')">Placer une ferme</button>
+                        <button class="buildings_button" onclick="place_building('forest')">Placer une fôret</button>
+                        <button class="buildings_button" onclick="place_building('industrial_area')">Placer une zone industrielle</button>
+                        <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
                     </div>
                 </div>
                 <div class="category" id="Selected_building_parameters_div">
                     <p class="category_title">Sélection</p>
                     <div id="selection_display_menu">
                         <div id="City_menu_div">
+                            <div id="City_menu_size_div">
+                                <div class="city_size_choice">
+                                    <input type="radio" class="city_size_button" name="city_size" value="1" onChange="setting_changed('city_size',this.value)">
+                                    <label for="html">Petite (1000 - 100 000 habitants)</label><br>
+                                </div>
+                                <div class="city_size_choice">
+                                    <input type="radio" class="city_size_button" name="city_size" value="2" checked="checked" onChange="setting_changed('city_size',this.value)">
+                                    <label for="css">Moyenne (100 000 - 500 000 habitants)</label><br>
+                                </div>
+                                <div class="city_size_choice">
+                                    <input type="radio" class="city_size_button" name="city_size" value="3" onChange="setting_changed('city_size',this.value)">
+                                    <label for="javascript">Grande (500 000 - 2 000 000 habitants)</label>
+                                </div>
+                            </div>
                             <p class="parameter_name"  id="nb_hab_label">Nombre d'habitants (100000)</p>
-                            <input class="settings_range" id="nb_hab_input" type="range" min="10000" max="10000000" value="100000" step="10000" oninput="setting_changed('city_nb_hab', this.value)">
+                            <input class="settings_range" id="nb_hab_input" type="range" min="10000" max="2000000" value="100000" step="10000" oninput="setting_changed('city_nb_hab', this.value)">
                             <p class="parameter_name"  id="conso_hab_label">Consommation par habitant (54 m³/an)</p>
                             <input class="settings_range" id="conso_hab_input" type="range" min="10" max="100" value="54" step="1" oninput="setting_changed('city_conso_hab', this.value)">
+                            <p class="parameter_name"  id="city_density_label">Densité de la population (5000 hb/km²)</p>
+                            <input class="settings_range" id="city_density_input" type="range" min="100" max="27000" value="5000" step="100" oninput="setting_changed('city_density', this.value)">
+                            <p class="parameter_name"  id="city_green_cover_label">Couverture végétale (25 %)</p>
+                            <input class="settings_range" id="city_green_cover_input" type="range" min="0" max="100" value="25" step="1" oninput="setting_changed('city_green_cover', this.value)">
                         </div>
                         <div id="Farm_menu_div">
                             <p class="parameter_name">Type de plantation</p>
