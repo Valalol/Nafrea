@@ -107,6 +107,7 @@
                         <button class="buildings_button" onclick="place_building('farm')">Placer une ferme</button>
                         <button class="buildings_button" onclick="place_building('forest')">Placer une fôret</button>
                         <button class="buildings_button" onclick="place_building('industrial_area')">Placer une zone industrielle</button>
+                        <button class="buildings_button" onclick="place_building('animals')">Placer un élevage</button>
                         <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
                     </div>
                 </div>
@@ -159,6 +160,26 @@
                             </select>
                             <p class="parameter_name"  id="forest_density_label">Densité de la forêt (50 %)</p>
                             <input class="settings_range" id="forest_density_input" type="range" min="1" max="100" value="50" step="1" oninput="setting_changed('forest_density', this.value)">
+                        </div>
+                        <div id="Industrial_area_menu_div">
+                            <p class="parameter_name"  id="industrie_conso_label">Consommation par industrie (1500 m³)</p>
+                            <input class="settings_range" id="industrie_conso_input" type="range" min="500" max="2500" value="1500" step="100" oninput="setting_changed('industry_conso', this.value)">
+                            <p class="parameter_name"  id="industrie_size_label">Taille de chaque industrie (9 ha)</p>
+                            <input class="settings_range" id="industrie_size_input" type="range" min="1" max="100" value="9" step="1" oninput="setting_changed('industry_size', this.value)">
+                            <p class="parameter_name"  id="nb_industries_label">Nombre d'industrie (1)</p>
+                            <input class="settings_range" id="nb_industries_input" type="range" min="1" max="1111" value="1" step="1" oninput="setting_changed('industry_number', this.value)">
+                        </div>
+                        <div id="Animals_menu_div">
+                            <p class="parameter_name">Type d'animal</p>
+                            <select class="settings_range" id="animal_type_select" onchange="setting_changed('animal_type', this.value)">
+                                <option value="Vache">Vache</option>
+                                <option value="Cochon">Cochon</option>
+                                <option value="Cheval">Cheval</option>
+                                <option value="Brebis">Brebis</option>
+                                <option value="Poule">Poule (milliers)</option>
+                            </select>
+                            <p class="parameter_name"  id="nb_animals_label">Nombre d'animaux (100)</p>
+                            <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="100" step="100" oninput="setting_changed('nb_animals', this.value)">
                         </div>
                     </div>
                 </div>

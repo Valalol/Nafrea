@@ -44,10 +44,19 @@ class Forest {
 }
 
 class Industrial_area {
-    constructor(conso = 1500,size = 92000, nb_industries = 1){
+    constructor(conso = 1500,size = 9, nb_industries = 1){
+        this.buildingtype = "industrial_area"
         this.conso = conso;
         this.size = size;
         this.nb_industries = nb_industries;
+    }
+}
+
+class Animals {
+    constructor(animal_type = "Vache", nb_animals = 1000){
+        this.buildingtype = "animals";
+        this.animal_type = animal_type;
+        this.nb_animals = nb_animals;
     }
 }
 
@@ -186,8 +195,14 @@ const city_density_label = document.getElementById("city_density_label");
 const city_green_cover_label = document.getElementById("city_green_cover_label");
 const farm_cover_label = document.getElementById("farm_cover_label");
 const forest_density_label = document.getElementById("forest_density_label");
+const industrie_conso_label = document.getElementById("industrie_conso_label");
+const industrie_size_label = document.getElementById("industrie_size_label");
+const nb_industries_label = document.getElementById("nb_industries_label");
+const nb_animals_label = document.getElementById("nb_animals_label");
+
 
 var selected_case = null;
+
 
 const Selected_building_parameters_div = document.getElementById("Selected_building_parameters_div");
 const City_menu_div = document.getElementById("City_menu_div");
@@ -198,6 +213,13 @@ const city_green_cover_input = document.getElementById("city_green_cover_input")
 const Farm_menu_div = document.getElementById("Farm_menu_div");
 const plantation_type_select = document.getElementById("plantation_type_select");
 const farm_cover_input = document.getElementById("farm_cover_input");
+const industrie_conso_input = document.getElementById("industrie_conso_input");
+const industrie_size_input = document.getElementById("industrie_size_input");
+const nb_industries_input = document.getElementById("nb_industries_input");
+const Industrial_area_menu_div = document.getElementById("Industrial_area_menu_div");
+const animal_type_select = document.getElementById("animal_type_select");
+const nb_animals_input = document.getElementById("nb_animals_input");
+const Animals_menu_div = document.getElementById("Animals_menu_div");
 
 const Forest_menu_div = document.getElementById("Forest_menu_div");
 const tree_type_select = document.getElementById("tree_type_select");
@@ -302,6 +324,63 @@ function setting_changed(setting, value) {
             break;
         case "forest_tree_type":
             buildings[selected_case].tree_type = value;
+            break;
+        case "industry_conso":
+            industrie_conso_label.textContent = "Consommation par industrie (" + value + " m³)";
+            buildings[selected_case].conso = parseInt(value);
+            break;
+        case "industry_size":
+            industrie_size_label.textContent = "Taille de chaque industrie (" + value + " ha)";
+            buildings[selected_case].size = parseInt(value);
+            nb_industries_input.max = 10000 / parseInt(value);
+            if (buildings[selected_case].nb_industries > parseInt(nb_industries_input.max)){
+                setting_changed("industry_number", value = parseInt(nb_industries_input.max));
+            }
+            break;
+        case "industry_number":
+            nb_industries_label.textContent = "Nombre d'industrie (" + value + ")";
+            buildings[selected_case].nb_industries = parseInt(value);
+            break;
+        case "animal_type":
+            buildings[selected_case].animal_type = value;
+            switch (value){
+                case "Vache":
+                    nb_animals_input.min = 100;
+                    nb_animals_input.max = 10000;
+                    if (nb_animals_input.value < 100){setting_changed("nb_animals",100)} 
+                    if (nb_animals_input.value > 10000){setting_changed("nb_animals",10000)} 
+
+                    break;  
+                case "Cochon":
+                    nb_animals_input.min = 2000;
+                    nb_animals_input.max = 2000000;
+                    if (nb_animals_input.value < 2000){setting_changed("nb_animals",2000)} 
+                    if (nb_animals_input.value > 2000000){setting_changed("nb_animals",2000000)} 
+                    break;  
+                case "Cheval":
+                    nb_animals_input.min = 100;
+                    nb_animals_input.max = 10000;
+                    if (nb_animals_input.value < 100){setting_changed("nb_animals",100)} 
+                    if (nb_animals_input.value > 10000){setting_changed("nb_animals",10000)} 
+                    break;  
+                case "Brebis":
+                    nb_animals_input.min = 1000;
+                    nb_animals_input.max = 100000;
+                    if (nb_animals_input.value < 1000){setting_changed("nb_animals",1000)} 
+                    if (nb_animals_input.value > 100000){setting_changed("nb_animals",100000)} 
+                    break;  
+                case "Poule":
+                    nb_animals_input.min = 100;
+                    nb_animals_input.max = 10000;
+                    if (nb_animals_input.value < 100){setting_changed("nb_animals",100)} 
+                    if (nb_animals_input.value > 10000){setting_changed("nb_animals",10000)} 
+                    break;  
+            }
+            break;
+        case "nb_animals":
+            nb_animals_label.textContent = "Nombre d'animaux (" + value + ")"
+            nb_animals_input.value = value;
+            break;
     }
 }
 
@@ -348,6 +427,7 @@ function div_selected(item) {
     City_menu_div.style.display = "none";
     Farm_menu_div.style.display = "none";
     Forest_menu_div.style.display = "none";
+    Industrial_area_menu_div.style.display = "none";
 
     if (selected_case in buildings) {
         switch (buildings[selected_case].buildingtype) {
@@ -406,6 +486,22 @@ function div_selected(item) {
                 setting_changed("forest_density", buildings[selected_case].density);
                 Forest_menu_div.style.display = "block";
                 break;
+            case "industrial_area":
+                Selected_building_parameters_div.style.display = "block";
+                
+                industrie_conso_input.value = buildings[selected_case].conso;
+                setting_changed("industry_conso", buildings[selected_case].conso);
+                industrie_size_input.value = buildings[selected_case].size;
+                setting_changed("industry_size", buildings[selected_case].size);
+                nb_industries_input.value = buildings[selected_case].nb_industries;
+                setting_changed("industry_number", buildings[selected_case].nb_industries);
+
+                Industrial_area_menu_div.style.display = "block";
+                break;
+            case "animals":
+                Selected_building_parameters_div.style.display = "block";
+
+                Animals_menu_div.style.display = "block";
             default:
                 break;
         }
@@ -417,6 +513,8 @@ const sprites = {
     "city": "Images/Ville.png",
     "farm": "Images/Ferme 2.png",
     "forest": "Images/Ferme 4.png",
+    "industrial_area": "Images/industrie.png",
+    "animals": "Images/Elevage.png",
 }
 
 var copied_building = false
@@ -451,6 +549,9 @@ function place_building(type, template = false) {
                     break;
                 case "industrial_area":
                     build = new Industrial_area();
+                    break;
+                case "animals":
+                    build = new Animals();
                     break;
                 default:
                     break;
@@ -629,6 +730,7 @@ function calc_conso(date) {
     let total_city_conso = 0;
     let agri_conso = 0;
     let forets_conso = 0;
+    let industry_conso = 0;
 
     //Si pendant 3 mois pluie > etp alors etp2 sinon si 3 mois pluie < etr etp3
     let etp 
@@ -659,10 +761,15 @@ function calc_conso(date) {
                     break;
             };
         }
+        if (buildings[key].buildingtype === 'industrial_area') {
+            industry_conso = industry_conso + buildings[key].conso * buildings[key].nb_industries;
+        }
+
     }
     water_consumption[0] += total_city_conso;
     water_consumption[1] += agri_conso;
     water_consumption[2] += forets_conso;
+    water_consumption[6] += industry_conso;
 
     var total_conso = total_city_conso + agri_conso + forets_conso + etp;
     outflow.innerHTML = parseInt(total_conso).toString() + " Gm³";
@@ -670,6 +777,7 @@ function calc_conso(date) {
     total_city_conso = total_city_conso / capacity;
     agri_conso = agri_conso / capacity;
     forets_conso = forets_conso / capacity;
+    industry_conso = industry_conso / capacity;
     etp = etp/(1000*capacity); // conversion en %/mois
 
     var total_conso = total_city_conso + agri_conso + forets_conso + etp;
