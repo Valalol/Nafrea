@@ -79,7 +79,7 @@ var time_labels = [new_data_label];
 var water_data = [0.65];
 
 
-function create_chart(canvas_used) {
+function create_chart(canvas_used, title_bool) {
     return new Chart(canvas_used, {
         type: 'line',
         data: {
@@ -102,14 +102,24 @@ function create_chart(canvas_used) {
                     },
                 },
                 y: {
+                    min: 0,
+                    max: 1,
                     ticks: {
-                        display: false,
+                        display: true,
                     },
                 }
             },
             plugins: {
                 legend: {
                     display: false,
+                },
+                title: {
+                    text: "Pourcentage de remplissage de la nappe phréatique au cours du temps",
+                    display: title_bool,
+                    font: {
+                        size: 18,
+                        weight: false,
+                    }
                 },
                 subtitle: {
                     display: false,
@@ -119,8 +129,8 @@ function create_chart(canvas_used) {
     });
 }
 
-var water_chart = create_chart(timeline);
-var water_chart_stats = create_chart(timeline_stats);
+var water_chart = create_chart(timeline, false);
+var water_chart_stats = create_chart(timeline_stats, true);
 var water_consumption = [0, 0, 0, 0, 0, 0, 0];
 
 const pie_chart_conso_canvas = document.getElementById("pie_chart_conso_canvas");
