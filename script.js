@@ -152,7 +152,7 @@ function create_chart(canvas_used, title_bool) {
 
 var water_chart = create_chart(water_timeline, false);
 var water_chart_stats = create_chart(water_timeline_stats, true);
-var water_consumption = [0, 0, 0, 0, 0, 0, 0];
+var water_consumption = [0, 0, 0, 0, 0, 0,0];
 
 var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
     type: 'pie',
@@ -163,8 +163,8 @@ var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
             'Forêts',
             'Évapotranspiration',
             'Écoulement latéral souterrain',
-            'Rivières',
-            'Industries'
+            'Industries',
+            'Elevages'
         ],
         datasets: [{
             data: water_consumption,
@@ -184,7 +184,7 @@ var selected_case = null;
 
 var capacity = 15 * 10 ** 9;// m^3
 var depth = 10; //m
-var permeability = 100; //m.s^-1
+var permeability = 10**-5; //m.s^-1
 var inclinaison = 5*Math.PI/180; //deg
 
 
@@ -228,9 +228,9 @@ function setting_changed(setting, value) {
             depth = parseInt(value);
             break;
         case "permeability_coeff":
-            permeability_coeff_label.textContent = "Coefficient de perméabilité (" + value + "e-7 m/s)";
+            permeability_coeff_label.textContent = "Coefficient de perméabilité (1e" + value + " m/s)";
             permeability_coeff_input.value = value;
-            permeability = parseInt(value);
+            permeability = parseFloat(10 ** value);
             break;
         case "capacity":
             capacity_label.textContent = "Capacité de la nappe (" + value + "e9 m³)";
@@ -358,7 +358,7 @@ function setting_changed(setting, value) {
                     if (nb_animals_input.value < 1000){setting_changed("nb_animals",1000)} 
                     if (nb_animals_input.value > 100000){setting_changed("nb_animals",100000)} 
                     break;  
-                case "Poule":
+                case "Poules":
                     nb_animals_input.min = 100;
                     nb_animals_input.max = 10000;
                     if (nb_animals_input.value < 100){setting_changed("nb_animals",100)} 
@@ -367,6 +367,7 @@ function setting_changed(setting, value) {
             }
             break;
         case "nb_animals":
+            buildings[selected_case].nb_animals = value;
             nb_animals_label.textContent = "Nombre d'animaux (" + value + ")"
             nb_animals_input.value = value;
             break;
@@ -407,6 +408,8 @@ function div_selected(item) {
     Farm_menu_div.style.display = "none";
     Forest_menu_div.style.display = "none";
     Industrial_area_menu_div.style.display = "none";
+    Animals_menu_div.style.display = "none";
+
 
     if (selected_case in buildings) {
         switch (buildings[selected_case].buildingtype) {
@@ -567,7 +570,7 @@ function paste_building() {
 }
 
 function calc_delay(date) {
-    Q = (permeability*10**-7) * (parseFloat(rain_data[date]['WCE'])*0.001+depth)/(depth);
+    Q = (permeability) * (parseFloat(rain_data[date]['WCE'])*0.001+depth)/(depth);
     return Math.floor((depth/Q)/2629800); // conversion secondes -> mois
 }
 
@@ -697,6 +700,8 @@ var conso_plantes = {"Blé" : {"1": 0, "2": 0, "3": 0, "4": 25, "5" : 90, "6": 6
 
 var kc = {"Blé" : 0.65, "Maïs" : 0.8, "PDT" : 0.85, "Soja" : 0.7, "Tournesol" : 0.9}
 
+var conso_animaux = {"Vache" : 80*30, "Cochon" : 10*30, "Cheval" : 30*30, "Brebis" : 6*30, "Poules" : 320*30}
+
 var etp_formules = {
     "abondance" : etp,
     "manque" : etp
@@ -710,6 +715,7 @@ function calc_conso(date) {
     let agri_conso = 0;
     let forets_conso = 0;
     let industry_conso = 0;
+    let animals_conso = 0;
 
     //Si pendant 3 mois pluie > etp alors etp2 sinon si 3 mois pluie < etr etp3
     let etp 
@@ -736,19 +742,23 @@ function calc_conso(date) {
         if (buildings[key].buildingtype === 'forest') {
             switch (buildings[key].tree_type) {
                 case "Chêne":
-                    forets_conso = forets_conso + 6000 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    forets_conso = forets_conso + (6000 * (buildings[key].density / 100) * (square_size ** 2 / 10000));
                     break;
             };
         }
         if (buildings[key].buildingtype === 'industrial_area') {
             industry_conso = industry_conso + buildings[key].conso * buildings[key].nb_industries;
         }
+        if (buildings[key].buildingtype === 'animals') {
+            animals_conso = animals_conso + (buildings[key].nb_animals * conso_animaux[buildings[key].animal_type])/1000
+        }
 
     }
     water_consumption[0] += total_city_conso;
     water_consumption[1] += agri_conso;
     water_consumption[2] += forets_conso;
-    water_consumption[6] += industry_conso;
+    water_consumption[5] += industry_conso;
+    water_consumption[6] += animals_conso;
 
     var total_conso = total_city_conso + agri_conso + forets_conso + etp;
     Sorties_counter.innerHTML = parseInt(total_conso).toString() + " Gm³";
@@ -757,9 +767,11 @@ function calc_conso(date) {
     agri_conso = agri_conso / capacity;
     forets_conso = forets_conso / capacity;
     industry_conso = industry_conso / capacity;
+    animals_conso = animals_conso / capacity;
+
     etp = etp/(1000*capacity); // conversion en %/mois
 
-    var total_conso = total_city_conso + agri_conso + forets_conso + etp;
+    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp;
     return total_conso;
 }
 
@@ -780,8 +792,14 @@ function update_future_rain(delay){
     let annee_futur = annee_actuelle;
     let mois_futur = mois_actuel + delay;
     if (mois_futur > 12) {
-        mois_futur = (mois_actuel+delay) % 12;
-        annee_futur = annee_actuelle + Math.floor((mois_actuel+delay)/12);
+        annee_futur = annee_actuelle + Math.floor((mois_actuel+delay-1)/12);
+        if (mois_futur%12 != 0){
+            mois_futur = (mois_actuel+delay) % 12;
+        }
+    }
+
+    if (annee_futur > 2100){
+        return 0;
     }
 
     let key = annee_futur.toString() + "-";
@@ -790,6 +808,7 @@ function update_future_rain(delay){
     }
 
     key = key + mois_futur.toString();
+
     if (!(key in future_rain)){
         future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity));
     } else { 
@@ -835,7 +854,7 @@ function new_frame() {
     // ECOULEMENT LATERAL SOUTERRAIN
 
     var hauteurnappe=old_value*capacity/(gridsize*10000)**2;
-    var lateralflow=permeability*gridsize*10000*hauteurnappe*Math.tan(inclinaison);
+    var lateralflow=permeability*gridsize*10000*hauteurnappe*Math.tan(inclinaison)*2629800;
     water_consumption[4] += lateralflow;
 
     lateralflow /= capacity; 

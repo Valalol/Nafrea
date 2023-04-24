@@ -371,6 +371,7 @@ html {
     transform: rotateZ(45deg);
     translate: -11% -33%;
     pointer-events: none;
+    user-select: none;
 }
 
 #building_buttons_div {

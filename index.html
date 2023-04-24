@@ -84,8 +84,8 @@
                         <input class="settings_range" id="depth_input" type="range" min="5" max="100" value="10" step="5" oninput="setting_changed('depth', this.value)">
                     </div>
                     <div class="parameter_div">
-                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (100e-7 m/s)</p>
-                        <input class="settings_range" id="permeability_coeff_input" type="range" min="1" max="1001" value="100" step="10" oninput="setting_changed('permeability_coeff', this.value)">
+                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (1e-5 m/s)</p>
+                        <input class="settings_range" id="permeability_coeff_input" type="range" min="-8" max="-3" value="-5" step="1" oninput="setting_changed('permeability_coeff', this.value)">
                     </div>
                     <div class="parameter_div">
                         <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
@@ -106,7 +106,7 @@
                         </div>
                         <button class="buildings_button" onclick="place_building('city')">Placer une ville</button>
                         <button class="buildings_button" onclick="place_building('farm')">Placer une ferme</button>
-                        <button class="buildings_button" onclick="place_building('forest')">Placer une fôret</button>
+                        <button class="buildings_button" onclick="place_building('forest')">Placer une forêt</button>
                         <button class="buildings_button" onclick="place_building('industrial_area')">Placer une zone industrielle</button>
                         <button class="buildings_button" onclick="place_building('animals')">Placer un élevage</button>
                         <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
@@ -177,13 +177,14 @@
                                 <option value="Cochon">Cochon</option>
                                 <option value="Cheval">Cheval</option>
                                 <option value="Brebis">Brebis</option>
-                                <option value="Poule">Poule (milliers)</option>
+                                <option value="Poules">Poules (milliers)</option>
                             </select>
                             <p class="parameter_name"  id="nb_animals_label">Nombre d'animaux (100)</p>
                             <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="100" step="100" oninput="setting_changed('nb_animals', this.value)">
                         </div>
                     </div>
                 </div>
+                
             </div>
             <div id="shrink_container">
                 <button id="shrink_button" onclick="shrink_menu()"></button>
