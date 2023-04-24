@@ -21,6 +21,7 @@ html {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow:hidden;
 }
 
 #header {
@@ -326,6 +327,9 @@ html {
     transform-style: preserve-3d;
     transform: rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0);
     transition: 2s ease-out;
+    position:relative;
+    top:0px;
+    left:0px
 }
 
 #grid_3d_div {

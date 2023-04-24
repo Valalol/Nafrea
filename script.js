@@ -1065,3 +1065,29 @@ function import_config() {
 
     input.click();
 }
+
+
+let zoom = 1;
+const ZOOM_SPEED = 0.1;
+let zoomElement = pave_3d;
+var offsets = document.getElementById('pave_3d').getBoundingClientRect();
+
+document.addEventListener("wheel", function(e) {  
+    var offsets = document.getElementById('pave_3d').getBoundingClientRect();
+
+    let dx = e.clientX - (offsets.x + offsets.width/2);
+    let dy = e.clientY - (offsets.y + offsets.height/2);
+
+    if(e.deltaY < 0 && e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height){    
+        if (zoom < 1.5) {zoom += ZOOM_SPEED}
+        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0) scale(${zoom})`;  
+        zoomElement.style.left = `${-dx}px`;
+        zoomElement.style.top = `${-dy}px`
+
+    }else if (e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height ){    
+        if (zoom > 1) {zoom -= ZOOM_SPEED}
+        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0) scale(${zoom})`;  
+        zoomElement.style.left = `0`;
+        zoomElement.style.top = `0`;
+    }
+});
