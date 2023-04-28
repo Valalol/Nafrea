@@ -91,7 +91,7 @@ html {
     background-color: rgb(200, 200, 200);
     justify-content: space-between;
     transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
-    z-index: 1;
+    z-index: 2;
 }
 
 #game_window {
@@ -216,6 +216,8 @@ html {
     height: 13%;
     display: flex;
     justify-content: space-around;
+    background-color: rgb(224, 224, 224);
+    z-index: 1;
 }
 
 #game_part {

@@ -742,8 +742,27 @@ function calc_conso(date) {
         if (buildings[key].buildingtype === 'forest') {
             switch (buildings[key].tree_type) {
                 case "Chêne":
-                    forets_conso = forets_conso + (6000 * (buildings[key].density / 100) * (square_size ** 2 / 10000));
+                    if (7 <= mois_actuel && mois_actuel <= 9){
+                        forets_conso = forets_conso + 850 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    } else {
+                        forets_conso = forets_conso + ((4000 - 3*850)/9) * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    }
                     break;
+                case "Hêtre":
+                    if (7 <= mois_actuel && mois_actuel <= 9){
+                        forets_conso = forets_conso + 800 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    } else {
+                        forets_conso = forets_conso + ((3500 - 3*800)/9) * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    }
+                    break;
+                case "Epicéa":
+                    if (7 <= mois_actuel && mois_actuel <= 9){
+                        forets_conso = forets_conso + 900 * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    } else {
+                        forets_conso = forets_conso + ((5000 - 3*900)/9) * (buildings[key].density / 100) * (square_size ** 2 / 10000);
+                    }
+                    break;
+                
             };
         }
         if (buildings[key].buildingtype === 'industrial_area') {
@@ -1070,19 +1089,18 @@ function import_config() {
 let zoom = 1;
 const ZOOM_SPEED = 0.1;
 let zoomElement = pave_3d;
-var offsets = document.getElementById('pave_3d').getBoundingClientRect();
 
 document.addEventListener("wheel", function(e) {  
-    var offsets = document.getElementById('pave_3d').getBoundingClientRect();
+    var offsets = document.getElementById('grid_3d_div').getBoundingClientRect();
 
     let dx = e.clientX - (offsets.x + offsets.width/2);
     let dy = e.clientY - (offsets.y + offsets.height/2);
 
     if(e.deltaY < 0 && e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height){    
-        if (zoom < 1.5) {zoom += ZOOM_SPEED}
+        if (zoom < 2) {zoom += ZOOM_SPEED}
         zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0) scale(${zoom})`;  
-        zoomElement.style.left = `${-dx}px`;
-        zoomElement.style.top = `${-dy}px`
+        zoomElement.style.left = `${-dx/2}px`;
+        zoomElement.style.top = `${-dy/2}px`
 
     }else if (e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height ){    
         if (zoom > 1) {zoom -= ZOOM_SPEED}
