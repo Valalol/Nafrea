@@ -82,33 +82,27 @@ function shrink_menu() {
 
 var temp_data, rain_data;
 
-//Données précipitations (SSP3-7.0)
-fetch('data_meteo/precipitations/precip_combine.csv')
-.then(response => response.text())
-    .then(csv => {
-        rain_data = Papa.parse(csv, {
-            header: true,
-            skipEmptyLines: true,
-            transformHeader: header => header.trim()
-        }).data.reduce((acc, row) => {
-            acc[row["date"]] = {"WCE" : row["WCE"], "World" : row["World"]};
-            return acc;
-        }, {});
-    });
+async function change_climatic_scenario(x){
+    console.log("hehe")
+    rain_data = await read_climate_csv(`precipitations/precip_combine_${x}.csv`);
+    temp_data = await read_climate_csv(`temperatures/temp_combine_${x}.csv`);
+}
 
-//Données températures (SSP3-7.0)
-fetch('data_meteo/temperatures/temp_combine.csv')
-.then(response => response.text())
-    .then(csv => {
-        temp_data = Papa.parse(csv, {
-            header: true,
-            skipEmptyLines: true,
-            transformHeader: header => header.trim()
-        }).data.reduce((acc, row) => {
-            acc[row["date"]] = {"WCE" : row["WCE"], "world" : row["world"]};
-            return acc;
-        }, {});
-    });
+async function read_climate_csv(name){
+    let response = await fetch(`data_meteo/${name}`);
+    let csv = await response.text();
+    let climate_data = Papa.parse(csv, {
+        header: true,
+        skipEmptyLines: true,
+        transformHeader: header => header.trim()
+    }).data.reduce((acc, row) => {
+        acc[row["date"]] = {"WCE" : row["WCE"], "World" : row["world"]};
+        return acc;
+    }, {});   
+    return climate_data;
+}
+
+change_climatic_scenario("245");
 
 const square_size = 10000 //m de côté
 

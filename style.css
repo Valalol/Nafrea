@@ -198,7 +198,10 @@ html {
     margin: 6px 0px;
 }
 
-
+#ssp_scenario {
+    display:flex;
+    justify-content: space-around;
+}
 
 
 

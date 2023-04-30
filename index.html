@@ -77,6 +77,26 @@
                 <div class="category">
                     <p class="category_title">Paramètres généraux</p>
                     <div class="parameter_div">
+                        <fieldset id="ssp_scenario">
+                            <legend>Choix du scénario climatique :</legend>
+                            
+                            <div>
+                                <input type="radio" name="scenario" value="126" onChange="change_climatic_scenario(this.value)">
+                                <label for="126">SSP1-2.6</label>
+                            </div>
+
+                            <div>
+                                <input type="radio" name="scenario" value="245" checked onChange="change_climatic_scenario(this.value)">
+                                <label for="245">SSP2-4.5</label>
+                            </div>
+                            
+                            <div>
+                                <input type="radio" name="scenario" value="370" onChange="change_climatic_scenario(this.value)">
+                                <label for="370">SSP3-7.0</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="parameter_div">
                         <p class="parameter_name" id="map_size_label">Taille de la carte (8)</p>
                         <input class="settings_range" id="map_size_input" type="range" min="3" max="20" value="8" step="1" oninput="setting_changed('size',this.value)">
                     </div>
