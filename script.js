@@ -56,6 +56,14 @@ class Industrial_area {
         this.size = size;
         this.nb_industries = nb_industries;
     }
+    export() {
+        return {
+            buildingtype: this.buildingtype,
+            conso: this.conso,
+            size: this.size,
+            nb_industries: this.nb_industries
+        }
+    }
 }
 
 class Animals {
@@ -63,6 +71,13 @@ class Animals {
         this.buildingtype = "animals";
         this.animal_type = animal_type;
         this.nb_animals = nb_animals;
+    }
+    export() {
+        return {
+            buildingtype: this.buildingtype,
+            animal_type: this.animal_type,
+            nb_animals: this.nb_animals
+        }
     }
 }
 
@@ -81,9 +96,10 @@ function shrink_menu() {
 }
 
 var temp_data, rain_data;
+var actual_scenario = "245";
 
 async function change_climatic_scenario(x){
-    console.log("hehe")
+    actual_scenario = x;
     rain_data = await read_climate_csv(`precipitations/precip_combine_${x}.csv`);
     temp_data = await read_climate_csv(`temperatures/temp_combine_${x}.csv`);
 }
@@ -102,7 +118,7 @@ async function read_climate_csv(name){
     return climate_data;
 }
 
-change_climatic_scenario("245");
+change_climatic_scenario(actual_scenario);
 
 const square_size = 10000 //m de côté
 
@@ -212,7 +228,7 @@ function redraw_grid(size) {
     gridsize = size;
     selected_case = null;
     buildings = [];
-   grid_3d_div.textContent = '';
+    grid_3d_div.textContent = '';
     draw_grid(size);
 }
 
@@ -225,7 +241,7 @@ function draw_grid(size) {
         for (let j = 1; j <= size; j++) {
             let div = document.createElement('div');
             div.className = 'case_grid';
-            div.id = `case${i}${j}`;
+            div.id = `case${i}_${j}`;
             div.style.zIndex = i - j + parseInt(size) + 1
             div.onclick = function () { div_selected(this) };
             grid_3d_div.appendChild(div);
@@ -700,7 +716,7 @@ function etp(date,cover){
 	var ea = (fes(Tn)*HRmax/100 + fes(Tx)*HRmin/100)/2;
 
 	var pdelta = 0.409*Math.sin(2*Math.PI*J/NBJ - 1.39);
- 	var dr = 1+0.033*Math.cos(2*Math.PI*J/NBJ);
+    var dr = 1+0.033*Math.cos(2*Math.PI*J/NBJ);
 	var ws = Math.acos(-Math.tan(phi)*Math.tan(pdelta));
 	var Ra = (24*60/Math.PI)*0.082*dr*(ws*Math.sin(phi)*Math.sin(pdelta) + Math.cos(phi)*Math.cos(pdelta)*Math.sin(ws));
 
@@ -965,6 +981,7 @@ function slow_down() {
         console.log(simulation_speed);
     }
 }
+
 function speed_up() {
     if (simulation_speed < 128) {
         simulation_speed = simulation_speed * 2;
@@ -972,17 +989,21 @@ function speed_up() {
         console.log(simulation_speed);
     }
 }
+
+function play_pause() {
+    if (simulation_running == false) {resume()} else {pause()}
+}
+
 function resume() {
     simulation_running = true;
     main_simulation = setInterval(new_frame, 500 / simulation_speed);
     play_pause_button.src = "Images/pause.svg";
-    play_pause_button.onclick = function () { pause() };
 }
+
 function pause() {
     simulation_running = false;
     clearInterval(main_simulation);
     play_pause_button.src = "Images/play.svg";
-    play_pause_button.onclick = function () { resume() };
 }
 
 function restart() {
@@ -992,19 +1013,27 @@ function restart() {
     }
 }
 
+var stats_opened = false;
 function open_stats() {
-    info_top_button.onclick = function () { close_stats() }
+    stats_opened = true;
     stats_window_div.classList.remove("disparition");
     stats_window_div.style.display = "flex";
 }
-
 function close_stats() {
-    info_top_button.onclick = function () { open_stats() }
+    stats_opened = false;
     stats_window_div.classList.add("disparition");
     setTimeout(() => {
         stats_window_div.style.display = "none"; // set display to "none" after the animation has completed
     }, 300);
 }
+function toggle_stats() {
+    if (stats_opened) {
+        close_stats();
+    } else {
+        open_stats();
+    }
+}
+
 
 function export_water_data() {
     var output_data = [];
@@ -1036,7 +1065,12 @@ function export_config() {
     output_data["water_consumption"] = water_consumption;
     output_data["annee_actuelle"] = annee_actuelle;
     output_data["mois_actuel"] = mois_actuel;
-    
+    output_data["actual_scenario"] = actual_scenario;
+    output_data["future_rain"] = future_rain;
+    output_data["old_value"] = old_value;
+    output_data["hist"] = hist;
+
+
     output_data["buildings"] = [];
     Object.keys(buildings).forEach(function(key) {
         var building = buildings[key];
@@ -1080,10 +1114,13 @@ function import_config() {
             update_all_charts();
             annee_actuelle = data["annee_actuelle"];
             mois_actuel = data["mois_actuel"];
+            change_climatic_scenario(data["actual_scenario"]);
+            future_rain = data["future_rain"];
+            old_value = data["old_value"];
+            hist = data["hist"];
 
 
             buildings = {};
-            // for each building in data["buildings"]
             data["buildings"].forEach(function(building_data) {
                 selected_case = building_data["position"];
 
@@ -1097,6 +1134,12 @@ function import_config() {
                         break;
                     case "forest":
                         template = new Forest(building_data["tree_type"], building_data["density"]);
+                        break;
+                    case "industrial_area":
+                        template = new Industrial_area(building_data["conso"], building_data["size"], building_data["nb_industries"]);
+                        break;
+                    case "animals":
+                        template = new Animals(building_data["animal_type"], building_data["nb_animals"]);
                         break;
                 }
 
@@ -1121,14 +1164,37 @@ document.addEventListener("wheel", function(e) {
 
     if(e.deltaY < 0 && e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height){    
         if (zoom < 2) {zoom += ZOOM_SPEED}
-        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0) scale(${zoom})`;  
+        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) scale(${zoom})`;  
         zoomElement.style.left = `${-dx/2}px`;
         zoomElement.style.top = `${-dy/2}px`
 
     }else if (e.clientX > offsets.x && e.clientX < offsets.x + offsets.width && e.clientY > offsets.y && e.clientY < offsets.y + offsets.height ){    
         if (zoom > 1) {zoom -= ZOOM_SPEED}
-        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0) scale(${zoom})`;  
+        zoomElement.style.transform = `rotateX(50deg) rotateZ(315deg) scale(${zoom})`;  
         zoomElement.style.left = `0`;
         zoomElement.style.top = `0`;
     }
 });
+
+document.addEventListener("keydown", (e) => {
+    switch (e.key) {
+        case "c":
+            copy_building();
+            break;
+        case "v":
+            paste_building();
+            break;
+        case " ":
+            play_pause();
+            break;
+        case "Delete":
+            remove_building();
+            break;
+        case "i":
+            toggle_stats();
+            break;
+    }
+});
+
+
+

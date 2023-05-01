@@ -165,22 +165,23 @@ html {
     outline: none;
 }
 
-#preconfig {
+.preconfig {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
     width: 80%;
-    height: 40px;
     margin: 5px 0;
+    padding: 2px;
+    background-color: lightgrey;
     border-radius: 2px;
     border: solid 1px black;
-    padding: 2px;
-    overflow: hidden;
-    background-color: lightgrey;
-    font-size: max(.5vw, 16px);
+    font-size: 16px;
     transition: ease-in-out 0.1s;
 }
 
-#preconfig:hover {
+.preconfig:hover {
     background-color: rgb(184, 184, 184);
-    cursor: pointer;
 }
 
 .category {
@@ -330,7 +331,7 @@ html {
     aspect-ratio: 1 / 1;
     /* background-color: #b5258f54; */
     transform-style: preserve-3d;
-    transform: rotateX(50deg) rotateZ(315deg) matrix(1,0,0,1,0,0);
+    transform: rotateX(50deg) rotateZ(315deg);
     transition: .3s ease-out;
     position:relative;
     top:0px;
@@ -391,6 +392,7 @@ html {
 }
 
 .buildings_button {
+    font-size: 16px;
     height: 40px;
     width: 100%;
     margin: 5px 0px;

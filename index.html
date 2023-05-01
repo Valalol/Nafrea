@@ -16,6 +16,18 @@
 </head>
 
 <body>
+    <div id="stats_window_div">
+        <img src="Images/close.svg" id="close_stats_img" onclick="close_stats()">
+        <div id="timeline_stats">
+            <canvas id="water_timeline_stats"></canvas>
+        </div>
+        <div id="stats_right_div">
+            <div id="stats_time_past" class="stats_texts">Durée écoulée : 0 ans 0 mois</div>
+            <div id="pie_chart_conso_div">
+                <canvas id="pie_chart_conso_canvas"></canvas>
+            </div>
+        </div>
+    </div>
     <div id="header">
         <h1 id="Title">Nafrea</h1>
         <div id="infos">
@@ -46,22 +58,10 @@
         </div>
         <div id="top_buttons">
             <button class="top_button"><img class="top_buttons_img" src="Images/clock.svg"></button>
-            <button class="top_button" id="info_top_button" onclick="open_stats()"><img class="top_buttons_img" src="Images/info.svg"></button>
+            <button class="top_button" id="info_top_button" onclick="toggle_stats()"><img class="top_buttons_img" src="Images/info.svg"></button>
             <button class="top_button" onclick=""><img class="top_buttons_img" src="Images/add.svg"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg"></button>
             <button class="top_button" onclick="export_water_data()"><img class="top_buttons_img" src="Images/download.svg"></button>
-        </div>
-    </div>
-    <div id="stats_window_div">
-        <img src="Images/close.svg" id="close_stats_img" onclick="close_stats()">
-        <div id="timeline_stats">
-            <canvas id="water_timeline_stats"></canvas>
-        </div>
-        <div id="stats_right_div">
-            <div id="stats_time_past" class="stats_texts">Durée écoulée : 0 ans 0 mois</div>
-            <div id="pie_chart_conso_div">
-                <canvas id="pie_chart_conso_canvas"></canvas>
-            </div>
         </div>
     </div>
     <div id="main_window">
@@ -71,8 +71,8 @@
                     <img src="Images/search.svg" class="search_icon">
                     <input type="text" class="search_form">
                 </div>
-                <button id="preconfig" onclick="import_config()">Importer une configuration</button>
-                <button id="preconfig" onclick="export_config()">Exporter la configuration</button>
+                <div class="preconfig" onclick="import_config()">Importer une configuration</div>
+                <div class="preconfig" onclick="export_config()">Exporter la configuration</div>
                 
                 <div class="category">
                     <p class="category_title">Paramètres généraux</p>
@@ -234,7 +234,7 @@
                 </div>
                 <div id="time_buttons_div">
                     <img class="player_button" src="Images/slow_down.svg" onclick="slow_down()">
-                    <img class="player_button" id="play_pause_button" src="Images/play.svg" onclick="resume()">
+                    <img class="player_button" id="play_pause_button" src="Images/play.svg" onclick="play_pause()">
                     <img class="player_button" src="Images/speed_up.svg" onclick="speed_up()">
                 </div>
             </div>
