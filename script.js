@@ -83,7 +83,6 @@ function shrink_menu() {
 var temp_data, rain_data;
 
 async function change_climatic_scenario(x){
-    console.log("hehe")
     rain_data = await read_climate_csv(`precipitations/precip_combine_${x}.csv`);
     temp_data = await read_climate_csv(`temperatures/temp_combine_${x}.csv`);
 }
@@ -814,12 +813,13 @@ function calc_conso(date) {
     return total_conso;
 }
 
+var secheresse = false;
+
 function check_etp_hist(){
-    if (hist.filter(x => x=="abondance").length == 1){
-        current_formula = "abondance";
-    }
-    if (hist.filter(x => x=="manque").length == 1){
-        current_formula = "manque";
+    if (hist.filter(x => x=="manque").length >= 9){
+        secheresse = true;
+    } else {
+        secheresse = false;
     }
 }
 
@@ -863,6 +863,60 @@ function update_surface_betonee(){
         }
     }
 }
+
+function seuils(){
+    let val;
+    for (var key of Object.keys(buildings)) {
+        if (buildings[key].buildingtype === 'farm') {
+            switch (buildings[key].plante) {
+                case "Blé":
+                    val = Math.round(buildings[key].cover * (1-0.3))
+                    buildings[key].cover = val;
+                    break;
+                case "Maïs":
+                    val = Math.round(buildings[key].cover * (1-0.18))
+                    buildings[key].cover = val;
+                    break;
+                case "PDT":
+                    val = Math.round(buildings[key].cover * (1-0.15))
+                    buildings[key].cover = val;
+                    break;
+                case "Soja":
+                    val = Math.round(buildings[key].cover * (1-0.116))
+                    buildings[key].cover = val;
+                    break;
+                case "Tournesol":
+                    val = Math.round(buildings[key].cover * (1-0.5))
+                    buildings[key].cover = val;
+                    break;
+            }
+            if (key == selected_case){
+                setting_changed("farm_cover", val);
+                farm_cover_input.value = val;
+            }
+        }
+        if (buildings[key].buildingtype === 'animals') {
+            val = Math.round(buildings[key].nb_animals * (1-0.2));
+            buildings[key].nb_animals = val;
+            if (key == selected_case){
+                setting_changed("nb_animals", val);
+                nb_animals_input.value = val;
+            }
+        }
+        if (buildings[key].buildingtype === 'forest') {
+            if (Math.floor(Math.random()*100) == 1){
+                val = 0;
+                buildings[key].density = val;
+                if (key == selected_case){
+                    setting_changed("forest_density", val);
+                    forest_density_input.value = val;
+                }
+            }
+        }
+    }
+}
+
+
 function update_all_charts() {
     water_chart.data.datasets.data = water_data;
     water_chart.data.labels = time_labels;
@@ -928,16 +982,23 @@ function new_frame() {
     //--------------------------------
     //Historique des dernières valeurs
 
-    if (new_value == 1){
+    if (new_value >= 0.2){
         hist.push("abondance")
     } else {
         hist.push("manque")
     }
 
-    while (hist.length > 1){
+    while (hist.length > 12){
         hist.shift()
     }
     //--------------------------------
+    if (mois_actuel == 12){ //Bilan de l'année (sécheresse ou non)
+        check_etp_hist();
+    }
+    
+    if (mois_actuel == 1 && secheresse){ //Conséquences d'une sécheresse
+        seuils();
+    }
 
     water_data.push(new_value);
 
