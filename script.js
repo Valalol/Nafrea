@@ -1009,6 +1009,13 @@ function new_frame() {
     }
     key = key + mois_actuel.toString();
 
+    // stop if the key is "2101-01"
+    if (key == "2101-01") {
+        simulation_ended = true;
+        clearInterval(main_simulation);
+        return;
+    }
+
     forest_easter_egg();
 
     let conso = calc_conso(key); //Calcul de la consommation totale
@@ -1067,6 +1074,7 @@ function new_frame() {
 var simulation_speed = 1;
 var main_simulation = 0;
 var simulation_running = false;
+var simulation_ended = false;
 
 function slow_down() {
     if (simulation_speed > 0.125) {
@@ -1085,13 +1093,15 @@ function speed_up() {
 }
 
 function play_pause() {
-    if (simulation_running == false) {resume()} else {pause()}
+    if (!simulation_running) {resume()} else {pause()}
 }
 
 function resume() {
     simulation_running = true;
-    main_simulation = setInterval(new_frame, 500 / simulation_speed);
-    play_pause_button.src = "Images/pause.svg";
+    if (!simulation_ended) {
+        main_simulation = setInterval(new_frame, 500 / simulation_speed);
+        play_pause_button.src = "Images/pause.svg";
+    }
 }
 
 function pause() {
@@ -1101,7 +1111,7 @@ function pause() {
 }
 
 function restart() {
-    if (simulation_running == true) {
+    if (simulation_running && !simulation_ended) {
         clearInterval(main_simulation);
         main_simulation = setInterval(new_frame, 500 / simulation_speed);
     }
