@@ -832,7 +832,7 @@ function calc_conso(date) {
 var secheresse = false;
 
 function check_etp_hist(){
-    if (hist.filter(x => x=="manque").length >= 9){
+    if (hist.filter(x => x <= 0.2).length >= 9){
         secheresse = true;
     } else {
         secheresse = false;
@@ -882,6 +882,12 @@ function update_surface_betonee(){
 
 function seuils(){
     let val;
+    let sum = 0;
+    for (let i = 0; i < 12; i++){
+        sum += hist[i];
+    } 
+    let moy = sum / 12;
+
     for (var key of Object.keys(buildings)) {
         if (buildings[key].buildingtype === 'farm') {
             switch (buildings[key].plante) {
@@ -920,18 +926,47 @@ function seuils(){
             }
         }
         if (buildings[key].buildingtype === 'forest') {
-            if (Math.floor(Math.random()*100) == 1){
-                val = 0;
+            val = buildings[key].density;
+            if (moy <= 0.2){
+                val = Math.round(buildings[key].density * (1-0.05));
                 buildings[key].density = val;
-                if (key == selected_case){
-                    setting_changed("forest_density", val);
-                    forest_density_input.value = val;
+            } else if (moy <= 0.4){
+                val = Math.round(buildings[key].density * (1-0.01));
+                buildings[key].density = val;
+            }
+
+            if (moy < 0.1){
+                if (Math.floor(Math.random()*1000) == 1){
+                    val = 0;
+                    buildings[key].density = val;
                 }
+            }
+            if (key == selected_case){
+                setting_changed("forest_density", val);
+                forest_density_input.value = val;
             }
         }
     }
 }
 
+function forest_easter_egg(){
+    for (var key of Object.keys(buildings)) {
+        if (buildings[key].buildingtype === 'forest') {
+            let val = buildings[key].density ;
+            if (old_value <= 0.1){
+                if (Math.floor(Math.random()*1000) == 1){
+                    val = 0;
+                    buildings[key].density = val;
+                    document.getElementById(key).firstChild.src = "Images/Herbe.png";
+                }
+            }
+            if (key == selected_case){
+                setting_changed("forest_density", val);
+                forest_density_input.value = val;
+            }
+        }
+    }
+}
 
 function update_all_charts() {
     water_chart.data.datasets.data = water_data;
@@ -974,6 +1009,8 @@ function new_frame() {
     }
     key = key + mois_actuel.toString();
 
+    forest_easter_egg();
+
     let conso = calc_conso(key); //Calcul de la consommation totale
 
     var delay = calc_delay(key); //Calcul du délai d'écoulement
@@ -998,11 +1035,7 @@ function new_frame() {
     //--------------------------------
     //Historique des dernières valeurs
 
-    if (new_value >= 0.2){
-        hist.push("abondance")
-    } else {
-        hist.push("manque")
-    }
+    hist.push(new_value);
 
     while (hist.length > 12){
         hist.shift()
