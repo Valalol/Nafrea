@@ -1130,6 +1130,13 @@ function export_config() {
     output_data["future_rain"] = future_rain;
     output_data["old_value"] = old_value;
     output_data["hist"] = hist;
+    output_data["z"] = z;
+    output_data["phi"] = phi;
+    output_data["tabHR"] = tabHR;
+    output_data["tabRg"] = tabRg;
+    output_data["tabv10"] = tabv10;
+
+
 
 
     output_data["buildings"] = [];
@@ -1179,6 +1186,11 @@ function import_config() {
             future_rain = data["future_rain"];
             old_value = data["old_value"];
             hist = data["hist"];
+            z = data["z"];
+            phi = data["phi"];
+            tabHR = data["tabHR"];
+            tabRg = data["tabRg"];
+            tabv10 = data["tabv10"];
 
 
             buildings = {};
