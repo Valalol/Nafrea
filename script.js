@@ -681,15 +681,15 @@ function fes(T){
     return 0.6108*Math.exp((17.27*T)/(T+237.3))
 }
 
+var z = 30; //altitude
+var phi = 40; //latitude
+var tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
+var tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
+var tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
+
 function etp(date,cover){
     
-
-	//Paramètres calculés
-    const tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
-    const tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
-    const tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
-
-    t = parseFloat(temp_data[date]["WCE"]);
+    var t = parseFloat(temp_data[date]["WCE"]);
 	var Tn = t-5;
     var Tx = t+5;
     var mois = parseInt(date.split("-")[1]);
@@ -698,8 +698,7 @@ function etp(date,cover){
     var Rg = tabRg[mois-1];
     var NBJ = 365;
 
-    var z = 30;
-    var phi = 40;
+    
     var v10m = tabv10[mois-1];
 
 
