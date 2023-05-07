@@ -209,6 +209,23 @@
                     </div>
                 </div>
                 
+                <div class="category">
+                    <p class="category_title">Affichage</p>
+                    <div class="parameter_div">
+                        <fieldset id="display_parameters_fieldset">                        
+                            <div>
+                                <input type="radio" name="scenario" value="percentage" checked onChange="change_chart_var(this.value)">
+                                <label for="percentage">Remplissage (%)</label>
+                            </div>
+
+                            <div>
+                                <input type="radio" name="scenario" value="niv_ngf" onChange="change_chart_var(this.value)">
+                                <label for="niv_ngf">Niveau ngf (m)</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                
             </div>
             <div id="shrink_container">
                 <button id="shrink_button" onclick="shrink_menu()"></button>
