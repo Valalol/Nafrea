@@ -222,7 +222,7 @@ var capacity = 15 * 10 ** 9;// m^3
 var depth = 10; //m
 var permeability = 10**-5; //m.s^-1
 var inclinaison = 5*Math.PI/180; //deg
-var intensity_rain = 100; //%
+var rain_intensity = 100; //%
 
 
 function redraw_grid(size) {
@@ -279,10 +279,10 @@ function setting_changed(setting, value) {
             inclinaison_input.value = value;
             inclinaison = parseInt(value)*Math.PI/180;
             break;
-	case "intensity_rain":
-            intensity_rain_label.textContent = "Intensité des précipitations (" + value + "%)";
-            intensity_rain_input.value = value;
-            intensity_rain = parseInt(value);
+	case "rain_intensity":
+            rain_intensity_label.textContent = "Intensité des précipitations (" + value + "%)";
+            rain_intensity_input.value = value;
+            rain_intensity = parseInt(value);
             break;
         case "city_size":
             buildings[selected_case].category = parseInt(value);
@@ -1189,7 +1189,7 @@ function export_config() {
     output_data["permeability"] = permeability;
     output_data["capacity"] = capacity;
     output_data["inclinaison"] = inclinaison;
-    output_data["intensity_rain"] = intensity_rain;
+    output_data["rain_intensity"] = rain_intensity;
     output_data["water_data"] = water_data;
     output_data["time_labels"] = time_labels;
     output_data["water_consumption"] = water_consumption;
@@ -1245,7 +1245,7 @@ function import_config() {
             setting_changed("permeability", data["permeability"])
             setting_changed("capacity", data["capacity"]/ 10 ** 9)
             setting_changed("inclinaison", data["inclinaison"]/Math.PI*180)
-            setting_changed("intensity_rain", data["intensity_rain"])
+	    setting_changed("rain_intensity", data["rain_intensity"])
             water_data = data["water_data"];
             time_labels = data["time_labels"];
             water_consumption = data["water_consumption"];
