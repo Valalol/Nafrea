@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     
-    <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="icons/josso.ico">
 
     <title>Nafrea</title>
 </head>
@@ -28,6 +28,58 @@
             </div>
         </div>
     </div>
+
+
+    <div id="advanced_window_div">
+        <img src="Images/close.svg" id="close_advanced_img" onclick="close_advanced()">
+        <h2 class="advanced_paramater_name">Paramètres avancés</h2>
+        <p class="advanced_paramater_name">Longueur d'une case (m)</p>
+        <input class="advanced_box" id="square_size_box" type="number" min="500" max="100000" value="10000" step="1" oninput="setting_changed('square_size', this.value)">
+        <p class="advanced_paramater_name">Altitude du site (m)</p>
+        <input class="advanced_box" id="altitude_box" type="number" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
+        <p class="advanced_paramater_name">Latitude du site (deg)</p>
+        <input class="advanced_box" id="latitude_box" type="number" min="-45" max="45" value="40" step="0.01" oninput="setting_changed('latitude', this.value)">
+        <p class="advanced_paramater_name">Profondeur minimale de la nappe (m)</p>
+        <input class="advanced_box" id="depth_box" type="number" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
+        <p class="advanced_paramater_name" id="permeability_coeff_advanced_label">Coefficient de perméabilité (m/s) (ex: 2e-6)</p>
+        <input class="advanced_box" id="permeability_coeff_box" type="text" min="0.01" max="9.99" value="1e-5" step="0.01" oninput="setting_changed('permeability_coeff_advanced', this.value)">
+        <p class="advanced_paramater_name" id="capacity_advanced_label">Capacité de la nappe (m³) (ex: 10e9)</p>
+        <input class="advanced_box" id="capacity_box" type="text" min="0.01" max="99" value="15e9" step="0.01" oninput="setting_changed('capacity_advanced', this.value)">
+        <p class="advanced_paramater_name">Inclinaison de la nappe (deg)</p>
+        <input class="advanced_box" id="inclinaison_box" type="number" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
+        <p class="advanced_paramater_name">Intensité des précipitations (%)</p>
+        <input class="advanced_box" id="rain_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('rain_intensity', this.value)">
+        <p class="advanced_paramater_name">Intensité du vent (%)</p>
+        <input class="advanced_box" id="wind_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('wind_intensity', this.value)">
+        <p class="advanced_paramater_name">Intensité du rayonnement solaire (%)</p>
+        <input class="advanced_box" id="solar_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('solar_intensity', this.value)">
+        <p class="advanced_paramater_name">Intensité de la température (%)</p>
+        <input class="advanced_box" id="temperature_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('temperature_intensity', this.value)">
+        <p class="advanced_paramater_name">Limite d'évapotranspiration (% des précipitations) (0=aucune)</p>
+        <input class="advanced_box" id="etp_limit_box" type="number" min="0" max="200" value="120" step="0.01" oninput="setting_changed('etp_limit', this.value)">
+    </div>
+
+    <div id="export_window_div">
+        <img src="Images/close.svg" id="close_stats_img" onclick="close_export()">
+        <h2 class="export_paramater_name">Exporter des données</h2>
+        <button class="export_button" onclick="export_data('per','Remplissage de la nappe')">
+            Remplissage de la nappe (%)
+            <img class="export_img" src="Images/Graph.svg">
+        </button>
+        <button class="export_button" onclick="export_data('ngf','Niveau ngf de la nappe')">
+            Niveau ngf de la nappe (m)
+            <img class="export_img" src="Images/Graph.svg">
+        </button>
+        <button class="export_button" onclick="export_data('rain','Précipitations mensuelles')">
+            Précipitations mensuelles (mm)
+            <img class="export_img" src="Images/Rain.svg">
+        </button>
+        <button class="export_button" onclick="export_data('temperature','Températures mensuelles')">
+            Températures mensuelles (°C)
+            <img class="export_img" src="Images/Temperature.svg">
+        </button>
+    </div>
+
     <div id="header">
         <h1 id="Title">Nafrea</h1>
         <div id="infos">
@@ -41,7 +93,7 @@
             </div>
             <div id="Entrées_div" class="compteur_div">
                 <div id="Entrées_counter">
-                    400 Ml/j
+                    0 m³
                 </div>
                 <div id="Entrées_img">
                     <img class="compteurs_img" src="Images/arrow_downward.svg">
@@ -49,7 +101,7 @@
             </div>
             <div id="Sorties_div" class="compteur_div">
                 <div id="Sorties_counter">
-                    300 Ml/j
+                    0 m³
                 </div>
                 <div id="Sorties_img">
                     <img class="compteurs_img" src="Images/arrow_upward.svg">
@@ -57,11 +109,12 @@
             </div>
         </div>
         <div id="top_buttons">
-            <button class="top_button"><img class="top_buttons_img" src="Images/info.svg"></button>
-            <button class="top_button" id="info_top_button" onclick="toggle_stats()"><img class="top_buttons_img" src="Images/stats.svg"></button>
-            <button class="top_button" onclick=""><img class="top_buttons_img" src="Images/add.svg"></button>
-            <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg"></button>
-            <button class="top_button" onclick="export_water_data()"><img class="top_buttons_img" src="Images/download.svg"></button>
+            <button class="top_button"><img class="top_buttons_img" src="Images/info.svg" title="documentation"></button>
+            <button class="top_button" id="info_top_button" onclick="toggle_stats()"><img class="top_buttons_img" src="Images/stats.svg" title="graphiques"></button>
+            <button class="top_button" id="advanced_top_button" onclick="toggle_advanced()"><img class="top_buttons_img" src="Images/settings.svg" title="paramètres avancés"></button>
+            <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add.svg" title="nouvelle simulation"></button>
+            <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg" title="importer une config"></button>
+            <button class="top_button" onclick="toggle_export()"><img class="top_buttons_img" src="Images/download.svg" title="télécharger les données"></button>
         </div>
     </div>
     <div id="main_window">
@@ -125,6 +178,33 @@
                         <input class="settings_range" id="rain_intensity_input" type="range" min="25" max="200" value="100" step="5" oninput="setting_changed('rain_intensity', this.value)">
                     </div>
                 </div>
+
+                <div class="category">
+                    <p class="category_title">Affichage</p>
+                    <div class="parameter_div">
+                        <fieldset id="display_parameters_fieldset">
+                            <legend>Choix de la donnée affichée sur la timeline :</legend>  
+
+                            <div>
+                                <input type="radio" name="display_data" value="percentage" checked onChange="change_chart_var(this.value)">
+                                <label for="percentage">Remplissage (%)</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="display_data" value="niv_ngf" onChange="change_chart_var(this.value)">
+                                <label for="niv_ngf">Niveau ngf (m)</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="display_data" value="rain" onChange="change_chart_var(this.value)">
+                                <label for="rain">Précipitations (mm)</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="display_data" value="temperature" onChange="change_chart_var(this.value)">
+                                <label for="temperature">Température (°C)</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
                 <div class="category" style="display: grid;">
                     <p class="category_title">Bâtiments</p>
                     
@@ -141,6 +221,7 @@
                         <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
                     </div>
                 </div>
+
                 <div class="category" id="Selected_building_parameters_div">
                     <p class="category_title">Sélection</p>
                     <div id="selection_display_menu">
@@ -210,23 +291,6 @@
                             <p class="parameter_name"  id="nb_animals_label">Nombre d'animaux (100)</p>
                             <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="100" step="100" oninput="setting_changed('nb_animals', this.value)">
                         </div>
-                    </div>
-                </div>
-                
-                <div class="category">
-                    <p class="category_title">Affichage</p>
-                    <div class="parameter_div">
-                        <fieldset id="display_parameters_fieldset">                        
-                            <div>
-                                <input type="radio" name="scenario" value="percentage" checked onChange="change_chart_var(this.value)">
-                                <label for="percentage">Remplissage (%)</label>
-                            </div>
-
-                            <div>
-                                <input type="radio" name="scenario" value="niv_ngf" onChange="change_chart_var(this.value)">
-                                <label for="niv_ngf">Niveau ngf (m)</label>
-                            </div>
-                        </fieldset>
                     </div>
                 </div>
                 
