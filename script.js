@@ -133,7 +133,7 @@ var new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigit
 
 var time_labels = [new_data_label];
 
-var water_data = [0.65];
+var water_data_per = [0.65];
 
 
 function create_chart(canvas_used, title_bool) {
@@ -142,9 +142,9 @@ function create_chart(canvas_used, title_bool) {
         data: {
             labels: time_labels,
             datasets: [{
-                data: water_data,
+                data: water_data_per,
                 borderColor: 'rgb(104, 176, 235)',
-                tension: 0.25
+                //tension: 0.25
             }]
         },
         options: {
@@ -219,11 +219,51 @@ var selected_case = null;
 
 
 var capacity = 15 * 10 ** 9;// m^3
+var z = 30; //m ngf
 var depth = 10; //m
 var permeability = 10**-5; //m.s^-1
 var inclinaison = 5*Math.PI/180; //deg
 var rain_intensity = 100; //%
 
+var water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))]; //valeurs en m ngf
+var displayed_data = "per";
+
+function change_chart_var(value){
+    console.log(value);
+    switch(value){
+        case "percentage" :
+        water_chart.options.scales.y.min = 0;
+        water_chart.options.scales.y.max = 1;
+        water_chart_stats.options.scales.y.min = 0;
+        water_chart_stats.options.scales.y.max = 1;
+
+        displayed_data = "per";
+        water_chart_stats.config.options.plugins.title.text = "Remplissage de la nappe au cours du temps (%)";
+        update_all_charts();
+        break;
+        case "niv_ngf" :
+
+        water_chart.options.scales.y.min = z - depth - capacity / ((square_size ** 2)*(gridsize ** 2));
+        water_chart.options.scales.y.max = z - depth;
+        water_chart_stats.options.scales.y.min = z - depth - capacity / ((square_size ** 2)*(gridsize ** 2));
+        water_chart_stats.options.scales.y.max = z - depth;
+
+        displayed_data = "ngf";
+        water_chart_stats.config.options.plugins.title.text = "Niveau ngf de la nappe au cours du temps (m)";
+        update_all_charts();
+        break;
+    default:
+        water_chart.options.scales.y.min = 0;
+        water_chart.options.scales.y.max = 1;
+        water_chart_stats.options.scales.y.min = 0;
+        water_chart_stats.options.scales.y.max = 1;
+
+        display_data = "per";
+        water_chart_stats.config.options.plugins.title.text = "Remplissage de la nappe au cours du temps (%)";
+        update_all_charts();
+        break;
+    }
+}
 
 function redraw_grid(size) {
     gridsize = size;
@@ -259,10 +299,17 @@ function setting_changed(setting, value) {
             map_size_input.value = gridsize;
             redraw_grid(gridsize);
             break;
+        case "altitude":
+            altitude_label.textContent = "Altitude du site (" + value + " m)";
+            altitude_input.value = value;
+            z = parseInt(value);
+            water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))];
+            break;
         case "depth":
             depth_label.textContent = "Profondeur de la nappe (" + value + " m)";
             depth_input.value = value;
             depth = parseInt(value);
+            water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))];
             break;
         case "permeability_coeff":
             permeability_coeff_label.textContent = "Coefficient de perméabilité (1e" + value + " m/s)";
@@ -279,7 +326,7 @@ function setting_changed(setting, value) {
             inclinaison_input.value = value;
             inclinaison = parseInt(value)*Math.PI/180;
             break;
-	case "rain_intensity":
+    case "rain_intensity":
             rain_intensity_label.textContent = "Intensité des précipitations (" + value + "%)";
             rain_intensity_input.value = value;
             rain_intensity = parseInt(value);
@@ -687,7 +734,7 @@ function fes(T){
     return 0.6108*Math.exp((17.27*T)/(T+237.3))
 }
 
-var z = 30; //altitude
+
 var phi = 40; //latitude
 var tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
 var tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
@@ -696,7 +743,7 @@ var tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
 function etp(date,cover){
     
     var t = parseFloat(temp_data[date]["WCE"]);
-	var Tn = t-5;
+    var Tn = t-5;
     var Tx = t+5;
     var mois = parseInt(date.split("-")[1]);
     var HRmin = tabHR[mois-1];
@@ -708,33 +755,33 @@ function etp(date,cover){
     var v10m = tabv10[mois-1];
 
 
-	var J = 30*(mois-1) + 15;
-	var Tmoy = (Tn+Tx)/2;
-	var delta = 4098*(fes(Tmoy)/((Tmoy+237.3)**2))
+    var J = 30*(mois-1) + 15;
+    var Tmoy = (Tn+Tx)/2;
+    var delta = 4098*(fes(Tmoy)/((Tmoy+237.3)**2))
 
-	var Pa = 101.3*((293-0.0065*z)/293)**5.26;
-	var gamma = 0.665e-3*Pa;
+    var Pa = 101.3*((293-0.0065*z)/293)**5.26;
+    var gamma = 0.665e-3*Pa;
 
-	var v2m = v10m*4.87/Math.log(672.58);
+    var v2m = v10m*4.87/Math.log(672.58);
 
-	var es = (fes(Tn)+fes(Tx))/2;
-	var ea = (fes(Tn)*HRmax/100 + fes(Tx)*HRmin/100)/2;
+    var es = (fes(Tn)+fes(Tx))/2;
+    var ea = (fes(Tn)*HRmax/100 + fes(Tx)*HRmin/100)/2;
 
-	var pdelta = 0.409*Math.sin(2*Math.PI*J/NBJ - 1.39);
+    var pdelta = 0.409*Math.sin(2*Math.PI*J/NBJ - 1.39);
     var dr = 1+0.033*Math.cos(2*Math.PI*J/NBJ);
-	var ws = Math.acos(-Math.tan(phi)*Math.tan(pdelta));
-	var Ra = (24*60/Math.PI)*0.082*dr*(ws*Math.sin(phi)*Math.sin(pdelta) + Math.cos(phi)*Math.cos(pdelta)*Math.sin(ws));
+    var ws = Math.acos(-Math.tan(phi)*Math.tan(pdelta));
+    var Ra = (24*60/Math.PI)*0.082*dr*(ws*Math.sin(phi)*Math.sin(pdelta) + Math.cos(phi)*Math.cos(pdelta)*Math.sin(ws));
 
-	var Rso = (0.75+(2e-5)*z)*Ra;
-	var Rn = 0.77*Rg - (0.34-0.14*Math.sqrt(ea))*(4.903e-9) * ((Tn+273.15)**4 + (Tx+273.15)**4)/2 * (1.35*Math.min(Rg/Rso,1)-0.35);
+    var Rso = (0.75+(2e-5)*z)*Ra;
+    var Rn = 0.77*Rg - (0.34-0.14*Math.sqrt(ea))*(4.903e-9) * ((Tn+273.15)**4 + (Tx+273.15)**4)/2 * (1.35*Math.min(Rg/Rso,1)-0.35);
 
-	//ET0 QUOTIDIENNE PENMAN-MONTEITH FAO
+    //ET0 QUOTIDIENNE PENMAN-MONTEITH FAO
 
-	var ET0 = (0.408*delta*Rn+gamma*(900/(Tmoy+273)) * v2m * Math.max(es-ea,0)) / (delta+gamma*(1+0.34*v2m));
-	//document.getElementById("etp_label").innerHTML = (Math.round(ET0*10000)/10000).toString() + " mm/j";
-	//document.getElementById("etpmois_label").innerHTML = ((Math.round(ET0*tabjours[mois-1]*10000)/10000)).toString() + " mm/mois";
+    var ET0 = (0.408*delta*Rn+gamma*(900/(Tmoy+273)) * v2m * Math.max(es-ea,0)) / (delta+gamma*(1+0.34*v2m));
+    //document.getElementById("etp_label").innerHTML = (Math.round(ET0*10000)/10000).toString() + " mm/j";
+    //document.getElementById("etpmois_label").innerHTML = ((Math.round(ET0*tabjours[mois-1]*10000)/10000)).toString() + " mm/mois";
 
-	return ET0*30*cover;
+    return ET0*30*cover;
 }
 
 var conso_plantes = {"Blé" : {"1": 0, "2": 0, "3": 0, "4": 25, "5" : 90, "6": 60, "7": 0, "8": 0, "9": 0, "10": 0, "11":0, "12": 0},"Maïs" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 10, "6": 80, "7": 200, "8": 120, "9": 25, "10": 0, "11":0, "12": 0},"PDT" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 20, "7": 70, "8": 120, "9": 30, "10": 0, "11":0, "12": 0}, "Soja" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 35, "7": 110, "8": 120, "9": 35, "10": 0, "11":0, "12": 0},"Tournesol" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 60, "7": 180, "8": 75, "9": 0, "10": 0, "11":0, "12": 0}} //mm / mois
@@ -835,13 +882,13 @@ function calc_conso(date) {
 
     // Affichage du flux sortant
     if(parseInt(total_conso*capacity*10**-9)>0){
-    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-8)/10).toString() + "e9 m³";
+        Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-8)/10).toString() + "e9 m³";
     } else if(parseInt(total_conso*capacity*10**-6)>0){
-    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-5)/10).toString() + "e6 m³";
+        Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-5)/10).toString() + "e6 m³";
     } else{
-    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-2)/10).toString() + "e3 m³";
-    }	
-	
+        Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-2)/10).toString() + "e3 m³";
+    }   
+    
     return total_conso;
 }
 
@@ -985,15 +1032,28 @@ function forest_easter_egg(){
 }
 
 function update_all_charts() {
-    water_chart.data.datasets.data = water_data;
+
+    if(displayed_data == "per"){
+        water_chart.data.datasets[0].data = water_data_per;
+        //water_chart.update();
+        water_chart_stats.data.datasets[0].data = water_data_per;
+    } else{
+        water_chart.data.datasets[0].data = water_data_ngf;
+        //water_chart.update();
+        water_chart_stats.data.datasets[0].data = water_data_ngf;
+    }
+    
     water_chart.data.labels = time_labels;
     water_chart.update();
-    water_chart_stats.data.datasets.data = water_data;
+    
     water_chart_stats.data.labels = time_labels;
     water_chart_stats.update();
 
     pie_chart_conso.data.datasets[0].data = water_consumption;
     pie_chart_conso.update();
+    
+    
+    console.log("charts updated");
 }
 
 function new_frame() {
@@ -1044,16 +1104,16 @@ function new_frame() {
     if (key in future_rain){
         new_value = old_value + future_rain[key];
         
-	// Affichage du flux entrant
+    // Affichage du flux entrant
         let rain_in = (parseFloat(future_rain[key]) * capacity);
-	if(parseInt(rain_in*10**-9)>0){
-    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-8)/10).toString() + "e9 m³";
-	} else if(parseInt(rain_in*10**-6)>0){
-    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-5)/10).toString() + "e6 m³";
-	} else{
-    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-2)/10).toString() + "e3 m³";
-	}
-	    
+    if(parseInt(rain_in*10**-9)>0){
+            Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-8)/10).toString() + "e9 m³";
+    } else if(parseInt(rain_in*10**-6)>0){
+            Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-5)/10).toString() + "e6 m³";
+    } else{
+            Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-2)/10).toString() + "e3 m³";
+    }
+        
     } else {
         new_value = old_value;
     }
@@ -1081,7 +1141,10 @@ function new_frame() {
         seuils();
     }
 
-    water_data.push(new_value);
+    water_data_per.push(new_value);
+
+    niv_ngf = z - depth - capacity*(1-new_value) / ((square_size ** 2)*(gridsize ** 2));
+    water_data_ngf.push(niv_ngf);
 
     update_all_charts();
 
@@ -1164,10 +1227,10 @@ function toggle_stats() {
 }
 
 
-function export_water_data() {
+function export_water_data_per() {
     var output_data = [];
-    for (let i=0; i<water_data.length; i++) {
-        output_data.push([time_labels[i],water_data[i]])
+    for (let i=0; i<water_data_per.length; i++) {
+        output_data.push([time_labels[i],water_data_per[i]])
     }
     var csv = 'Date,Water_level\n';
     output_data.forEach(function(row) {
@@ -1178,7 +1241,7 @@ function export_water_data() {
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
-    hiddenElement.download = 'Water_data.csv';
+    hiddenElement.download = 'water_data_per.csv';
     hiddenElement.click();
 }
 
@@ -1190,7 +1253,7 @@ function export_config() {
     output_data["capacity"] = capacity;
     output_data["inclinaison"] = inclinaison;
     output_data["rain_intensity"] = rain_intensity;
-    output_data["water_data"] = water_data;
+    output_data["water_data_per"] = water_data_per;
     output_data["time_labels"] = time_labels;
     output_data["water_consumption"] = water_consumption;
     output_data["annee_actuelle"] = annee_actuelle;
@@ -1245,8 +1308,8 @@ function import_config() {
             setting_changed("permeability", data["permeability"])
             setting_changed("capacity", data["capacity"]/ 10 ** 9)
             setting_changed("inclinaison", data["inclinaison"]/Math.PI*180)
-	    setting_changed("rain_intensity", data["rain_intensity"])
-            water_data = data["water_data"];
+        setting_changed("rain_intensity", data["rain_intensity"])
+            water_data_per = data["water_data_per"];
             time_labels = data["time_labels"];
             water_consumption = data["water_consumption"];
             update_all_charts();
