@@ -222,6 +222,7 @@ var capacity = 15 * 10 ** 9;// m^3
 var depth = 10; //m
 var permeability = 10**-5; //m.s^-1
 var inclinaison = 5*Math.PI/180; //deg
+var intensity_rain = 100; //%
 
 
 function redraw_grid(size) {
@@ -277,6 +278,11 @@ function setting_changed(setting, value) {
             inclinaison_label.textContent = "Inclinaison (" + value + "°)";
             inclinaison_input.value = value;
             inclinaison = parseInt(value)*Math.PI/180;
+            break;
+	case "intensity_rain":
+            intensity_rain_label.textContent = "Intensité des précipitations (" + value + "%)";
+            intensity_rain_input.value = value;
+            intensity_rain = parseInt(value);
             break;
         case "city_size":
             buildings[selected_case].category = parseInt(value);
@@ -865,9 +871,9 @@ function update_future_rain(delay){
     key = key + mois_futur.toString();
 
     if (!(key in future_rain)){
-        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity));
+        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity))*intensity_rain/100;
     } else { 
-        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity));
+        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity))*intensity_rain/100;
     }
 }
 
