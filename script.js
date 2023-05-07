@@ -230,7 +230,7 @@ var rain_intensity = 100; //%
 var wind_intensity = 100; //%
 var solar_intensity = 100; //%
 var temperature_intensity = 100; //%
-var etp_limit = 120; //% des précipitations
+var etp_limit = Infinity; //% des précipitations, Infinity = pas de limite
 
 var water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))]; //valeurs en m ngf
 var displayed_data = "per";
