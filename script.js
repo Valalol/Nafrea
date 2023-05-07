@@ -1189,6 +1189,7 @@ function export_config() {
     output_data["permeability"] = permeability;
     output_data["capacity"] = capacity;
     output_data["inclinaison"] = inclinaison;
+    output_data["intensity_rain"] = intensity_rain;
     output_data["water_data"] = water_data;
     output_data["time_labels"] = time_labels;
     output_data["water_consumption"] = water_consumption;
@@ -1244,6 +1245,7 @@ function import_config() {
             setting_changed("permeability", data["permeability"])
             setting_changed("capacity", data["capacity"]/ 10 ** 9)
             setting_changed("inclinaison", data["inclinaison"]/Math.PI*180)
+            setting_changed("intensity_rain", data["intensity_rain"])
             water_data = data["water_data"];
             time_labels = data["time_labels"];
             water_consumption = data["water_consumption"];
