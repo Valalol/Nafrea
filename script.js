@@ -222,7 +222,6 @@ var capacity = 15 * 10 ** 9;// m^3
 var depth = 10; //m
 var permeability = 10**-5; //m.s^-1
 var inclinaison = 5*Math.PI/180; //deg
-var intensity_rain = 100; //%
 
 
 function redraw_grid(size) {
@@ -278,11 +277,6 @@ function setting_changed(setting, value) {
             inclinaison_label.textContent = "Inclinaison (" + value + "°)";
             inclinaison_input.value = value;
             inclinaison = parseInt(value)*Math.PI/180;
-            break;
-	case "intensity_rain":
-            intensity_rain_label.textContent = "Intensité des précipitations (" + value + "%)";
-            intensity_rain_input.value = value;
-            intensity_rain = parseInt(value);
             break;
         case "city_size":
             buildings[selected_case].category = parseInt(value);
@@ -832,6 +826,16 @@ function calc_conso(date) {
     etp = etp/(1000*capacity); // conversion en %/mois
 
     var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp;
+
+    // Affichage du flux sortant
+    if(parseInt(total_conso*capacity*10**-9)>0){
+    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-8)/10).toString() + "e9 m³";
+    } else if(parseInt(total_conso*capacity*10**-6)>0){
+    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-5)/10).toString() + "e6 m³";
+    } else{
+    	Sorties_counter.innerHTML = parseFloat(Math.floor(total_conso*capacity*10**-2)/10).toString() + "e3 m³";
+    }	
+	
     return total_conso;
 }
 
@@ -871,9 +875,9 @@ function update_future_rain(delay){
     key = key + mois_futur.toString();
 
     if (!(key in future_rain)){
-        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity))*intensity_rain/100;
+        future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity));
     } else { 
-        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity))*intensity_rain/100;
+        future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity));
     }
 }
 
@@ -1033,8 +1037,17 @@ function new_frame() {
     
     if (key in future_rain){
         new_value = old_value + future_rain[key];
-        //console.log(future_rain[key]*(10000*gridsize)**2/1000000000);
-        Entrées_counter.innerHTML = parseInt(future_rain[key]*(10000*gridsize)**2).toString() + " Gm³";
+        
+	// Affichage du flux entrant
+        let rain_in = (parseFloat(future_rain[key]) * capacity);
+	if(parseInt(rain_in*10**-9)>0){
+    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-8)/10).toString() + "e9 m³";
+	} else if(parseInt(rain_in*10**-6)>0){
+    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-5)/10).toString() + "e6 m³";
+	} else{
+    	    Entrées_counter.innerHTML = parseFloat(Math.floor(rain_in*10**-2)/10).toString() + "e3 m³";
+	}
+	    
     } else {
         new_value = old_value;
     }
