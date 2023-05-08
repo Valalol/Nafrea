@@ -1014,7 +1014,7 @@ function etp(date,cover){
     var HRmax = 100;
     var Rg = tabRg[mois-1]*solar_intensity/100;
     var NBJ = 365;
-
+    var rad_phi = phi * (Math.PI/180)
     
     var v10m = tabv10[mois-1]*wind_intensity/100;
 
@@ -1033,12 +1033,11 @@ function etp(date,cover){
 
     var pdelta = 0.409*Math.sin(2*Math.PI*J/NBJ - 1.39);
     var dr = 1+0.033*Math.cos(2*Math.PI*J/NBJ);
-    var ws = Math.acos(-Math.tan(phi)*Math.tan(pdelta));
-    var Ra = (24*60/Math.PI)*0.082*dr*(ws*Math.sin(phi)*Math.sin(pdelta) + Math.cos(phi)*Math.cos(pdelta)*Math.sin(ws));
+    var ws = Math.acos(-Math.tan(rad_phi)*Math.tan(pdelta));
+    var Ra = (24*60/Math.PI)*0.082*dr*(ws*Math.sin(rad_phi)*Math.sin(pdelta) + Math.cos(rad_phi)*Math.cos(pdelta)*Math.sin(ws));
 
     var Rso = (0.75+(2e-5)*z)*Ra;
     var Rn = 0.77*Rg - (0.34-0.14*Math.sqrt(ea))*(4.903e-9) * ((Tn+273.15)**4 + (Tx+273.15)**4)/2 * (1.35*Math.min(Rg/Rso,1)-0.35);
-
     //ET0 QUOTIDIENNE PENMAN-MONTEITH FAO
 
     var ET0 = (0.408*delta*Rn+gamma*(900/(Tmoy+273)) * v2m * Math.max(es-ea,0)) / (delta+gamma*(1+0.34*v2m));
@@ -1057,7 +1056,7 @@ var etp_formules = {
     "abondance" : etp,
     "manque" : etp
 }
-var current_formula = "manque";
+var current_formula = "abondance";
 var hist = [];
 
 
