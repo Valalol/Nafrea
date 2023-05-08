@@ -126,6 +126,7 @@ function initialisation(){
     setting_changed("depth",10);
     setting_changed("permeability_coeff",-5);
     setting_changed("inclinaison",5);
+    setting_changed("grasskc",0.8);
     setting_changed("rain_intensity",100);
     setting_changed("wind_intensity",100);
     setting_changed("solar_intensity",100);
@@ -152,9 +153,9 @@ function initialisation(){
 
     copied_building = false;
 
-    tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
-    tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
-    tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
+    tabHR = [85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85];
+    tabRg = [1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01];
+    tabv10 = [5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14];
 
 
     current_formula = "manque";
@@ -507,6 +508,11 @@ function setting_changed(setting, value) {
             inclinaison_box.value = value;
             inclinaison = parseFloat(value)*Math.PI/180;
             break;
+        case "grasskc":
+            //advanced only
+            grasskc_box.value = value;
+            grasskc = parseFloat(value);
+            break;
         case "rain_intensity":
             rain_intensity_label.textContent = "Intensité des précipitations (" + value + "%)";
             rain_intensity_input.value = value;
@@ -518,7 +524,7 @@ function setting_changed(setting, value) {
             wind_intensity_box.value = value;
             wind_intensity = parseFloat(value);
             break;
-        case "wind_intensity":
+        case "solar_intensity":
             //advanced only
             solar_intensity_box.value = value;
             solar_intensity = parseFloat(value);
@@ -1000,19 +1006,19 @@ function fes(T){
 }
 
 
-var tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
-var tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
-var tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
+var tabHR = [85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85];
+var tabRg = [1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01];
+var tabv10 = [5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14];
+var grasskc = 0.8;
 
 function etp(date,cover){
     
-    var t = parseFloat(temp_data[date]["WCE"])*temperature_intensity/100;
+    var t = parseFloat(temp_data[date]["World"])*temperature_intensity/100;
     var Tn = t-5;
     var Tx = t+5;
     var mois = parseInt(date.split("-")[1]);
-    var HRmin = tabHR[mois-1];
-    var HRmax = 100;
-    var Rg = tabRg[mois-1]*solar_intensity/100;
+    var HRmoy = tabHR[mois-1];
+    var Rg = tabRg[mois-1]*3.6*solar_intensity/100;
     var NBJ = 365;
     var rad_phi = phi * (Math.PI/180)
     
@@ -1029,7 +1035,7 @@ function etp(date,cover){
     var v2m = v10m*4.87/Math.log(672.58);
 
     var es = (fes(Tn)+fes(Tx))/2;
-    var ea = (fes(Tn)*HRmax/100 + fes(Tx)*HRmin/100)/2;
+    var ea = HRmoy/100 * es;
 
     var pdelta = 0.409*Math.sin(2*Math.PI*J/NBJ - 1.39);
     var dr = 1+0.033*Math.cos(2*Math.PI*J/NBJ);
@@ -1070,7 +1076,7 @@ function calc_conso(date) {
     //Si pendant 3 mois pluie > etp alors etp2 sinon si 3 mois pluie < etr etp3
     let etp 
     if (current_formula == "manque"){
-        etp = 0.8*etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
+        etp = grasskc*etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
     } else {
         etp = etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
     }
@@ -1124,7 +1130,7 @@ function calc_conso(date) {
         }
 
     }
-    console.log(forets_conso);
+
     water_consumption[0] += total_city_conso;
     water_consumption[1] += agri_conso;
     water_consumption[2] += forets_conso;
@@ -1198,6 +1204,7 @@ function update_future_rain(delay){
 
     if (!(key in future_rain)){
         future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity))*rain_intensity/100;
+
     } else { 
         future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity))*rain_intensity/100;
     }
@@ -1430,6 +1437,7 @@ function new_frame() {
     }
     
     if (mois_actuel == 1 && secheresse){ //Conséquences d'une sécheresse
+        console.log(secheresse);
         seuils();
     }
 
@@ -1732,7 +1740,6 @@ function import_config() {
             setting_changed("tabHR",data["tabHR"]);
             setting_changed("tabRg", data["tabRg"]);
             setting_changed("tabv10", data["tabv10"]);
-
 
             water_data_per = data["water_data_per"];
             water_data_ngf = data["water_data_ngf"];
