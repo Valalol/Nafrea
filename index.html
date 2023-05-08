@@ -26,37 +26,60 @@
             <div id="pie_chart_conso_div">
                 <canvas id="pie_chart_conso_canvas"></canvas>
             </div>
+            <div class="stats_parameters_div">
+                <fieldset id="stats_parameters_fieldset">
+                    <legend>Choix de la consommation (m³) :</legend>
+                    <div>
+                        <input type="radio" name="display_stats_conso" value="total" checked onChange="change_stats_conso(this.value)">
+                        <label for="total">Totale</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="display_stats_conso" value="month" onChange="change_stats_conso(this.value)">
+                        <label for="month">Mois actuel</label>
+                    </div>
+                </fieldset>
+            </div>
         </div>
     </div>
 
 
     <div id="advanced_window_div">
         <img src="Images/close.svg" id="close_advanced_img" onclick="close_advanced()">
-        <h2 class="advanced_paramater_name">Paramètres avancés</h2>
-        <p class="advanced_paramater_name">Longueur d'une case (m)</p>
-        <input class="advanced_box" id="square_size_box" type="number" min="500" max="100000" value="10000" step="1" oninput="setting_changed('square_size', this.value)">
-        <p class="advanced_paramater_name">Altitude du site (m)</p>
-        <input class="advanced_box" id="altitude_box" type="number" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
-        <p class="advanced_paramater_name">Latitude du site (deg)</p>
-        <input class="advanced_box" id="latitude_box" type="number" min="-45" max="45" value="40" step="0.01" oninput="setting_changed('latitude', this.value)">
-        <p class="advanced_paramater_name">Profondeur minimale de la nappe (m)</p>
-        <input class="advanced_box" id="depth_box" type="number" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
-        <p class="advanced_paramater_name" id="permeability_coeff_advanced_label">Coefficient de perméabilité (m/s) (ex: 2e-6)</p>
-        <input class="advanced_box" id="permeability_coeff_box" type="text" min="0.01" max="9.99" value="1e-5" step="0.01" oninput="setting_changed('permeability_coeff_advanced', this.value)">
-        <p class="advanced_paramater_name" id="capacity_advanced_label">Capacité de la nappe (m³) (ex: 10e9)</p>
-        <input class="advanced_box" id="capacity_box" type="text" min="0.01" max="99" value="15e9" step="0.01" oninput="setting_changed('capacity_advanced', this.value)">
-        <p class="advanced_paramater_name">Inclinaison de la nappe (deg)</p>
-        <input class="advanced_box" id="inclinaison_box" type="number" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
-        <p class="advanced_paramater_name">Intensité des précipitations (%)</p>
-        <input class="advanced_box" id="rain_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('rain_intensity', this.value)">
-        <p class="advanced_paramater_name">Intensité du vent (%)</p>
-        <input class="advanced_box" id="wind_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('wind_intensity', this.value)">
-        <p class="advanced_paramater_name">Intensité du rayonnement solaire (%)</p>
-        <input class="advanced_box" id="solar_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('solar_intensity', this.value)">
-        <p class="advanced_paramater_name">Intensité de la température (%)</p>
-        <input class="advanced_box" id="temperature_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('temperature_intensity', this.value)">
-        <p class="advanced_paramater_name">Limite d'évapotranspiration (% des précipitations) (0=aucune)</p>
-        <input class="advanced_box" id="etp_limit_box" type="number" min="0" max="200" value="0" step="0.01" oninput="setting_changed('etp_limit', this.value)">
+        <div class="advanced_side_div">
+            <h2 class="advanced_paramater_title">Paramètres avancés</h2>
+            <p class="advanced_paramater_name">Longueur d'une case (m)</p>
+            <input class="advanced_box" id="square_size_box" type="number" min="500" max="100000" value="10000" step="1" oninput="setting_changed('square_size', this.value)">
+            <p class="advanced_paramater_name">Altitude du site (m)</p>
+            <input class="advanced_box" id="altitude_box" type="number" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
+            <p class="advanced_paramater_name">Latitude du site (deg)</p>
+            <input class="advanced_box" id="latitude_box" type="number" min="-45" max="45" value="40" step="0.01" oninput="setting_changed('latitude', this.value)">
+            <p class="advanced_paramater_name">Profondeur minimale de la nappe (m)</p>
+            <input class="advanced_box" id="depth_box" type="number" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
+            <p class="advanced_paramater_name" id="permeability_coeff_advanced_label">Coefficient de perméabilité (m/s) (ex: 2e-6)</p>
+            <input class="advanced_box" id="permeability_coeff_box" type="text" min="0.01" max="9.99" value="1e-5" step="0.01" oninput="setting_changed('permeability_coeff_advanced', this.value)">
+            <p class="advanced_paramater_name" id="capacity_advanced_label">Capacité de la nappe (m³) (ex: 10e9)</p>
+            <input class="advanced_box" id="capacity_box" type="text" min="0.01" max="99" value="15e9" step="0.01" oninput="setting_changed('capacity_advanced', this.value)">
+            <p class="advanced_paramater_name">Inclinaison de la nappe (deg)</p>
+            <input class="advanced_box" id="inclinaison_box" type="number" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
+        </div>
+        <div class="advanced_side_div">
+            <p class="advanced_paramater_name" id="tabHR_label">Humidité relative mensuelle moyenne (%) (12)</p>
+            <input class="advanced_box" id="tabHR_box" type="text" value="[74,68,58,48,54,50,44,45,68,64,74,78]" oninput="setting_changed('tabHR', this.value)">
+            <p class="advanced_paramater_name" id="tabRg_label">Irradiance quotidienne moyenne (kWh/m²/jour) (12)</p>
+            <input class="advanced_box" id="tabRg_box" type="text" value="[1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36]" oninput="setting_changed('tabRg', this.value)">
+            <p class="advanced_paramater_name" id="tabv10_label">Vitesse mensuelle moyenne du vent à 10m (m/s) (12)</p>
+            <input class="advanced_box" id="tabv10_box" type="text" value="[11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1]" oninput="setting_changed('tabv10', this.value)">
+            <p class="advanced_paramater_name">Intensité des précipitations (%)</p>
+            <input class="advanced_box" id="rain_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('rain_intensity', this.value)">
+            <p class="advanced_paramater_name">Intensité du vent (%)</p>
+            <input class="advanced_box" id="wind_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('wind_intensity', this.value)">
+            <p class="advanced_paramater_name">Intensité du rayonnement solaire (%)</p>
+            <input class="advanced_box" id="solar_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('solar_intensity', this.value)">
+            <p class="advanced_paramater_name">Intensité de la température (%)</p>
+            <input class="advanced_box" id="temperature_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('temperature_intensity', this.value)">
+            <p class="advanced_paramater_name">Limite d'évapotranspiration (% des précipitations) (0=aucune)</p>
+            <input class="advanced_box" id="etp_limit_box" type="number" min="0" max="300" value="0" step="0.01" oninput="setting_changed('etp_limit', this.value)">
+        </div>
     </div>
 
     <div id="export_window_div">
@@ -81,7 +104,8 @@
     </div>
 
     <div id="header">
-        <h1 id="Title">Nafrea</h1>
+        <img id="logo" src="Images/Nafrea.png">
+        <!--<h1 id="Title">Nafrea</h1>-->
         <div id="infos">
             <div id="Habitants_div" class="compteur_div">
                 <div id="Habitants_counter">
@@ -149,6 +173,28 @@
                             </div>
                         </fieldset>
                     </div>
+
+                    <p class="category_subtitle" title="Ne pas modifier en cours de simulation">Paramètres initiaux</p>
+
+                    <form>
+                        <label>Début : </label>
+                        <select id="start_month_select" onchange="setting_changed('start_date', this.value)">
+                            <option value="01">Janvier</option>
+                            <option value="02">Février</option>
+                            <option value="03">Mars</option>
+                            <option value="04">Avril</option>
+                            <option value="05">Mai</option>
+                            <option value="06">Juin</option>
+                            <option value="07">Juillet</option>
+                            <option value="08">Aout</option>
+                            <option value="09">Septembre</option>
+                            <option value="10">Octobre</option>
+                            <option value="11">Novembre</option>
+                            <option value="12">Décembre</option>
+                        </select>
+                        <input id="start_year_box" type="number" min="1850" max="2099" value="2023" step="1" oninput="setting_changed('start_date', this.value)">
+                    </form>
+
                     <div class="parameter_div">
                         <p class="parameter_name" id="map_size_label">Taille de la carte (8)</p>
                         <input class="settings_range" id="map_size_input" type="range" min="3" max="20" value="8" step="1" oninput="setting_changed('size',this.value)">
@@ -162,12 +208,14 @@
                         <input class="settings_range" id="depth_input" type="range" min="5" max="100" value="10" step="5" oninput="setting_changed('depth', this.value)">
                     </div>
                     <div class="parameter_div">
-                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (1e-5 m/s)</p>
-                        <input class="settings_range" id="permeability_coeff_input" type="range" min="-8" max="-3" value="-5" step="1" oninput="setting_changed('permeability_coeff', this.value)">
-                    </div>
-                    <div class="parameter_div">
                         <p class="parameter_name"  id="capacity_label">Capacité de la nappe (15e9 m³)</p>
                         <input class="settings_range" id="capacity_input" type="range" min="1" max="50" value="15" step="1" oninput="setting_changed('capacity', this.value)">
+                    </div>
+
+                    <p class="category_subtitle" title="Modifiables en cours de simulation">Paramètres variables</p>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="permeability_coeff_label">Coefficient de perméabilité (1e-5 m/s)</p>
+                        <input class="settings_range" id="permeability_coeff_input" type="range" min="-8" max="-3" value="-5" step="1" oninput="setting_changed('permeability_coeff', this.value)">
                     </div>
                     <div class="parameter_div">
                         <p class="parameter_name"  id="inclinaison_label">Inclinaison (5°)</p>
