@@ -95,6 +95,91 @@ function shrink_menu() {
     }
 }
 
+function initialisation(){
+    // appelée par new_session() et import_config()
+    actual_scenario = "245";
+    change_climatic_scenario(actual_scenario);
+    square_size = 10000 //m de côté
+    old_value = 0.65;
+
+    start_month_select.value = "01";
+    start_year_box.value = 2023;
+    setting_changed("start_date",0);
+
+    water_data_per = [0.65];
+    water_data_rain = [0];
+    water_data_temperature = [0];
+
+    water_consumption = [0, 0, 0, 0, 0, 0,0];
+    water_consumption_current = [0, 0, 0, 0, 0, 0,0];
+
+    update_all_charts();
+
+    gridsize = 8;
+    redraw_grid(gridsize);
+    selected_case = null;
+
+
+    setting_changed("capacity",15);
+    setting_changed("latitude",48);
+    setting_changed("altitude",30);
+    setting_changed("depth",10);
+    setting_changed("permeability_coeff",-5);
+    setting_changed("inclinaison",5);
+    setting_changed("rain_intensity",100);
+    setting_changed("wind_intensity",100);
+    setting_changed("solar_intensity",100);
+    setting_changed("temperature_intensity",100);
+    setting_changed("etp_limit",0);
+
+
+    water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))]; //valeurs en m ngf
+    displayed_data = "per";
+    displayed_stats_conso = "total";
+
+
+    occupied_list = [];
+    buildings = {};
+
+    place_cube_side_faces();
+    const resizeObserver_cube = new ResizeObserver(entries => {
+        for (let entry of entries) {
+            place_cube_side_faces();
+        }
+    });
+    resizeObserver_cube.observe(pave_3d);
+
+
+    copied_building = false;
+
+    tabHR = [74,68,58,48,54,50,44,45,68,64,74,78];
+    tabRg = [1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36];
+    tabv10 = [11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1];
+
+
+    current_formula = "manque";
+    hist = [];
+
+    secheresse = false;
+
+    future_rain = {};
+    surface_betonee = 0;
+
+    simulation_speed = 1;
+    main_simulation = 0;
+    simulation_running = false;
+    pause();
+    simulation_ended = false;
+
+    stats_opened = false;
+    advanced_opened = false;
+    export_opened = false;
+
+    close_stats();
+    close_advanced();
+    close_export();
+}
+
 var temp_data, rain_data;
 var actual_scenario = "245";
 
@@ -102,6 +187,7 @@ async function change_climatic_scenario(x){
     actual_scenario = x;
     rain_data = await read_climate_csv(`precipitations/precip_combine_${x}.csv`);
     temp_data = await read_climate_csv(`temperatures/temp_combine_${x}.csv`);
+
 }
 
 async function read_climate_csv(name){
@@ -124,8 +210,8 @@ var square_size = 10000 //m de côté
 
 var old_value = 0.65;
 
-const annee_debut = 2023;
-const mois_debut = 01;
+var annee_debut = 2023;
+var mois_debut = 01;
 var annee_actuelle = annee_debut;
 var mois_actuel = mois_debut;
 
@@ -146,7 +232,7 @@ function create_chart(canvas_used, title_bool) {
             datasets: [{
                 data: water_data_per,
                 borderColor: 'rgb(104, 176, 235)',
-                //tension: 0.25
+                tension: 0.25
             }]
         },
         options: {
@@ -191,6 +277,7 @@ function create_chart(canvas_used, title_bool) {
 var water_chart = create_chart(water_timeline, false);
 var water_chart_stats = create_chart(water_timeline_stats, true);
 var water_consumption = [0, 0, 0, 0, 0, 0,0];
+var water_consumption_current = [0, 0, 0, 0, 0, 0,0];
 
 var pie_chart_conso = new Chart(pie_chart_conso_canvas, {
     type: 'pie',
@@ -221,7 +308,7 @@ var selected_case = null;
 
 
 var capacity = 15 * 10 ** 9;// m^3
-var phi = 40; //latitude (deg)
+var phi = 48; //latitude (deg)
 var z = 30; //m ngf
 var depth = 10; //m
 var permeability = 10**-5; //m.s^-1
@@ -230,10 +317,11 @@ var rain_intensity = 100; //%
 var wind_intensity = 100; //%
 var solar_intensity = 100; //%
 var temperature_intensity = 100; //%
-var etp_limit = Infinity; //% des précipitations, Infinity = pas de limite
+var etp_limit = Infinity; //% des précipitations, Infinity=pas de limite
 
 var water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))]; //valeurs en m ngf
 var displayed_data = "per";
+var displayed_stats_conso = "total";
 
 function change_chart_var(value){
     console.log(value);
@@ -292,6 +380,24 @@ function change_chart_var(value){
     }
 }
 
+function change_stats_conso(value){
+    switch(value){
+        case "month":
+            displayed_stats_conso = "month";
+            update_all_charts();
+            break;
+        case "total":
+            displayed_stats_conso = "total";
+            update_all_charts();
+            break;
+        default:
+            displayed_stats_conso = "total";
+            update_all_charts();
+            break;
+
+    }
+}
+
 function redraw_grid(size) {
     gridsize = size;
     selected_case = null;
@@ -330,6 +436,16 @@ function setting_changed(setting, value) {
             //advanced only
             square_size = parseInt(value);
             break;
+        case "start_date":
+            mois_debut = parseInt(start_month_select.value);
+            annee_debut = parseInt(start_year_box.value);
+            annee_actuelle = annee_debut;
+            mois_actuel = mois_debut;
+            new_data_label = mois_actuel.toLocaleString(undefined, { minimumIntegerDigits: 2 }) + "/" + annee_actuelle;
+            time_labels = [new_data_label];
+            update_all_charts();
+            break;
+
         case "altitude":
             altitude_label.textContent = "Altitude du site (" + value + " m)";
             altitude_input.value = value;
@@ -340,6 +456,7 @@ function setting_changed(setting, value) {
             break;
         case "latitude":
             //advanced only
+            latitude_box.value = parseFloat(value);
             phi = parseFloat(value);
             break;
         case "depth":
@@ -419,6 +536,45 @@ function setting_changed(setting, value) {
                 etp_limit = parseFloat(value);
             }
             break;
+        case "tabHR":
+            //advanced only
+            mytmp = value.toString();
+            mytmp = mytmp.replace("[","");
+            mytmp = mytmp.replace("]","");
+            mytmp = mytmp.split(",").map(Number);
+            if(mytmp.length == 12){
+                tabHR = mytmp;
+            } else{
+                tabHR_label.textContent = "Humidité relative mensuelle moyenne (%) [FORMAT INVALIDE]";
+            }
+            tabHR_box.value = value;
+            break;
+        case "tabRg":
+            //advanced only
+            mytmp = value.toString();
+            mytmp = mytmp.replace("[","");
+            mytmp = mytmp.replace("]","");
+            mytmp = mytmp.split(",").map(Number);
+            if(mytmp.length == 12){
+                tabRg = mytmp;
+            } else{
+                tabRg_label.textContent = "Irradiance quotidienne moyenne (kWh/m²/jour) [FORMAT INVALIDE]";
+            }
+            tabRg_box.value = value;
+            break;
+        case "tabv10":
+            //advanced only
+            mytmp = value.toString();
+            mytmp = mytmp.replace("[","");
+            mytmp = mytmp.replace("]","");
+            mytmp = mytmp.split(",").map(Number);
+            if(mytmp.length == 12){
+                tabv10 = mytmp;
+            } else{
+                tabv10_label.textContent = "Vitesse mensuelle moyenne du vent à 10m (m/s) [FORMAT INVALIDE]";
+            }
+            tabv10_box.value = value;
+            break;
         case "city_size":
             buildings[selected_case].category = parseInt(value);
             if(value == "1"){
@@ -432,6 +588,8 @@ function setting_changed(setting, value) {
                 city_green_cover_input.max = 90;
                 setting_changed("city_green_cover", 25);
                 city_green_cover_input.value = 25;
+
+                document.getElementById(selected_case).firstChild.src = sprites["small city"];
             }
             if(value == "2"){
                 nb_hab_input.min = 100000;
@@ -444,6 +602,8 @@ function setting_changed(setting, value) {
                 city_green_cover_input.max = 50;
                 setting_changed("city_green_cover", 25);
                 city_green_cover_input.value = 25;
+
+                document.getElementById(selected_case).firstChild.src = sprites["medium city"];
             }
             if(value == "3"){
                 nb_hab_input.min = 500000;
@@ -456,6 +616,8 @@ function setting_changed(setting, value) {
                 city_green_cover_input.max = 30;
                 setting_changed("city_green_cover", 25);
                 city_green_cover_input.value = 25;
+
+                document.getElementById(selected_case).firstChild.src = sprites["city"];
             }
         case "city_nb_hab":
             nb_hab_label.textContent = "Nombre d'habitants (" + value + ")";
@@ -601,6 +763,8 @@ function div_selected(item) {
                     
                     city_green_cover_input.min = 10;
                     city_green_cover_input.max = 90;
+
+                    document.getElementById(selected_case).firstChild.src = sprites["small city"];
                 } else if(buildings[selected_case].category == 2){
                     nb_hab_input.min = 100000;
                     nb_hab_input.max = 500000;
@@ -608,6 +772,8 @@ function div_selected(item) {
 
                     city_green_cover_input.min = 10;
                     city_green_cover_input.max = 50;
+
+                    document.getElementById(selected_case).firstChild.src = sprites["medium city"];
                 } else if(buildings[selected_case].category == 3){
                     nb_hab_input.min = 500000;
                     nb_hab_input.max = 2000000;
@@ -615,6 +781,8 @@ function div_selected(item) {
 
                     city_green_cover_input.min = 5;
                     city_green_cover_input.max = 30;
+
+                    document.getElementById(selected_case).firstChild.src = sprites["city"];
                 }
 
                 nb_hab_input.value = buildings[selected_case].nb_hab;
@@ -670,8 +838,11 @@ function div_selected(item) {
 
 const sprites = {
     "city": "Images/Ville.png",
+    "medium city" : "Images/Ville Moyenne.png",
+    "small city" : "Images/Ville Petite.png",
     "farm": "Images/Ferme 2.png",
     "forest": "Images/Forêt Epicea.png",
+    "dead forest" : "Images/Forêt morte.png",
     "industrial_area": "Images/Industrie.png",
     "animals": "Images/Elevage.png",
 }
@@ -699,6 +870,8 @@ function place_building(type, template = false) {
 
                     city_green_cover_input.min = 10;
                     city_green_cover_input.max = 50;
+
+                    document.getElementById(selected_case).firstChild.src = sprites["medium city"];
                     break;
                 case "farm":
                     build = new Farm();
@@ -716,7 +889,8 @@ function place_building(type, template = false) {
                     break;
             }
         } else {
-            build = Object.assign(Object.create(Object.getPrototypeOf(copied_building)), copied_building)
+            //build = Object.assign(Object.create(Object.getPrototypeOf(copied_building)), copied_building)
+            build = template;
         }
         buildings[selected_case] = build;
     }
@@ -903,6 +1077,7 @@ function calc_conso(date) {
     check_etp_hist()
 
     water_consumption[3] += etp/1000;
+    water_consumption_current[3] = etp/1000;
 
     for (var key of Object.keys(buildings)) {
         if (buildings[key].buildingtype === 'city') {
@@ -947,14 +1122,20 @@ function calc_conso(date) {
         }
 
     }
+    console.log(forets_conso);
     water_consumption[0] += total_city_conso;
     water_consumption[1] += agri_conso;
     water_consumption[2] += forets_conso;
     water_consumption[5] += industry_conso;
     water_consumption[6] += animals_conso;
 
-    var total_conso = total_city_conso + agri_conso + forets_conso + etp;
-    Sorties_counter.innerHTML = parseInt(total_conso).toString() + " Gm³";
+    water_consumption_current[0] = total_city_conso;
+    water_consumption_current[1] = agri_conso;
+    water_consumption_current[2] = forets_conso;
+    water_consumption_current[5] = industry_conso;
+    water_consumption_current[6] = animals_conso;
+
+    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp;
 
     total_city_conso = total_city_conso / capacity;
     agri_conso = agri_conso / capacity;
@@ -1106,7 +1287,7 @@ function forest_easter_egg(){
                 if (Math.floor(Math.random()*1000) == 1){
                     val = 0;
                     buildings[key].density = val;
-                    document.getElementById(key).firstChild.src = "Images/Forêt morte.png";
+                    document.getElementById(key).firstChild.src = spirtes["dead forest"];
                 }
             }
             if (key == selected_case){
@@ -1147,7 +1328,19 @@ function update_all_charts() {
     water_chart_stats.data.labels = time_labels;
     water_chart_stats.update();
 
-    pie_chart_conso.data.datasets[0].data = water_consumption;
+
+    switch(displayed_stats_conso){
+        case "total":
+            pie_chart_conso.data.datasets[0].data = water_consumption;
+            break;
+        case "month":
+            pie_chart_conso.data.datasets[0].data = water_consumption_current;
+            break;
+        default:
+            pie_chart_conso.data.datasets[0].data = water_consumption;
+            break;
+    }
+    
     pie_chart_conso.update();
     
 }
@@ -1250,6 +1443,13 @@ function new_frame() {
 
     water_bar_colored.style.height = new_value * 100 + "%";
     water_bar_quantity.innerHTML = (Math.round(new_value * 100)).toString() + "%";
+    if(new_value < 0.2){
+        water_bar_colored.style.backgroundColor = '#eb6868';
+        vagues.style.backgroundColor = '#eb6868';
+    } else{
+        water_bar_colored.style.backgroundColor = '#68b0eb';
+        vagues.style.backgroundColor = '#68b0eb';
+    }
 
 
 
@@ -1310,6 +1510,7 @@ function open_stats() {
     stats_opened = true;
     stats_window_div.classList.remove("disparition");
     stats_window_div.style.display = "flex";
+    pie_chart_conso.update();
 }
 function close_stats() {
     stats_opened = false;
@@ -1337,7 +1538,7 @@ var advanced_opened = false;
 function open_advanced() {
     advanced_opened = true;
     advanced_window_div.classList.remove("disparition");
-    advanced_window_div.style.display = "inline-grid";
+    advanced_window_div.style.display = "flex";
 }
 function close_advanced() {
     advanced_opened = false;
@@ -1498,6 +1699,8 @@ function export_config() {
 
 
 function import_config() {
+    new_session();
+
     var input = document.createElement('input');
     input.type = 'file';
 
@@ -1520,6 +1723,13 @@ function import_config() {
             setting_changed("solar_intensity", data["solar_intensity"]);
             setting_changed("wind_intensity", data["wind_intensity"]);
             setting_changed("temperature_intensity", data["temperature_intensity"]);
+            setting_changed("altitude",data["z"]);
+            setting_changed("latitude", data["phi"]);
+
+            setting_changed("tabHR",data["tabHR"]);
+            setting_changed("tabRg", data["tabRg"]);
+            setting_changed("tabv10", data["tabv10"]);
+
 
             water_data_per = data["water_data_per"];
             water_data_ngf = data["water_data_ngf"];
@@ -1532,11 +1742,6 @@ function import_config() {
             future_rain = data["future_rain"];
             old_value = data["old_value"];
             hist = data["hist"];
-            z = data["z"];
-            phi = data["phi"];
-            tabHR = data["tabHR"];
-            tabRg = data["tabRg"];
-            tabv10 = data["tabv10"];
 
 
             buildings = {};
@@ -1561,7 +1766,6 @@ function import_config() {
                         template = new Animals(building_data["animal_type"], building_data["nb_animals"]);
                         break;
                 }
-
                 place_building(building_data["buildingtype"], template);
             });
         }
@@ -1574,7 +1778,8 @@ function import_config() {
 function new_session(){
     let check = confirm("Vous êtes sur le point de créer une nouvelle simulation. Tous les paramètres de la simulation et la grille seront réinitialisés.");
     if (check){
-        location.reload();
+        //location.reload();
+        initialisation();
     }
 }
 
