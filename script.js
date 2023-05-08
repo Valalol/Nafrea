@@ -571,7 +571,7 @@ function setting_changed(setting, value) {
             if(mytmp.length == 12){
                 tabv10 = mytmp;
             } else{
-                tabv10_label.textContent = "Vitesse mensuelle moyenne du vent à 10m (m/s) [FORMAT INVALIDE]";
+                tabv10_label.textContent = "Vitesse mensuelle moyenne du vent à 10m (m/s) [FORMAT INVALIDE]"
             }
             tabv10_box.value = value;
             break;
@@ -889,8 +889,11 @@ function place_building(type, template = false) {
                     break;
             }
         } else {
-            //build = Object.assign(Object.create(Object.getPrototypeOf(copied_building)), copied_building)
-            build = template;
+            if(copied_building){
+                build = Object.assign(Object.create(Object.getPrototypeOf(copied_building)), copied_building)
+            } else{
+                build = template;
+            }            
         }
         buildings[selected_case] = build;
     }
@@ -1365,6 +1368,7 @@ function new_frame() {
     var hauteurnappe=old_value*capacity/(gridsize*10000)**2;
     var lateralflow=permeability*gridsize*10000*hauteurnappe*Math.tan(inclinaison)*2629800;
     water_consumption[4] += lateralflow;
+    water_consumption_current[4] = lateralflow;
 
     lateralflow /= capacity; 
     
