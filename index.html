@@ -52,7 +52,7 @@
             <p class="advanced_paramater_name">Altitude du site (m)</p>
             <input class="advanced_box" id="altitude_box" type="number" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
             <p class="advanced_paramater_name">Latitude du site (deg)</p>
-            <input class="advanced_box" id="latitude_box" type="number" min="-45" max="45" value="40" step="0.01" oninput="setting_changed('latitude', this.value)">
+            <input class="advanced_box" id="latitude_box" type="text" min="-45" max="60" value="48" step="0.01" oninput="setting_changed('latitude', this.value)">
             <p class="advanced_paramater_name">Profondeur minimale de la nappe (m)</p>
             <input class="advanced_box" id="depth_box" type="number" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
             <p class="advanced_paramater_name" id="permeability_coeff_advanced_label">Coefficient de perméabilité (m/s) (ex: 2e-6)</p>
@@ -60,15 +60,17 @@
             <p class="advanced_paramater_name" id="capacity_advanced_label">Capacité de la nappe (m³) (ex: 10e9)</p>
             <input class="advanced_box" id="capacity_box" type="text" min="0.01" max="99" value="15e9" step="0.01" oninput="setting_changed('capacity_advanced', this.value)">
             <p class="advanced_paramater_name">Inclinaison de la nappe (deg)</p>
-            <input class="advanced_box" id="inclinaison_box" type="number" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
+            <input class="advanced_box" id="inclinaison_box" type="text" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
+            <p class="advanced_paramater_name">Coefficient cultural de l'herbe</p>
+            <input class="advanced_box" id="grasskc_box" type="text" min="0" max="2" value="0.8" step="0.01" oninput="setting_changed('grasskc', this.value)">
         </div>
         <div class="advanced_side_div">
             <p class="advanced_paramater_name" id="tabHR_label">Humidité relative mensuelle moyenne (%) (12)</p>
-            <input class="advanced_box" id="tabHR_box" type="text" value="[74,68,58,48,54,50,44,45,68,64,74,78]" oninput="setting_changed('tabHR', this.value)">
+            <input class="advanced_box" id="tabHR_box" type="text" value="[85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85]" oninput="setting_changed('tabHR', this.value)">
             <p class="advanced_paramater_name" id="tabRg_label">Irradiance quotidienne moyenne (kWh/m²/jour) (12)</p>
-            <input class="advanced_box" id="tabRg_box" type="text" value="[1.43,2.37,4.09,5.29,5.36,5.66,5.71,5.28,4.64,3,1.67,1.36]" oninput="setting_changed('tabRg', this.value)">
+            <input class="advanced_box" id="tabRg_box" type="text" value="[1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01]" oninput="setting_changed('tabRg', this.value)">
             <p class="advanced_paramater_name" id="tabv10_label">Vitesse mensuelle moyenne du vent à 10m (m/s) (12)</p>
-            <input class="advanced_box" id="tabv10_box" type="text" value="[11,14.9,14.3,13.5,11.4,12.2,12.6,11.7,11.6,12.3,15.2,14.1]" oninput="setting_changed('tabv10', this.value)">
+            <input class="advanced_box" id="tabv10_box" type="text" value="[5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14]" oninput="setting_changed('tabv10', this.value)">
             <p class="advanced_paramater_name">Intensité des précipitations (%)</p>
             <input class="advanced_box" id="rain_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('rain_intensity', this.value)">
             <p class="advanced_paramater_name">Intensité du vent (%)</p>
@@ -151,8 +153,8 @@
                 <div class="preconfig" onclick="import_config()">Importer une configuration</div>
                 <div class="preconfig" onclick="export_config()">Exporter la configuration</div>
                 
-                <details class="category" open>
-                    <summary class="category_title">Paramètres généraux</summary>
+                <div class="category">
+                    <p class="category_title">Paramètres généraux</p>
                     <div class="parameter_div">
                         <fieldset id="ssp_scenario">
                             <legend>Choix du scénario climatique :</legend>
@@ -225,10 +227,10 @@
                         <p class="parameter_name"  id="rain_intensity_label">Intensité des précipitations (100%)</p>
                         <input class="settings_range" id="rain_intensity_input" type="range" min="25" max="200" value="100" step="5" oninput="setting_changed('rain_intensity', this.value)">
                     </div>
-                </details>
+                </div>
 
-                <details class="category" open>
-                    <summary class="category_title">Affichage</summary>
+                <div class="category">
+                    <p class="category_title">Affichage</p>
                     <div class="parameter_div">
                         <fieldset id="display_parameters_fieldset">
                             <legend>Choix de la donnée affichée sur la timeline :</legend>  
@@ -251,10 +253,10 @@
                             </div>
                         </fieldset>
                     </div>
-                </details>
+                </div>
 
-                <details class="category" style="display: grid;" open>
-                    <summary class="category_title">Bâtiments</summary>
+                <div class="category" style="display: grid;">
+                    <p class="category_title">Bâtiments</p>
                     
                     <div id="building_buttons_div">
                         <div id="copy_paste_div">
@@ -268,10 +270,10 @@
                         <button class="buildings_button" onclick="place_building('animals')">Placer un élevage</button>
                         <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
                     </div>
-                </details>
+                </div>
 
-                <details class="category" id="Selected_building_parameters_div" open>
-                    <summary class="category_title">Sélection</summary>
+                <div class="category" id="Selected_building_parameters_div">
+                    <p class="category_title">Sélection</p>
                     <div id="selection_display_menu">
                         <div id="City_menu_div">
                             <div id="City_menu_size_div">
@@ -340,7 +342,7 @@
                             <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="100" step="100" oninput="setting_changed('nb_animals', this.value)">
                         </div>
                     </div>
-                </details>
+                </div>
                 
             </div>
             <div id="shrink_container">
