@@ -30,6 +30,8 @@ html {
     justify-content: space-between;
     align-items: center;
     background: rgb(200, 200, 200);
+    background: linear-gradient(90deg, rgba(212,212,212,1) 8%, rgba(138,199,231,1) 62%, rgba(180,219,222,1) 100%);
+
     z-index: 1;
     height: 6%;
 }
@@ -40,6 +42,10 @@ html {
     font-style: italic;
 }
 
+#logo{
+    width: auto;
+    height: 90%;
+}
 
 #infos {
     display: flex;
@@ -195,20 +201,27 @@ html {
     margin-bottom: 10px;
 }
 
+.category_subtitle {
+    font-size: max(1vw, 18px);
+    align-self: flex-start;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
 .parameter_div {
     margin: 6px 0px;
+}
+
+.stats_parameters_div{
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 #ssp_scenario {
     display:flex;
     justify-content: space-around;
 }
-
-
-
-
-
-
 
 
 #game_display {
@@ -470,8 +483,8 @@ html {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    height: 80%;
+    width: 65%;
+    height: 55%;
     border-radius: 50px;
     background-color: #ffffffe0;
     box-shadow: 0 0 40px 3px #535353;
@@ -484,6 +497,7 @@ html {
 
     animation: advanced_window_div_open 0.3s cubic-bezier(0.37, 1.34, 0.72, 0.99) forwards;
 }
+
 
 #advanced_window_div.disparition {
     animation: advanced_window_div_close 0.3s cubic-bezier(0.22,-0.06, 0.8,-0.02) forwards;
@@ -499,13 +513,23 @@ html {
     100% {transform: translate(-50%, -50%) scale(0);}
 }
 
+.advanced_side_div{
+    display: inline-grid;
+    margin-left: 4%;
+}
 
 .advanced_paramater_name{
     margin-left: 20px;
 }
 
+.advanced_paramater_title{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 .advanced_box{
     margin-left: 20px;
+    margin-bottom: 5px;
 }
 
 
@@ -560,8 +584,13 @@ html {
 
 .export_button{
     margin-left: 20px;
-    height: 50%;
+    height: 60%;
+    width: 80%;
+    border: 4px solid #1b94f5cc;
+    border-radius: 10%;
+    background-color: #ffffff00;
 }
+
 .export_img{
     width: 50%;
     height: 50%;
