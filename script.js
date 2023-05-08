@@ -1013,7 +1013,7 @@ var grasskc = 0.8;
 
 function etp(date,cover){
     
-    var t = parseFloat(temp_data[date]["World"])*temperature_intensity/100;
+    var t = parseFloat(temp_data[date]["WCE"])*temperature_intensity/100;
     var Tn = t-5;
     var Tx = t+5;
     var mois = parseInt(date.split("-")[1]);
@@ -1075,13 +1075,9 @@ function calc_conso(date) {
 
     //Si pendant 3 mois pluie > etp alors etp2 sinon si 3 mois pluie < etr etp3
     let etp 
-    if (current_formula == "manque"){
-        etp = grasskc*etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
-    } else {
-        etp = etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
-    }
+    etp = etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
+    
     //On enregistre si y'a un manque ou pas
-
     check_etp_hist()
 
     water_consumption[3] += etp/1000;
@@ -1204,7 +1200,6 @@ function update_future_rain(delay){
 
     if (!(key in future_rain)){
         future_rain[key] = ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee)) / (1000*capacity))*rain_intensity/100;
-
     } else { 
         future_rain[key] += ((parseFloat(rain_data[key]['WCE']) * 30 * ((square_size ** 2) * (gridsize ** 2) - surface_betonee))  / (1000*capacity))*rain_intensity/100;
     }
@@ -1437,7 +1432,6 @@ function new_frame() {
     }
     
     if (mois_actuel == 1 && secheresse){ //Conséquences d'une sécheresse
-        console.log(secheresse);
         seuils();
     }
 
@@ -1740,6 +1734,7 @@ function import_config() {
             setting_changed("tabHR",data["tabHR"]);
             setting_changed("tabRg", data["tabRg"]);
             setting_changed("tabv10", data["tabv10"]);
+
 
             water_data_per = data["water_data_per"];
             water_data_ngf = data["water_data_ngf"];

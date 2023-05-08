@@ -93,6 +93,7 @@ html {
     left: 0%;
     box-shadow: 3px 2px 5px 0px #a3a3a3;
     height: -webkit-fill-available;
+    height: 94%;
     width: 25%;
     background-color: rgb(200, 200, 200);
     justify-content: space-between;
