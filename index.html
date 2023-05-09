@@ -107,16 +107,7 @@
 
     <div id="header">
         <img id="logo" src="Images/Nafrea.png">
-        <!--<h1 id="Title">Nafrea</h1>-->
         <div id="infos">
-            <div id="Habitants_div" class="compteur_div">
-                <div id="Habitants_counter">
-                    1000
-                </div>
-                <div id="Habitants_img">
-                    <img class="compteurs_img" src="Images/person.svg">
-                </div>
-            </div>
             <div id="Entrées_div" class="compteur_div">
                 <div id="Entrées_counter">
                     0 m³
@@ -146,12 +137,10 @@
     <div id="main_window">
         <div id="side_menu">
             <div id="real_menu">
-                <div class="search_bar">
+                <!-- <div class="search_bar">
                     <img src="Images/search.svg" class="search_icon">
                     <input type="text" class="search_form">
-                </div>
-                <div class="preconfig" onclick="import_config()">Importer une configuration</div>
-                <div class="preconfig" onclick="export_config()">Exporter la configuration</div>
+                </div> -->
                 
                 <details class="category" open>
                     <summary class="category_title">Paramètres généraux</summary>
@@ -269,6 +258,31 @@
                         <button class="buildings_button" onclick="place_building('industrial_area')">Placer une zone industrielle</button>
                         <button class="buildings_button" onclick="place_building('animals')">Placer un élevage</button>
                         <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
+                    </div>
+                </details>
+                
+                <details id="config_category" class="category" open>
+                    <summary class="category_title">Configurations</summary>
+                    <div id="config_buttons_div">
+                        <div id="preconfig_selector_div">
+                            <select id="preconfig_selector">
+                                <option value="Bas-Rhin_Strasbourg">Bas Rhin Strasbourg</option>
+                                <option value="Bouches-du-Rhône_Marseille">Bouches du Rhône Marseille</option>
+                                <option value="Corse-du-Sud_Ajaccio">Corse du Sud Ajaccio</option>
+                                <option value="Côte-d-Or_Dijon">Côte d'Or Dijon</option>
+                                <option value="Département_de_Paris_Paris">Département de Paris Paris</option>
+                                <option value="Gironde_Bordeaux">Gironde Bordeaux</option>
+                                <option value="Haute-Garonne_Toulouse">Haute Garonne Toulouse</option>
+                                <option value="Ille-et-Vilaine_Rennes">Ille et Vilaine Rennes</option>
+                                <option value="Loire-Atlantique_Nantes">Loire Atlantique Nantes</option>
+                                <option value="Nord_Lille">Nord Lille</option>
+                                <option value="Rhône_Lyon">Rhône Lyon</option>
+                                <option value="Seine-Maritime_Rouen">Seine Maritime_Rouen</option>
+                            </select>
+                            <button class="preconfig" id="preconfig_selector_button" onclick="import_config(true)">Importer</button>
+                        </div>
+                        <button class="preconfig" onclick="import_config()">Importer une configuration personnalisée</button>
+                        <button class="preconfig" onclick="export_config()">Exporter la configuration</button>
                     </div>
                 </details>
 

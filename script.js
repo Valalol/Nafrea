@@ -1712,80 +1712,105 @@ function export_config() {
 }
 
 
-function import_config() {
-    new_session();
+function import_sub_function(data) {
+    setting_changed("size", data["gridsize"]);
+    setting_changed("depth", data["depth"]);
+    setting_changed("permeability", data["permeability"]);
+    setting_changed("capacity", data["capacity"]/ 10 ** 9);
+    setting_changed("inclinaison", data["inclinaison"]/Math.PI*180);
+    setting_changed("rain_intensity", data["rain_intensity"]);
+    setting_changed("solar_intensity", data["solar_intensity"]);
+    setting_changed("wind_intensity", data["wind_intensity"]);
+    setting_changed("temperature_intensity", data["temperature_intensity"]);
+    setting_changed("altitude",data["z"]);
+    setting_changed("latitude", data["phi"]);
 
-    var input = document.createElement('input');
-    input.type = 'file';
-
-    input.onchange = e => { 
-        var file = e.target.files[0]; 
-
-        var reader = new FileReader();
-        reader.readAsText(file,'UTF-8');
-
-        reader.onload = readerEvent => {
-            var content = readerEvent.target.result;
-            var data = JSON.parse(content);
-            console.log(data);
-            setting_changed("size", data["gridsize"]);
-            setting_changed("depth", data["depth"]);
-            setting_changed("permeability", data["permeability"]);
-            setting_changed("capacity", data["capacity"]/ 10 ** 9);
-            setting_changed("inclinaison", data["inclinaison"]/Math.PI*180);
-            setting_changed("rain_intensity", data["rain_intensity"]);
-            setting_changed("solar_intensity", data["solar_intensity"]);
-            setting_changed("wind_intensity", data["wind_intensity"]);
-            setting_changed("temperature_intensity", data["temperature_intensity"]);
-            setting_changed("altitude",data["z"]);
-            setting_changed("latitude", data["phi"]);
-
-            setting_changed("tabHR",data["tabHR"]);
-            setting_changed("tabRg", data["tabRg"]);
-            setting_changed("tabv10", data["tabv10"]);
+    setting_changed("tabHR",data["tabHR"]);
+    setting_changed("tabRg", data["tabRg"]);
+    setting_changed("tabv10", data["tabv10"]);
 
 
-            water_data_per = data["water_data_per"];
-            water_data_ngf = data["water_data_ngf"];
-            time_labels = data["time_labels"];
-            water_consumption = data["water_consumption"];
-            update_all_charts();
-            annee_actuelle = data["annee_actuelle"];
-            mois_actuel = data["mois_actuel"];
-            change_climatic_scenario(data["actual_scenario"]);
-            future_rain = data["future_rain"];
-            old_value = data["old_value"];
-            hist = data["hist"];
+    water_data_per = data["water_data_per"];
+    water_data_ngf = data["water_data_ngf"];
+    time_labels = data["time_labels"];
+    water_consumption = data["water_consumption"];
+    update_all_charts();
+    annee_actuelle = data["annee_actuelle"];
+    mois_actuel = data["mois_actuel"];
+    change_climatic_scenario(data["actual_scenario"]);
+    future_rain = data["future_rain"];
+    old_value = data["old_value"];
+    hist = data["hist"];
 
 
-            buildings = {};
-            data["buildings"].forEach(function(building_data) {
-                selected_case = building_data["position"];
+    buildings = {};
+    data["buildings"].forEach(function(building_data) {
+        selected_case = building_data["position"];
 
-                var template
-                switch (building_data["buildingtype"]) {
-                    case "city":
-                        template = new City(building_data["nb_hab"], building_data["conso"], building_data["density"], building_data["category"], building_data["green_cover"]);
-                        break;
-                    case "farm":
-                        template = new Farm(building_data["plante"], building_data["cover"]);
-                        break;
-                    case "forest":
-                        template = new Forest(building_data["tree_type"], building_data["density"]);
-                        break;
-                    case "industrial_area":
-                        template = new Industrial_area(building_data["conso"], building_data["size"], building_data["nb_industries"]);
-                        break;
-                    case "animals":
-                        template = new Animals(building_data["animal_type"], building_data["nb_animals"]);
-                        break;
+        var template
+        switch (building_data["buildingtype"]) {
+            case "city":
+                template = new City(building_data["nb_hab"], building_data["conso"], building_data["density"], building_data["category"], building_data["green_cover"]);
+                break;
+            case "farm":
+                template = new Farm(building_data["plante"], building_data["cover"]);
+                break;
+            case "forest":
+                template = new Forest(building_data["tree_type"], building_data["density"]);
+                break;
+            case "industrial_area":
+                template = new Industrial_area(building_data["conso"], building_data["size"], building_data["nb_industries"]);
+                break;
+            case "animals":
+                template = new Animals(building_data["animal_type"], building_data["nb_animals"]);
+                break;
+        }
+        place_building(building_data["buildingtype"], template);
+    });
+}
+
+
+function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+}
+
+function import_config(known = false) {
+    if (new_session()) {
+        if (!known) {
+            var input = document.createElement('input');
+            input.type = 'file';
+        
+            input.onchange = e => { 
+                var file = e.target.files[0]; 
+                var reader = new FileReader();
+                reader.readAsText(file,'UTF-8');
+        
+                reader.onload = readerEvent => {
+                    var content = readerEvent.target.result;
+                    var data = JSON.parse(content);
+                    console.log(data);
+                    import_sub_function(data);
                 }
-                place_building(building_data["buildingtype"], template);
+            }
+            input.click();
+        }
+        else {
+            var file = preconfig_selector.value;
+            console.log(file)
+            readTextFile(`preconfigs/${file}.json`, function(text){
+                var data = JSON.parse(text);
+                import_sub_function(data);
             });
         }
     }
-
-    input.click();
 }
 
 
@@ -1794,6 +1819,9 @@ function new_session(){
     if (check){
         //location.reload();
         initialisation();
+        return true
+    } else {
+        return false
     }
 }
 

@@ -145,7 +145,7 @@ html {
     cursor: pointer;
 }
 
-.search_bar {
+/* .search_bar {
     display: flex;
     width: 80%;
     height: 30px;
@@ -169,30 +169,42 @@ html {
 
 .search_form:focus {
     outline: none;
-}
+} */
 
 .preconfig {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    width: 80%;
-    margin: 5px 0;
-    padding: 2px;
-    background-color: lightgrey;
-    border-radius: 2px;
-    border: solid 1px black;
     font-size: 16px;
-    transition: ease-in-out 0.1s;
+    height: 40px;
+    width: 100%;
+    margin: 5px 0px;
+    cursor: pointer;
 }
 
-.preconfig:hover {
-    background-color: rgb(184, 184, 184);
+#preconfig_selector_div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#preconfig_selector {
+    width: 58%;
+    height: 40px;
+}
+
+#preconfig_selector_button {
+    width: 38%;
 }
 
 .category {
     width: 90%;
     margin: 10px 0 0 0;
+}
+
+#config_buttons_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10%;
 }
 
 .category_title {
@@ -342,7 +354,6 @@ html {
     align-items: center;
     width: 35%;
     aspect-ratio: 1 / 1;
-    /* background-color: #b5258f54; */
     transform-style: preserve-3d;
     transform: rotateX(50deg) rotateZ(315deg);
     transition: .3s ease-out;
@@ -409,6 +420,7 @@ html {
     height: 40px;
     width: 100%;
     margin: 5px 0px;
+    cursor: pointer;
 }
 
 #copy_paste_div {
@@ -420,12 +432,6 @@ html {
 .copy_paste_button {
     width: 48%;
 }
-/* #copy_button {
-    margin-right: 8px;
-}
-#paste_button {
-    margin-left: 8px;
-} */
 
 
 #Selected_building_parameters_div {
@@ -558,7 +564,7 @@ html {
     height: 60%;
     width: 80%;
     border: 4px solid #1b94f5cc;
-    border-radius: 10%;
+    border-radius: 10px;
     background-color: #ffffff00;
 }
 
