@@ -1528,12 +1528,15 @@ function toggle_stats() {
     if (stats_opened) {
         close_stats();
     } else {
-        open_stats();
-        if (advanced_opened){
+        if (advanced_opened || export_opened){
             close_advanced();
-        }
-        if (export_opened){
             close_export();
+            setTimeout(() => {
+                open_stats();
+            }, 300);
+        }
+        else {
+            open_stats();
         }
     }
 }
@@ -1556,12 +1559,15 @@ function toggle_advanced() {
     if (advanced_opened) {
         close_advanced();
     } else {
-        open_advanced();
-        if (stats_opened){
+        if (stats_opened || export_opened){
             close_stats();
-        }
-        if (export_opened){
             close_export();
+            setTimeout(() => {
+                open_advanced();
+            }, 300);
+        }
+        else {
+            open_advanced();
         }
     }
 }
@@ -1585,12 +1591,15 @@ function toggle_export() {
     if (export_opened) {
         close_export();
     } else {
-        open_export();
-        if (stats_opened){
+        if (stats_opened || advanced_opened){
             close_stats();
-        }
-        if (advanced_opened){
             close_advanced();
+            setTimeout(() => {
+                open_export();
+            }, 300);
+        }
+        else {
+            open_export();
         }
     }
 }
