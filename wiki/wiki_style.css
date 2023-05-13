@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran&family=Open+Sans:wght@300&family=Ubuntu:wght@700&display=swap');
+
+:root {
+    --title-color: #2e5ca2;
+  }
+  
+
+#title{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    color: var(--title-color);
+    font-size: 40px;
+}
+#title_nafrea{
+    background: -webkit-linear-gradient(0deg, #2e5ca2 0%, rgba(13,141,254,1) 25%, rgba(0,212,255,1) 100%);;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#logo{
+    width: 40%;
+    height: auto;
+    margin-left: 10%;
+    margin: 5%;
+}
+
+#logo_div{
+    width: 100%;
+    height: auto;
+    background-color: white;
+    background : -webkit-linear-gradient(90deg, rgb(5, 68, 104, 1) 0%, rgb(223, 240, 255) 5%, rgb(255, 255, 255) 100%);;
+}
+
+
+body{
+    background: #f5f6fa;
+    font-family: "Catamaran";
+}
+
+.wrapper{
+    background: rgb(5, 68, 104);
+    color: white;
+    /*position: fixed;*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16%;
+    height: 100%;
+    transition: all 0.5s ease;
+
+    /*float: inline-start;*/
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    overflow-y:auto;
+}
+
+#empty_left{
+    float: left;
+    top: 0;
+    left: 0;
+    width: 16%;
+    height: 100%;
+}
+
+
+details[open] {
+    padding-bottom: 0em;
+} 
+summary{
+    padding-top: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.nav-ul{
+}
+
+li{
+    display: block;
+}
+ul li::before {
+    content: "₪ ";
+  }
+
+.nav{
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    /*margin-left: 40px;*/
+}
+.inlink{
+    cursor: help;
+    color: rgb(0, 102, 255);
+    text-decoration: underline;
+}
+.outlink{
+    cursor: help;
+    color: #00aa5a;
+    text-decoration: underline;
+}
+
+#content{
+    float: none;
+    overflow: hidden;
+    padding-left: 5%;
+    overflow-x:auto;
+}
+
+section{
+    width: 80%;
+}
+
+#introduction{
+    border: 1px solid blue;
+}
+
+#avertissement{
+    margin-top: 10px;
+    border: 1px solid rgb(153, 0, 0);
+}
+
+#avertissement_title{
+    color: rgb(153, 0, 0);
+}
+
+.section_title{
+    padding-left: 10px;
+    color: var(--title-color);
+    font-family: "Ubuntu";
+    font-size: 26px;
+}
+
+.section_subtitle{
+    padding-left: 20px;
+    color: var(--title-color);
+    font-size: 22px;
+}
+
+.section_subtitle::before{
+    content: "●๋• ";
+    color:#00aeff;
+}
+
+p{
+    padding-left: 20px;
+    font-size: 18px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.italic{
+    font-style: italic;
+}
+
+th, tr, td{
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px;
+}
+
+#abstract{
+    font-family: Courrier;
+    text-justify: auto;
+    text-align: justify;
+}
+#mit_license{
+    font-family: Courrier;
+    text-justify: auto;
+    text-align: justify;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+#table_raccourcis{
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -95,91 +95,7 @@ function shrink_menu() {
     }
 }
 
-function initialisation(){
-    // appelée par new_session() et import_config()
-    actual_scenario = "245";
-    change_climatic_scenario(actual_scenario);
-    square_size = 10000 //m de côté
-    old_value = 0.65;
 
-    start_month_select.value = "01";
-    start_year_box.value = 2023;
-    setting_changed("start_date",0);
-
-    water_data_per = [0.65];
-    water_data_rain = [0];
-    water_data_temperature = [0];
-
-    water_consumption = [0, 0, 0, 0, 0, 0,0];
-    water_consumption_current = [0, 0, 0, 0, 0, 0,0];
-
-    update_all_charts();
-
-    gridsize = 8;
-    redraw_grid(gridsize);
-    selected_case = null;
-
-
-    setting_changed("capacity",15);
-    setting_changed("latitude",48);
-    setting_changed("altitude",30);
-    setting_changed("depth",10);
-    setting_changed("permeability_coeff",-5);
-    setting_changed("inclinaison",5);
-    setting_changed("grasskc",0.8);
-    setting_changed("rain_intensity",100);
-    setting_changed("wind_intensity",100);
-    setting_changed("solar_intensity",100);
-    setting_changed("temperature_intensity",100);
-    setting_changed("etp_limit",0);
-
-
-    water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))]; //valeurs en m ngf
-    displayed_data = "per";
-    displayed_stats_conso = "total";
-
-
-    occupied_list = [];
-    buildings = {};
-
-    place_cube_side_faces();
-    const resizeObserver_cube = new ResizeObserver(entries => {
-        for (let entry of entries) {
-            place_cube_side_faces();
-        }
-    });
-    resizeObserver_cube.observe(pave_3d);
-
-
-    copied_building = false;
-
-    tabHR = [85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85];
-    tabRg = [1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01];
-    tabv10 = [5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14];
-
-
-    current_formula = "manque";
-    hist = [];
-
-    secheresse = false;
-
-    future_rain = {};
-    surface_betonee = 0;
-
-    simulation_speed = 1;
-    main_simulation = 0;
-    simulation_running = false;
-    pause();
-    simulation_ended = false;
-
-    stats_opened = false;
-    advanced_opened = false;
-    export_opened = false;
-
-    close_stats();
-    close_advanced();
-    close_export();
-}
 
 var temp_data, rain_data;
 var actual_scenario = "245";
@@ -224,6 +140,11 @@ var water_data_per = [0.65];
 var water_data_rain = [0];//[parseFloat(rain_data[mois_debut.toString()+"-01"]['WCE']) * 30];
 var water_data_temperature = [0];
 
+// Données calculées pendant la simulation
+var record_data_per = true;
+var record_data_ngf = true;
+var record_data_temperature = false;
+var record_data_rain = false;
 
 function create_chart(canvas_used, title_bool) {
     return new Chart(canvas_used, {
@@ -325,7 +246,6 @@ var displayed_data = "per";
 var displayed_stats_conso = "total";
 
 function change_chart_var(value){
-    console.log(value);
     switch(value){
         case "percentage" :
             water_chart.options.scales.y.min = 0;
@@ -365,7 +285,7 @@ function change_chart_var(value){
             water_chart_stats.options.scales.y.max = 50;
 
             displayed_data = "temperature";
-            water_chart_stats.config.options.plugins.title.text = "Température mensuelle (°C)";
+            water_chart_stats.config.options.plugins.title.text = "Température moyenne mensuelle (°C)";
             update_all_charts();
             break;
 
@@ -397,6 +317,29 @@ function change_stats_conso(value){
             break;
 
     }
+}
+
+function change_record_parameters(value){
+    per_radio.disabled = !record_per_checkbox.checked;
+    ngf_radio.disabled = !record_ngf_checkbox.checked;
+    rain_radio.disabled = !record_rain_checkbox.checked;
+    temperature_radio.disabled = !record_temperature_checkbox.checked;
+
+    export_per_button.disabled = !record_per_checkbox.checked;
+    export_ngf_button.disabled = !record_ngf_checkbox.checked;
+    export_rain_button.disabled = !record_rain_checkbox.checked;
+    export_temperature_button.disabled = !record_temperature_checkbox.checked;
+
+    record_data_per = record_per_checkbox.checked;
+    record_data_ngf = record_ngf_checkbox.checked;
+    record_data_rain = record_rain_checkbox.checked;
+    record_data_temperature = record_temperature_checkbox.checked;
+}
+
+
+function change_animations_status(value){
+    water_chart.options.animation = value;
+    water_chart_stats.options.animation = value;
 }
 
 function redraw_grid(size) {
@@ -508,10 +451,17 @@ function setting_changed(setting, value) {
             inclinaison_box.value = value;
             inclinaison = parseFloat(value)*Math.PI/180;
             break;
-        case "grasskc":
+        case "startfilling":
             //advanced only
-            grasskc_box.value = value;
-            grasskc = parseFloat(value);
+            startfilling_box.value = value;
+            old_value = parseInt(value)/100;
+            water_data_per = [old_value];
+            water_data_ngf = [z - depth - capacity*(1-old_value) / ((square_size ** 2)*(gridsize ** 2))];
+            water_data_rain = [0];
+            water_data_temperature = [0];
+            water_bar_colored.style.height = old_value * 100 + "%";
+            water_bar_quantity.innerHTML = (Math.round(old_value * 100)).toString() + "%";
+            update_all_charts();
             break;
         case "rain_intensity":
             rain_intensity_label.textContent = "Intensité des précipitations (" + value + "%)";
@@ -550,6 +500,7 @@ function setting_changed(setting, value) {
             mytmp = mytmp.split(",").map(Number);
             if(mytmp.length == 12){
                 tabHR = mytmp;
+                tabHR_label.textContent = "Humidité relative mensuelle moyenne (%)";
             } else{
                 tabHR_label.textContent = "Humidité relative mensuelle moyenne (%) [FORMAT INVALIDE]";
             }
@@ -563,6 +514,7 @@ function setting_changed(setting, value) {
             mytmp = mytmp.split(",").map(Number);
             if(mytmp.length == 12){
                 tabRg = mytmp;
+                tabRg_label.textContent = "Irradiance quotidienne moyenne (kWh/m²/jour)";
             } else{
                 tabRg_label.textContent = "Irradiance quotidienne moyenne (kWh/m²/jour) [FORMAT INVALIDE]";
             }
@@ -576,6 +528,7 @@ function setting_changed(setting, value) {
             mytmp = mytmp.split(",").map(Number);
             if(mytmp.length == 12){
                 tabv10 = mytmp;
+                tabv10_label.textContent = "Vitesse mensuelle moyenne du vent à 10m (m/s)";
             } else{
                 tabv10_label.textContent = "Vitesse mensuelle moyenne du vent à 10m (m/s) [FORMAT INVALIDE]"
             }
@@ -834,6 +787,7 @@ function div_selected(item) {
             case "animals":
                 Selected_building_parameters_div.style.display = "block";
 
+                setting_changed("nb_animals", buildings[selected_case].nb_animals);
                 Animals_menu_div.style.display = "block";
             default:
                 break;
@@ -1330,7 +1284,7 @@ function update_all_charts() {
     water_chart.update();
     
     water_chart_stats.data.labels = time_labels;
-    water_chart_stats.update();
+    
 
 
     switch(displayed_stats_conso){
@@ -1344,8 +1298,11 @@ function update_all_charts() {
             pie_chart_conso.data.datasets[0].data = water_consumption;
             break;
     }
-    
-    pie_chart_conso.update();
+    if(windows_opened[0]){
+        pie_chart_conso.update();
+        water_chart_stats.update();
+    }
+
     
 }
 
@@ -1435,14 +1392,21 @@ function new_frame() {
         seuils();
     }
 
-    water_data_per.push(new_value);
+    if(record_data_per){
+        water_data_per.push(new_value);
+    }
 
-    niv_ngf = z - depth - capacity*(1-new_value) / ((square_size ** 2)*(gridsize ** 2));
-    water_data_ngf.push(niv_ngf);
-
-    water_data_rain.push(parseFloat(rain_data[key]['WCE']) * 30 * rain_intensity/100);
-
-    water_data_temperature.push(parseFloat(temp_data[key]['WCE']) * temperature_intensity/100);
+    if(record_data_ngf){
+        niv_ngf = z - depth - capacity*(1-new_value) / ((square_size ** 2)*(gridsize ** 2));
+        water_data_ngf.push(niv_ngf);
+    }
+    if(record_data_rain){
+        water_data_rain.push(parseFloat(rain_data[key]['WCE']) * 30 * rain_intensity/100);
+    }
+    if(record_data_temperature){
+        water_data_temperature.push(parseFloat(temp_data[key]['WCE']) * temperature_intensity/100);
+    }
+     
 
     update_all_charts();
 
@@ -1486,6 +1450,7 @@ function speed_up() {
 }
 
 function play_pause() {
+    lock_parameters(true);
     if (!simulation_running) {resume()} else {pause()}
 }
 
@@ -1510,98 +1475,46 @@ function restart() {
     }
 }
 
-var stats_opened = false;
-function open_stats() {
-    stats_opened = true;
-    stats_window_div.classList.remove("disparition");
-    stats_window_div.style.display = "flex";
-    pie_chart_conso.update();
+
+
+var windows_opened = [false, false, false]; //stats, advanced, export
+const mywindows = [stats_window_div, advanced_window_div, export_window_div]; //stats, advanced, export
+const windows_display = ["flex", "flex", "flex"]; //stats, advanced, export
+
+function open_window(wid){
+    windows_opened[wid] = true;
+    mywindows[wid].classList.remove("disparition");
+    mywindows[wid].style.display = windows_display[wid];
 }
-function close_stats() {
-    stats_opened = false;
-    stats_window_div.classList.add("disparition");
+
+function close_window(wid){
+    windows_opened[wid] = false;
+    mywindows[wid].classList.add("disparition");
     setTimeout(() => {
-        stats_window_div.style.display = "none"; // set display to "none" after the animation has completed
+        mywindows[wid].style.display = "none"; // set display to "none" after the animation has completed
     }, 300);
 }
-function toggle_stats() {
-    if (stats_opened) {
-        close_stats();
+
+function toggle_window(wid=0) {
+    wid = parseInt(wid); // 0:stats, 1:advanced, 2:export
+    if (windows_opened[wid]) {
+        close_window(wid); //on ferme la fenetre
     } else {
-        if (advanced_opened || export_opened){
-            close_advanced();
-            close_export();
+        if(windows_opened.includes(true)){ //autres fenetres ouvertes ?
+            close_all_windows(); //on les ferme
             setTimeout(() => {
-                open_stats();
+                open_window(wid); //on ouvre la fenetre
             }, 300);
-        }
-        else {
-            open_stats();
+        } else{
+            open_window(wid); //on ouvre la fenetre
         }
     }
 }
 
-
-var advanced_opened = false;
-function open_advanced() {
-    advanced_opened = true;
-    advanced_window_div.classList.remove("disparition");
-    advanced_window_div.style.display = "flex";
-}
-function close_advanced() {
-    advanced_opened = false;
-    advanced_window_div.classList.add("disparition");
-    setTimeout(() => {
-        advanced_window_div.style.display = "none"; // set display to "none" after the animation has completed
-    }, 300);
-}
-function toggle_advanced() {
-    if (advanced_opened) {
-        close_advanced();
-    } else {
-        if (stats_opened || export_opened){
-            close_stats();
-            close_export();
-            setTimeout(() => {
-                open_advanced();
-            }, 300);
-        }
-        else {
-            open_advanced();
-        }
-    }
-}
-
-
-
-var export_opened = false;
-function open_export() {
-    export_opened = true;
-    export_window_div.classList.remove("disparition");
-    export_window_div.style.display = "inline-grid";
-}
-function close_export() {
-    export_opened = false;
-    export_window_div.classList.add("disparition");
-    setTimeout(() => {
-        export_window_div.style.display = "none"; // set display to "none" after the animation has completed
-    }, 300);
-}
-function toggle_export() {
-    if (export_opened) {
-        close_export();
-    } else {
-        if (stats_opened || advanced_opened){
-            close_stats();
-            close_advanced();
-            setTimeout(() => {
-                open_export();
-            }, 300);
-        }
-        else {
-            open_export();
-        }
-    }
+function close_all_windows(name){
+    close_window(0);
+    close_window(1);
+    close_window(2);
 }
 
 
@@ -1624,39 +1537,41 @@ function export_water_data_per() {
 
 
 function export_data(dataid, myname) {
-    let mydata = [];
-    switch(dataid){
-        case "per":
-            mydata = water_data_per;
-            break;
-        case "ngf":
-            mydata = water_data_ngf;
-            break;
-        case "rain":
-            mydata = water_data_rain;
-            break;
-        case "temperature":
-            mydata = water_data_temperature;
-            break;
-        default:
-            mydata = water_data_per;
-            break;
+    if(confirmation("Vous êtes sur le point de télécharger un fichier csv.")){
+        let mydata = [];
+        switch(dataid){
+            case "per":
+                mydata = water_data_per;
+                break;
+            case "ngf":
+                mydata = water_data_ngf;
+                break;
+            case "rain":
+                mydata = water_data_rain;
+                break;
+            case "temperature":
+                mydata = water_data_temperature;
+                break;
+            default:
+                mydata = water_data_per;
+                break;
+        }
+    
+        var output_data = [];
+        for (let i=0; i<mydata.length; i++) {
+            output_data.push([time_labels[i],mydata[i]])
+        }
+        var csv = 'Date,Water_' + myname + '\n';
+        output_data.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+        });
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = myname + '.csv';
+        hiddenElement.click();
     }
-
-    var output_data = [];
-    for (let i=0; i<mydata.length; i++) {
-        output_data.push([time_labels[i],mydata[i]])
-    }
-    var csv = 'Date,Water_' + myname + '\n';
-    output_data.forEach(function(row) {
-        csv += row.join(',');
-        csv += "\n";
-    });
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = myname + '.csv';
-    hiddenElement.click();
 }
 
 
@@ -1713,6 +1628,7 @@ function export_config() {
 
 
 function import_sub_function(data) {
+    initialisation();
     setting_changed("size", data["gridsize"]);
     setting_changed("depth", data["depth"]);
     setting_changed("permeability", data["permeability"]);
@@ -1769,6 +1685,43 @@ function import_sub_function(data) {
     });
 }
 
+function initialisation(){
+    // appelée par import_sub_function()
+    square_size = 10000 //m de côté
+
+    water_data_rain = [0];
+    water_data_temperature = [0];
+    record_rain_checkbox.checked = false;
+    record_data_temperature.checked = false;
+    change_record_parameters("");
+
+    water_consumption_current = [0, 0, 0, 0, 0, 0,0];
+
+    selected_case = null;
+    setting_changed("etp_limit",0);
+
+    displayed_data = "per";
+    change_chart_var("per");
+
+    update_all_charts();
+
+    copied_building = false;
+
+    secheresse = false;
+
+    future_rain = {};
+
+    redraw_grid(gridsize);
+    occupied_list = [];
+
+    simulation_speed = 1;
+    main_simulation = 0;
+    simulation_running = false;
+    pause();
+    simulation_ended = false;
+
+    close_all_windows();
+}
 
 function readTextFile(file, callback) {
     var rawFile = new XMLHttpRequest();
@@ -1783,7 +1736,7 @@ function readTextFile(file, callback) {
 }
 
 function import_config(known = false) {
-    if (new_session()) {
+    if (confirmation()) {
         if (!known) {
             var input = document.createElement('input');
             input.type = 'file';
@@ -1814,16 +1767,63 @@ function import_config(known = false) {
 }
 
 
+function confirmation(message="Vous êtes sur le point de créer une nouvelle simulation. Tous les paramètres de la simulation et la grille seront réinitialisés."){
+    pause();
+    return confirm(message);
+}
+
 function new_session(){
-    let check = confirm("Vous êtes sur le point de créer une nouvelle simulation. Tous les paramètres de la simulation et la grille seront réinitialisés.");
-    if (check){
-        //location.reload();
-        initialisation();
-        return true
-    } else {
-        return false
+    if (confirmation()){
+        location.reload(true);
+        //initialisation();
     }
 }
+
+
+function restart_sim(){
+    let check = confirm("La timeline sera réinitialisée.");
+    if(check){
+        pause();
+        water_data_per = [];
+        water_data_ngf = [];
+        water_data_rain = [];
+        water_data_temperature = [];
+        water_consumption = [];
+        water_consumption_current = 0;
+    
+        setting_changed("start_date","");
+        setting_changed("startfilling", startfilling_box.value);
+    
+        update_all_charts();
+        lock_parameters(false);
+    }
+}
+
+
+
+function lock_parameters(status){
+    // Paramètres initiaux
+    start_month_select.disabled = status;
+    start_year_box.disabled = status;
+    map_size_input.disabled = status;
+    altitude_input.disabled = status;
+    depth_input.disabled = status;
+    capacity_input.disabled = status;
+
+    //Affichage
+    record_per_checkbox.disabled = status;
+    record_ngf_checkbox.disabled = status;
+    record_rain_checkbox.disabled = status;
+    record_temperature_checkbox.disabled = status;
+
+    //Paramètres avancés
+    square_size_box.disabled = status;
+    altitude_box.disabled = status;
+    latitude_box.disabled = status;
+    depth_box.disabled = status;
+    startfilling_box.disabled = status;
+}
+
 
 let zoom = 1;
 const ZOOM_SPEED = 0.1;

@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link href="style.css" rel="stylesheet">
     <script src="libraries/papaparse.min.js"></script>
     <script defer src="script.js"></script>
@@ -17,7 +20,7 @@
 
 <body>
     <div id="stats_window_div">
-        <img src="Images/close.svg" id="close_stats_img" onclick="close_stats()">
+        <img src="Images/close.svg" id="close_stats_img" onclick="close_window(0)">
         <div id="timeline_stats">
             <canvas id="water_timeline_stats"></canvas>
         </div>
@@ -44,33 +47,33 @@
 
 
     <div id="advanced_window_div">
-        <img src="Images/close.svg" id="close_advanced_img" onclick="close_advanced()">
+        <img src="Images/close.svg" id="close_advanced_img" onclick="close_window(1)">
         <div class="advanced_side_div">
             <h2 class="advanced_paramater_title">Paramètres avancés</h2>
             <p class="advanced_paramater_name">Longueur d'une case (m)</p>
             <input class="advanced_box" id="square_size_box" type="number" min="500" max="100000" value="10000" step="1" oninput="setting_changed('square_size', this.value)">
             <p class="advanced_paramater_name">Altitude du site (m)</p>
-            <input class="advanced_box" id="altitude_box" type="number" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
+            <input class="advanced_box" id="altitude_box" type="text" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
             <p class="advanced_paramater_name">Latitude du site (deg)</p>
             <input class="advanced_box" id="latitude_box" type="text" min="-45" max="60" value="48" step="0.01" oninput="setting_changed('latitude', this.value)">
             <p class="advanced_paramater_name">Profondeur minimale de la nappe (m)</p>
-            <input class="advanced_box" id="depth_box" type="number" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
+            <input class="advanced_box" id="depth_box" type="text" min="2" max="200" value="10" step="1" oninput="setting_changed('depth', this.value)">
             <p class="advanced_paramater_name" id="permeability_coeff_advanced_label">Coefficient de perméabilité (m/s) (ex: 2e-6)</p>
             <input class="advanced_box" id="permeability_coeff_box" type="text" min="0.01" max="9.99" value="1e-5" step="0.01" oninput="setting_changed('permeability_coeff_advanced', this.value)">
             <p class="advanced_paramater_name" id="capacity_advanced_label">Capacité de la nappe (m³) (ex: 10e9)</p>
             <input class="advanced_box" id="capacity_box" type="text" min="0.01" max="99" value="15e9" step="0.01" oninput="setting_changed('capacity_advanced', this.value)">
             <p class="advanced_paramater_name">Inclinaison de la nappe (deg)</p>
             <input class="advanced_box" id="inclinaison_box" type="text" min="0" max="50" value="5" step="0.01" oninput="setting_changed('inclinaison', this.value)">
-            <p class="advanced_paramater_name">Coefficient cultural de l'herbe</p>
-            <input class="advanced_box" id="grasskc_box" type="text" min="0" max="2" value="0.8" step="0.01" oninput="setting_changed('grasskc', this.value)">
+            <p class="advanced_paramater_name">Remplissage initial (%)</p>
+            <input class="advanced_box" id="startfilling_box" type="number" min="0" max="100" value="65" step="1" oninput="setting_changed('startfilling', this.value)">
         </div>
         <div class="advanced_side_div">
             <p class="advanced_paramater_name" id="tabHR_label">Humidité relative mensuelle moyenne (%) (12)</p>
-            <input class="advanced_box" id="tabHR_box" type="text" value="[85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85]" oninput="setting_changed('tabHR', this.value)">
+            <input class="advanced_box" id="tabHR_box" type="text" value="85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85" oninput="setting_changed('tabHR', this.value)">
             <p class="advanced_paramater_name" id="tabRg_label">Irradiance quotidienne moyenne (kWh/m²/jour) (12)</p>
-            <input class="advanced_box" id="tabRg_box" type="text" value="[1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01]" oninput="setting_changed('tabRg', this.value)">
+            <input class="advanced_box" id="tabRg_box" type="text" value="1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01" oninput="setting_changed('tabRg', this.value)">
             <p class="advanced_paramater_name" id="tabv10_label">Vitesse mensuelle moyenne du vent à 10m (m/s) (12)</p>
-            <input class="advanced_box" id="tabv10_box" type="text" value="[5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14]" oninput="setting_changed('tabv10', this.value)">
+            <input class="advanced_box" id="tabv10_box" type="text" value="5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14" oninput="setting_changed('tabv10', this.value)">
             <p class="advanced_paramater_name">Intensité des précipitations (%)</p>
             <input class="advanced_box" id="rain_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('rain_intensity', this.value)">
             <p class="advanced_paramater_name">Intensité du vent (%)</p>
@@ -85,23 +88,19 @@
     </div>
 
     <div id="export_window_div">
-        <img src="Images/close.svg" id="close_stats_img" onclick="close_export()">
+        <img src="Images/close.svg" id="close_stats_img" onclick="close_window(2)">
         <h2 class="export_paramater_name">Exporter des données</h2>
-        <button class="export_button" onclick="export_data('per','Remplissage de la nappe')">
+        <button class="export_button" id="export_per_button" onclick="export_data('per','Remplissage de la nappe')">
             Remplissage de la nappe (%)
-            <img class="export_img" src="Images/Graph.svg">
         </button>
-        <button class="export_button" onclick="export_data('ngf','Niveau ngf de la nappe')">
+        <button class="export_button" id="export_ngf_button" onclick="export_data('ngf','Niveau ngf de la nappe')">
             Niveau ngf de la nappe (m)
-            <img class="export_img" src="Images/Graph.svg">
         </button>
-        <button class="export_button" onclick="export_data('rain','Précipitations mensuelles')">
+        <button class="export_button" id="export_rain_button" onclick="export_data('rain','Précipitations mensuelles')" disabled>
             Précipitations mensuelles (mm)
-            <img class="export_img" src="Images/Rain.svg">
         </button>
-        <button class="export_button" onclick="export_data('temperature','Températures mensuelles')">
+        <button class="export_button" id="export_temperature_button" onclick="export_data('temperature','Températures mensuelles')" disabled>
             Températures mensuelles (°C)
-            <img class="export_img" src="Images/Temperature.svg">
         </button>
     </div>
 
@@ -126,12 +125,13 @@
             </div>
         </div>
         <div id="top_buttons">
-            <button class="top_button"><img class="top_buttons_img" src="Images/info.svg" title="documentation"></button>
-            <button class="top_button" id="info_top_button" onclick="toggle_stats()"><img class="top_buttons_img" src="Images/stats.svg" title="graphiques"></button>
-            <button class="top_button" id="advanced_top_button" onclick="toggle_advanced()"><img class="top_buttons_img" src="Images/settings.svg" title="paramètres avancés"></button>
-            <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add.svg" title="nouvelle simulation"></button>
+            <button class="top_button" onclick="window.open('wiki/wiki.html', '_blank')"><img class="top_buttons_img" src="Images/info.svg" title="documentation"></button>
+            <button class="top_button" id="info_top_button" onclick="toggle_window(0)"><img class="top_buttons_img" src="Images/stats.svg" title="graphiques"></button>
+            <button class="top_button" id="advanced_top_button" onclick="toggle_window(1)"><img class="top_buttons_img" src="Images/settings.svg" title="paramètres avancés"></button>
+            <button class="top_button" onclick="restart_sim()"><img class="top_buttons_img" src="Images/rewind.svg" title="recommencer la simulation"></button>
+            <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add.svg" title="nouvelle session"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg" title="importer une config"></button>
-            <button class="top_button" onclick="toggle_export()"><img class="top_buttons_img" src="Images/download.svg" title="télécharger les données"></button>
+            <button class="top_button" onclick="toggle_window(2)"><img class="top_buttons_img" src="Images/download.svg" title="télécharger les données"></button>
         </div>
     </div>
     <div id="main_window">
@@ -147,7 +147,6 @@
                     <div class="parameter_div">
                         <fieldset id="ssp_scenario">
                             <legend>Choix du scénario climatique :</legend>
-                            
                             <div>
                                 <input type="radio" name="scenario" value="126" onChange="change_climatic_scenario(this.value)">
                                 <label for="126">SSP1-2.6</label>
@@ -225,23 +224,47 @@
                             <legend>Choix de la donnée affichée sur la timeline :</legend>  
 
                             <div>
-                                <input type="radio" name="display_data" value="percentage" checked onChange="change_chart_var(this.value)">
+                                <input type="radio" id="per_radio" name="display_data" value="percentage" checked onChange="change_chart_var(this.value)">
                                 <label for="percentage">Remplissage (%)</label>
                             </div>
                             <div>
-                                <input type="radio" name="display_data" value="niv_ngf" onChange="change_chart_var(this.value)">
+                                <input type="radio" id="ngf_radio" name="display_data" value="niv_ngf" onChange="change_chart_var(this.value)">
                                 <label for="niv_ngf">Niveau ngf (m)</label>
                             </div>
                             <div>
-                                <input type="radio" name="display_data" value="rain" onChange="change_chart_var(this.value)">
+                                <input type="radio" id="rain_radio" name="display_data" value="rain" disabled onChange="change_chart_var(this.value)">
                                 <label for="rain">Précipitations (mm)</label>
                             </div>
                             <div>
-                                <input type="radio" name="display_data" value="temperature" onChange="change_chart_var(this.value)">
+                                <input type="radio" id="temperature_radio" name="display_data" value="temperature" disabled onChange="change_chart_var(this.value)">
+                                <label for="temperature">Température (°C)</label>
+                            </div>
+                        </fieldset>
+                        <fieldset id="record_parameters_fieldset">
+                            <legend title="a un impact sur les performances">Choix des données calculées :</legend>  
+
+                            <div>
+                                <input type="checkbox" id="record_per_checkbox" name="record_data" value="per" checked onChange="change_record_parameters(this.value)">
+                                <label for="per">Remplissage (%)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="record_ngf_checkbox" name="record_data" value="ngf" checked onChange="change_record_parameters(this.value)">
+                                <label for="ngf">Niveau ngf (m)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="record_rain_checkbox" ame="record_data" value="rain" unchecked onChange="change_record_parameters(this.value)">
+                                <label for="rain">Précipitations (mm)</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="record_temperature_checkbox" name="record_data" value="temperature" unchecked onChange="change_record_parameters(this.value)">
                                 <label for="temperature">Température (°C)</label>
                             </div>
                         </fieldset>
                     </div>
+                    <fieldset>
+                        <label title="a un impact sur les performances">Animations </label>
+                        <input type="checkbox" id="animations_checkbox" checked onclick="change_animations_status(this.checked)">
+                    </fieldset>
                 </details>
 
                 <details class="category" style="display: grid;" open>
@@ -340,7 +363,7 @@
                             <input class="settings_range" id="industrie_conso_input" type="range" min="500" max="2500" value="1500" step="100" oninput="setting_changed('industry_conso', this.value)">
                             <p class="parameter_name"  id="industrie_size_label">Taille de chaque industrie (9 ha)</p>
                             <input class="settings_range" id="industrie_size_input" type="range" min="1" max="100" value="9" step="1" oninput="setting_changed('industry_size', this.value)">
-                            <p class="parameter_name"  id="nb_industries_label">Nombre d'industrie (1)</p>
+                            <p class="parameter_name"  id="nb_industries_label">Nombre d'industries (1)</p>
                             <input class="settings_range" id="nb_industries_input" type="range" min="1" max="1111" value="1" step="1" oninput="setting_changed('industry_number', this.value)">
                         </div>
                         <div id="Animals_menu_div">
@@ -352,8 +375,8 @@
                                 <option value="Brebis">Brebis</option>
                                 <option value="Poules">Poules (milliers)</option>
                             </select>
-                            <p class="parameter_name"  id="nb_animals_label">Nombre d'animaux (100)</p>
-                            <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="100" step="100" oninput="setting_changed('nb_animals', this.value)">
+                            <p class="parameter_name"  id="nb_animals_label">Nombre d'animaux (1000)</p>
+                            <input class="settings_range" id="nb_animals_input" type="range" min="100" max="10000" value="1000" step="100" oninput="setting_changed('nb_animals', this.value)">
                         </div>
                     </div>
                 </details>

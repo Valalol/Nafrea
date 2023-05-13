@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="wiki_style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../icons/josso.ico">
+
+    <title>Wiki.Nafrea</title>
+</head>
+
+<body>
+    <h1 id="title">WIKI<span id="title_nafrea">.NAFREA</span></h1>
+
+    <div class="wrapper">
+        <!--Top menu -->
+        <div class="sidebar">
+           <!--profile image & text-->
+            <!--menu item-->
+            <div id="logo_div">
+                <a href="../index.html" title="Retourner au simulateur"><img id="logo" src="../Images/Nafrea.png"></a>
+            </div>
+            <details open>
+                <summary>Interface</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#sidebar">Volet latéral</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#topbar">Barre du haut</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#fenetres">Fenêtres</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#timeline">Timeline</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#waterbar">Barre de remplissage</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>Paramètres</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#parametres_initiaux">Paramètres initiaux</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#parametres_variables">Paramètres variables</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#parametres_avances">Paramètres avancés</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#parametres_specifiques">Paramètres spécifiques</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#parametres_autres">Autres paramètres</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>Données</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#sources_donnees">Sources de données</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#donnees_nafrea">Données produites avec Nafrea</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#donnees_reelles">Données réelles</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>Résultats</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#hypotheses">Hypothèses du modèle</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#consommations">Consommations</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#niveau">Niveau de la nappe</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>Optimisation</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#solutions_optimisation">Solutions d'optimisation</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>Raccourcis</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#liste_raccourcis">Liste des raccourcis</a>
+                    </li>
+                </ul>
+            </details>
+
+            <details open>
+                <summary>A propos</summary>
+                <ul class="nav-ul">
+                    <li>
+                        <a class="nav" href="#equipe">Notre équipe</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#projet">Notre projet</a>
+                    </li>
+                    <li>
+                        <a class="nav" href="#licenses">Licenses</a>
+                    </li>
+                </ul>
+            </details>
+        </div>
+    </div>
+
+    <div id="empty_left">
+        <h1 style="visibility: hidden;">nav_bar</h1>
+    </div>
+
+
+    <div id="content">
+
+        <section id="introduction">
+            <h2 class="section_title">Bienvenue !</h2>
+            <p>
+                Vous êtes sur le guide de Nafrea. Naviguez à l'aide du menu latéral pour en apprendre plus sur le site et devenir un pro de la simulation.
+                <br> Tout <a class="inlink">lien bleu</a> est un lien interne au site, et tout <a class="outlink">lien vert</a> vous ouvrira une nouvelle fenêtre vers un site externe.
+                <br>Dernière mise à jour du Wiki : <input type="date" value="2023-05-13" disabled>
+            </p>
+        </section>
+        <section id="avertissement">
+            <h2 class="section_title" id="avertissement_title">Avertissement</h2>
+            <p>
+                Nafrea est un simulateur à but pédagogique seulement. Les données produites par le simulateur ne sauraient être précises, pertinentes ni fiables.
+                Elles ne doivent en aucun cas être utilisées à des fins scientifiques.
+            </p>
+        </section>
+
+        <section id="interface">
+            <h2 class="section_title">Interface</h2>
+            <p>
+                Nafrea propose une interface intuitive et épurée, pensée pour tous types d'utilisateurs.
+            </p>
+            <h3 class="section_subtitle" id="sidebar">Volet latéral</h3>
+            <p>
+                Situé à gauche, le volet latéral permet de modifier un petit nombre de paramètres : les plus pertinents. Il se décompose en 4 sections :
+                <br><br><span class="bold">1. Les paramètres généraux :</span> initiaux ou variables, ce sont les paramètres de base pour les simulations. 
+                Tout en haut, le choix du <a class="inlink" href="#parametres_autres">scénario climatique du GIEC</a> peut être modifié à tout moment.
+                Les paramètres initiaux désignent l'ensemble des paramètres qui ne peuvent plus être modifiés en cours de simulation. 
+                On y retrouve tous les paramètres qui auraient des conséquences désastreuses s'ils étaient modifiés après avoir lancé la simulation.
+                Pensez donc à les modifier avant de commencer ! Les paramètres variables, au contraire, peuvent être modifiés en cours de simulation pour
+                mesurer leur impact en temps réel. Ils concernent principalement l'environnement : état du sol, intensité de la pluie... N'hésitez surtout pas
+                à les mettre à jour régulièrement !
+                Pour en apprendre plus sur les paramètres, rendez-vous en section <a class="inlink" href="#parametres">paramètres</a>. 
+            </p>
+            <p>
+                <span class="bold">2. L'affichage :</span> cette section essentielle vous offre la possibilité de visualiser les données qui vous intéressent.
+                Elle est aussi la clé de <a class="inlink" href="#optimisation">l'optimisation</a> du site. Deux panneaux de sélections à 4 choix, très similaires,
+                vous permettent de choisir quelle variable (parmi : remplissage de la nappe (%), niveau ngf de la nappe (m), précipitations (mm) et température (°C)) 
+                est affichée sur les graphiques et lesquelles des variables seront calculées lors de la simulation. 
+                Le choix des variables calculées ne peut plus être modifié en cours de simulation. A vous donc de choisir les données que vous souhaitez exploiter, 
+                puis de les visualiser sur le graphique. Une variable non calculée ne sera évidemment pas disponible à l'affichage. Enfin, l'option Animations
+                vous permet d'activer ou non les animations des graphiques. 
+            </p>
+            <p>
+                <span class="bold">3. Les bâtiments :</span> ici vous pouvez créer, supprimer et manipuler les bâtiments de la grille. Pour placer un bâtiment,
+                il suffit de sélectionner une case de la grille, celle-ci devient alors rouge. Cliquez ensuite sur l'un des boutons <span class="italic">Placer</span> du menu 
+                (exemple : <span class="italic">Placer une ville</span>). Vous ne pouvez pas placer
+                de bâtiment sur une case déjà remplie. Par contre, vous pouvez supprimer un bâtiment existant en le sélectionnant, il se met alors en surbrillance et il vous
+                suffit de cliquer sur le bouton <span class="italic">Supprimer le bâtiment</span>. Lorsque vous placer un bâtiment, il est automatique sélectionné. Lorsqu'un bâtiment est sélectionné,
+                ses propriétés s'affichent dans le volet latéral sous une nouvelle section <span class="italic">Sélection</span>. Dans cette section, vous pouvez modifier les 
+                <a class="inlink" href="#parametres_specifiques">paramètres spécifiques</a> au bâtiment sélectionné. Si vous avez plusieurs bâtiments de même classe (exemple : deux villes) sur votre grille, chaque bâtiment pourra avoir des valeurs différentes.
+                Les boutons <span class="italic">Copier</span> et <span class="italic">Coller</span> vous permettent de dupliquer des bâtiments. Toutes leurs propriétés sont également dupliquées.
+                <br><span class="italic">Astuce : vous pouvez utiliser les raccourcis C et V pour copier et coller vos bâtiments.</span>
+            </p>
+            <p>
+                <span class="bold">4. Les configurations :</span> cette dernière section est destinée à l'import/export de <a class="inlink" href="#configurations">configurations</a>.
+                Vous avez le choix entre importer une préconfiguration proposée par le site (aucun téléchargement nécessaire) ou importer une configuration stockée sur votre machine.
+                Le bouton <span class="italic">Exporter la configuration</span> crée un téléchargement direct d'un fichier de configuration. Vous pouvez ainsi sauvagarder vos 
+                configurations localement sur votre machine pour reprendre vos simulations plus tard.
+            </p>
+            <p>Vous pouvez cacher le volet latéral avec la petite flèche située en bordure.</p>
+
+            <h3 class="section_subtitle" id="topbar">Barre du haut</h3>
+            <p>
+                Située en haut de l'écran, la barre du haut regorge de boutons très utiles. Avant ces boutons, les flux entrants (↓) et sortants (↑) sont affichés
+                dans des bulles. Ils vous permettent d'observer les quantités entrantes et sortantes de la nappe (ou renvoyées à l'atmosphère) du mois actuel. 
+                L'affichage se fait en notation scientifique,par exemple <span class="italic">e6</span> doit être lu x10<sup>6</sup>.
+                Dans le coin supérieur droit se trouvent différents boutons. Le premier bouton <span class="italic">(documentation)</span> vous a conduit sur ce
+                wiki. Le second ouvre la <a class="inlink" href="#fenetre_stats">fenêtre des statistiques</a>. Vous pourrez y visualiser le niveau de votre nappe et surtout
+                la répartition des consommations. Vient ensuite le bouton pour ouvrir les <a class="inlink" href="#parametres_avances">paramètres avancés</a>, qui prend
+                la forme d'un rouage. Le bouton suivant, avec une icone de flèche circulaire, vous permet de redémarrer la simulation en conservant les bâtiments et les
+                paramètres mais en réinitialisant les données calculées. Le bouton en forme de "+" sert quant-à-lui à démarrer une toute nouvelle session. Tous les paramètres
+                sont alors réinitialisés et la grille vidée. La page est tout simplement rechargée. Pour éviter un clic par mégarde, un message d'avertissement vous préviendra
+                lorsque vous cliquez sur les boutons <span class="italic">Recommencer la simulation</span> et <span class="italic">Nouvelle session</span>. Le dernier bouton ouvre
+                la <a class="inlink" href="fenetre_telechargement">fenêtre de téléchargement</a>. Vous pourrez alors télécharger les données calculées pendant la simulation.
+            </p>
+
+            <h3 class="section_subtitle" id="fenetres">Fenêtres</h3>
+            <p>
+                Comme précisé ci-dessus, certains boutons de la barre du haut ouvrent une nouvelle fenêtre.
+            </p>
+            <p>
+                <span class="bold">1. Le visualiseur de données :</span> cette fenêtre affiche sur la gauche une plus grande version de la <a class="inlink" href="#timeline">
+                timeline</a>. Pour changer la variable affichée, il suffit de sélectioner la variable souhaité dans le panneau latéral, via la section
+                <span class="italic">Choix de donnée affichée sur la timeline</span>. Par défaut, ce graphique vous affiche le pourcentage de remplissage de la nappe
+                au fil des mois. En survolant les points du graphique, vous aurez accès aux valeurs pour les mois correspondant. Sur la droite de la fenêtre 
+                se trouve le graphique circulaire qui affiche la répartition de la consommation de l'eau. 
+                Vous pouvez décider de cacher certaines sources de consommations en cliquant sur le texte de la légende correspondante. Il est peut par exemple
+                être utile de cacher l'évapotranspiration qui est la part majoritaire de consommation. Une fois cachée, le nom de la source de consommation est 
+                rayé et il vous suffit de re-cliquer dessus pour la réafficher. En survolant les différentes parts du graphiques, vous aurez accès à une consommation
+                chiffrée, en m³. Le choix de la valeur affichée au survol peut être changé via la section <span class="italic">Choix de la consommation</span>,
+                toujours dans la fenêtre. Vous avez le choix entre l'affichage de la consommation totale, c'est à dire depuis le début de la simulation, ou de la
+                consommation du mois actuelle.
+                <br><span class="italic">Note : l'affichage du graphique circulaire peut parfois prendre du temps, n'hésitez pas à résumer ou au contraire mettre 
+                en pause la simulation pour rafraichir le graphique.</span>
+            </p>
+            <p>
+                <span class="bold">2. La fenêtre des paramètres avancées :</span> de manière assez explicite, cette fenêtre vous permet de modifier plus de 
+                paramètres que ceux présent dans le panneau latéral, ou d'atteindre une précision supérieure. Soyez certain d'avoir compris le format des valeurs
+                pour éviter de corrompre vos données ou de générer des erreurs. Visitez la section <a class="inlink" href="#parametres_avances">paramètres avancés</a>
+                pour en apprendre plus sur ces paramètres.
+            </p>
+            <p>
+                <span class="bold">3. La fenêtre d'export :</span> cette dernière fenêtre affiche des boutons de téléchargement pour les données disponibles.
+                Les données calculées ont été choisies avant le lancement de la simulation dans la section <span class="italic">Affichage</span>
+                du <a class="inlink" href="#sidebar">volet latéral</a>.
+                Un message de confirmation vous prévient du téléchargement. Les fichiers téléchargés sont au format csv. La première colonne correspond aux dates et 
+                la seconde aux valeurs mensuelles associées (parmi : remplissage de la nappe (%), niveau ngf de la nappe (m), précipitations (mm), température (°C)).
+                A partir de ces fichiers, vous pouvez analyser vos données sur d'autres logiciels, comme un tableur.
+                <br><span class="italic">Note : sont désignées comme températures les températures mensuelles moyennes</span>.
+            </p>
+
+            <h3 class="section_subtitle" id="timeline">Timeline</h3>
+            <p>La timeline est située en bas de la page, sous la grille du terrain. Elle vous permet de visualiser en temps réel une certaine variable et toutes ses valeurs passées.
+                Par défaut, la variable affichée est le remplissage de la nappe. Vous pouvez choisir quelle variable est affichée depuis la section <span class="italic">Affichage</span>
+                du <a class="inlink" href="#sidebar">volet latéral</a>. Pour afficher le même graphique mais en plus grande taille, il vous suffit d'ouvrir la 
+                <a class="inlink" href="#fenetres">fenêtre de visualisation des données</a>.
+            </p>
+
+            <h3 class="section_subtitle" id="waterbar">Barre de remplissage</h3>
+            <p>Elle est située sur la droite de la page. Elle affiche en temps réel le remplissage de la nappe et agit ainsi en complément de la timeline. Pensez à surveiller régulièrement 
+                son niveau ! Lorsque l'état de remplissage de la nappe est en dessous du niveau des 20%, la barre de remplissage devient rouge. Si un tel cas se produit, votre nappe est 
+                asséchée. Vous puisez dans ses dernières ressources et cela peut se traduire par une pénurie d'eau. Pensez alors à limiter les consommations de vos bâtiments pour tenter de 
+                rétablir un niveau satisfaisant.
+            </p>
+        </section>
+
+        <section id="parametres">
+            <h2 class="section_title">Paramètres</h2>
+            <h3 class="section_subtitle" id="parametres_initiaux">Paramètres initiaux</h3>
+            <p>
+                Les paramètres initiaux sont les paramètres qui ne peuvent pas être modifiés en cours de simulation. C'est une mesure de sécurité qui est prise 
+                pour réduire tout risque de corruption de données ou d'erreurs de calcul. Le tableau ci-dessous récapitule les informations concernant les 
+                paramètres initiaux de base.
+            </p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Taille de la carte</td>
+                        <td>Nombre de cases par rangée</td>
+                        <td>gridsize</td>
+                        <td>/</td>
+                        <td>8</td>
+                        <td>3</td>
+                        <td>20</td>
+                        <td>Superficie</td>
+                    </tr>
+                    <tr>
+                        <td>Altitude du site</td>
+                        <td>Altitude moyenne à laquelle est situé le terrain</td>
+                        <td>z</td>
+                        <td>m</td>
+                        <td>30</td>
+                        <td>0</td>
+                        <td>200</td>
+                        <td>Évapotranspiration, niveau ngf</td>
+                    </tr>
+                    <tr>
+                        <td>Profondeur de la nappe</td>
+                        <td>Profondeur minimale à partir de laquelle on peut trouver de l'eau</td>
+                        <td>depth</td>
+                        <td>m</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>100</td>
+                        <td>Infiltration, niveau ngf</td>
+                    </tr>
+                    <tr>
+                        <td>Capacité de la nappe</td>
+                        <td>Capacité maximale de la nappe, correspond à un remplissage de 100%</td>
+                        <td>capacity</td>
+                        <td>x10<sup>9</sup> m³</td>
+                        <td>15</td>
+                        <td>1</td>
+                        <td>50</td>
+                        <td>Remplissage</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 class="section_subtitle" id="parametres_variables">Paramètres variables</h3>
+            <p>
+                Les paramètres variables sont les paramètres qui peuvent être modifiés en cours de simulation sans risque. Ils auront un impact quasi-instantané sur
+                l'état de remplissage de la nappe. Le tableau ci-dessous récapitule les informations concernant les paramètres variables de base.
+            </p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Coefficient de perméabilité</td>
+                        <td>Capacité d'infiltration de l'eau dans le sol (ordre de grandeur, comprendre 10<sup>coeff</sup>)</td>
+                        <td>permeability_coeff</td>
+                        <td>m.s<sup>-1</sup></td>
+                        <td>-5</td>
+                        <td>-8</td>
+                        <td>-3</td>
+                        <td>Infiltration</td>
+                    </tr>
+                    <tr>
+                        <td>Inclinaison</td>
+                        <td>Inclinaison de la nappe</td>
+                        <td>inclinaison</td>
+                        <td>degré</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td>50</td>
+                        <td>Écoulement latéral souterrain</td>
+                    </tr>
+                    <tr>
+                        <td>Intensité des précipitations</td>
+                        <td>Intensité des précipitations prévues par le GIEC</td>
+                        <td>rain_intensity</td>
+                        <td>%</td>
+                        <td>100</td>
+                        <td>25</td>
+                        <td>200</td>
+                        <td>Remplissage</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 class="section_subtitle" id="parametres_avances">Paramètres avancés</h3>
+            <p>
+                Les paramètres avancés sont les paramètres les plus poussés auxquels à accès l'utilisateur. Ils englobent certains paramètres de bases, car
+                ils offrent une précision plus importante. Ils sont pour la plupart sans restrictions, des modifications non-contrôlées peuvent engendrer
+                des erreurs ou résultats incohérents. Le tableau ci-dessous récapitule les informations concernant les paramètres avancés.
+                <br><span class="italic">Les paramètres non-modifiables en cours de simulation sont annotés *</span>
+            </p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Longueur d'une case*</td>
+                        <td>Longueur de chaque case de la grille</td>
+                        <td>square_size</td>
+                        <td>m</td>
+                        <td>10000</td>
+                        <td>500</td>
+                        <td>100000</td>
+                        <td>Superficie</td>
+                    </tr>
+                    <tr>
+                        <td>Altitude du site*</td>
+                        <td>Altitude moyenne à laquelle est situé le terrain</td>
+                        <td>z</td>
+                        <td>m</td>
+                        <td>30</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Évapotranspiration, niveau ngf</td>
+                    </tr>
+                    <tr>
+                        <td>Latitude du site*</td>
+                        <td>Latitude moyenne du terrain</td>
+                        <td>phi</td>
+                        <td>degré</td>
+                        <td>48</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Profondeur minimale de la nappe*</td>
+                        <td>Profondeur minimale à partir de laquelle on peut trouver de l'eau</td>
+                        <td>depth</td>
+                        <td>m</td>
+                        <td>10</td>
+                        <td>2</td>
+                        <td>200</td>
+                        <td>Infiltration, niveau ngf</td>
+                    </tr>
+                    <tr>
+                        <td>Coefficient de perméabilité</td>
+                        <td>Capacité d'infiltration de l'eau dans le sol (notation scientifique)</td>
+                        <td>permeability_coeff</td>
+                        <td>m.s<sup>-1</sup></td>
+                        <td>1e-5</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Infiltration</td>
+                    </tr>
+                    <tr>
+                        <td>Inclinaison de la nappe</td>
+                        <td>Inclinaison de la nappe</td>
+                        <td>inclinaison</td>
+                        <td>degré</td>
+                        <td>5</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Écoulement latéral souterrain</td>
+                    </tr>
+                    <tr>
+                        <td>Remplissage initial*</td>
+                        <td>Remplissage de la nappe avant le lancement de la simulation</td>
+                        <td>old_value</td>
+                        <td>%</td>
+                        <td>65</td>
+                        <td>0</td>
+                        <td>100</td>
+                        <td>Remplissage</td>
+                    </tr>
+                    <tr>
+                        <td>Humidité relative mensuelle moyenne</td>
+                        <td>12 valeurs, séparées par des virgules et en notation décimale anglaise (ex : 82.5, 77.81, ...)</td>
+                        <td>tabHR</td>
+                        <td>%</td>
+                        <td>85, 81, 77, 73, 74, 69, 68, 70, 70, 80, 85, 85</td>
+                        <td>0</td>
+                        <td>100</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Irradiance quotidienne moyenne</td>
+                        <td>Autrement appelé rayonnement solaire. <br>12 valeurs, séparées par des virgules et en notation décimale anglaise (ex : 2.5, 4.81, ...)</td>
+                        <td>tabRg</td>
+                        <td>kWh/m²/jour</td>
+                        <td>1.96, 3.3, 4.6, 5.59, 5.65, 5.93, 5.99, 5.79, 5.43, 3.46, 2.46, 2.01</td>
+                        <td>0</td>
+                        <td>/</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Vitesse mensuelle moyenne du vent à 10m</td>
+                        <td>12 valeurs, séparées par des virgules et en notation décimale anglaise (ex : 5.7, 4.22, ...)</td>
+                        <td>tabv10</td>
+                        <td>m.s<sup>-1</sup></td>
+                        <td>5.22, 5.06, 4.89, 4.69, 4.36, 4.22, 4.06, 3.92, 4.19, 4.64, 4.89, 5.14</td>
+                        <td>0</td>
+                        <td>/</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Intensité des précipitations</td>
+                        <td>Intensité des précipitations prévues par le GIEC</td>
+                        <td>rain_intensity</td>
+                        <td>%</td>
+                        <td>100</td>
+                        <td>0</td>
+                        <td>300</td>
+                        <td>Remplissage</td>
+                    </tr>
+                    <tr>
+                        <td>Intensité du vent</td>
+                        <td>Intensité du vent renseigné en tabv10</td>
+                        <td>wind_intensity</td>
+                        <td>%</td>
+                        <td>100</td>
+                        <td>0</td>
+                        <td>300</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Intensité du rayonnement solaire</td>
+                        <td>Intensité de l'irradiance renseignée en tabRg</td>
+                        <td>solar_intensity</td>
+                        <td>%</td>
+                        <td>100</td>
+                        <td>0</td>
+                        <td>300</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Intensité de la température</td>
+                        <td>Intensité des températures prévues par le GIEC</td>
+                        <td>temperature_intensity</td>
+                        <td>%</td>
+                        <td>100</td>
+                        <td>0</td>
+                        <td>300</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                    <tr>
+                        <td>Limite d'évapotranspiration</td>
+                        <td>Limitation de l'évapotranspiration à un certain pourcentage des précipitations du jour. 0=aucune</td>
+                        <td>etp_limit</td>
+                        <td>%</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>300</td>
+                        <td>Évapotranspiration</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 class="section_subtitle" id="parametres_specifiques">Paramètres spécifiques aux bâtiments</h3>
+            <p>
+                Les paramètres spécifiques (ou propriétés) des bâtiments sont les paramètres qui sont assimilés à chaque bâtiment présent sur la grille.
+                Ces paramètres sont répliqués lors d'un copier/coller de bâtiment.
+                Les tableau ci-dessous récapitulent les informations concernant les paramètres spécifiques pour chaque classe de bâtiment.
+            </p>
+            <p><span class="bold">1. Villes</span></p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Type de ville</td>
+                        <td>Type de la ville selon son nombre d'habitants (parmi : petite, moyenne et grande ville)</td>
+                        <td>City.category</td>
+                        <td>/</td>
+                        <td>Moyenne</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Affichage</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'habitants</td>
+                        <td>Nombre d'habitants de la ville</td>
+                        <td>City.nb_hab</td>
+                        <td>/</td>
+                        <td>100000</td>
+                        <td>1000</td>
+                        <td>2000000</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Densité de la population</td>
+                        <td>Densité de la population dans la ville</td>
+                        <td>City.density</td>
+                        <td>hab/km²</td>
+                        <td>5000</td>
+                        <td>200</td>
+                        <td>27000</td>
+                        <td>Surface bétonnée</td>
+                    </tr>
+                    <tr>
+                        <td>Couverture végétale</td>
+                        <td>Pourcentage de couverture végétale de la ville</td>
+                        <td>City.green_cover</td>
+                        <td>%</td>
+                        <td>25</td>
+                        <td>5</td>
+                        <td>30</td>
+                        <td>Surface bétonnée</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><span class="bold">2. Fermes</span></p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Type de plantation</td>
+                        <td>Type de culture de la ferme (parmi : blé, maïs, pomme de terre, soja, tournesol)</td>
+                        <td>Farm.plante</td>
+                        <td>/</td>
+                        <td>Blé</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Couverture des plantations</td>
+                        <td>Couverture des plantations de la ferme</td>
+                        <td>Farm.cover</td>
+                        <td>ha</td>
+                        <td>1000</td>
+                        <td>100</td>
+                        <td>10000</td>
+                        <td>Consommation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><span class="bold">3. Fôrets</span></p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Type d'arbres</td>
+                        <td>Type d'arbres de la fôret (parmi : chêne, hêtre, épicéa)</td>
+                        <td>Forest.tree_type</td>
+                        <td>/</td>
+                        <td>Chêne</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Densité de la fôret</td>
+                        <td>Densité de la fôret (occupation du terrain)</td>
+                        <td>Forest.density</td>
+                        <td>%</td>
+                        <td>50</td>
+                        <td>0</td>
+                        <td>100</td>
+                        <td>Consommation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><span class="bold">4. Industries</span></p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Consommation par industrie</td>
+                        <td>Consommation mensuelle par industrie de la case</td>
+                        <td>Industrial_area.conso</td>
+                        <td>m³</td>
+                        <td>1500</td>
+                        <td>500</td>
+                        <td>2500</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Taille de chaque industrie</td>
+                        <td>Terrain occupé par chaque industrie de la case</td>
+                        <td>Industrial_area.size</td>
+                        <td>ha</td>
+                        <td>9</td>
+                        <td>1</td>
+                        <td>100</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'industries</td>
+                        <td>Nombre d'industries sur la case (présentant les mêmes propriétés de taille et consommation)</td>
+                        <td>Industrial_area.nb_industries</td>
+                        <td>/</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>100</td>
+                        <td>Consommation</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><span class="bold">5. Élevages</span></p>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Dénomination</th>
+                        <th>Description</th>
+                        <th>Notation</th>
+                        <th>Unité</th>
+                        <th>Valeur par défaut</th>
+                        <th>Valeur min</th>
+                        <th>Valeur max</th>
+                        <th>Utilisation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Type d'animal</td>
+                        <td>Type d'animal d'élevage (parmi : vache, cochon, cheval, brebis, et poules*)<br>*poules = x10³</td>
+                        <td>Animals.animal_type</td>
+                        <td>/</td>
+                        <td>Vache</td>
+                        <td>/</td>
+                        <td>/</td>
+                        <td>Consommation</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre d'animaux</td>
+                        <td>Nombre d'animaux de l'élevage</td>
+                        <td>Animals.nb_animals</td>
+                        <td>/</td>
+                        <td>1000</td>
+                        <td>10</td>
+                        <td>10000</td>
+                        <td>Consommation</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3 class="section_subtitle" id="parametres_autres">Autres paramètres</h3>
+            <p>
+                Nafrea propose d'autres paramètres, qui interagissent avec les données extérieures du GIEC. Le tableau ci-dessous récapitule les informations 
+                concernant les autres paramètres.
+            </p>
+            <p><span class="bold">1. Choix du scénatio climatique :</span> Nafrea donne la possibilité d'exploiter 3 scénarios du GIEC.</p>
+            <ul>
+                <ol>
+                    <li>
+                        SSP1-2.6 : Ce scénario donne des prévisions en se basant sur une amélioration de la situation, en particulier en considérant des
+                        améliorations nettes en matière de développement durable.
+                    </li>
+                    <li>
+                        SSP2-4.5 : Ce scénario donne des prévisions en se basant sur une évolution future similaire à l'évolution passée. Les tendances poursuivent
+                        leur cours sans grande modification.
+                    </li>
+                    <li>
+                        SSP3-7.0 : Ce scénario donne des prévisions en considérant une situation climatique qui a empiré. Il prévoit l'apparition de tensions et 
+                        l'émergence de nouvelles inégalités.
+                    </li>
+                </ol>
+            </ul>
+            <p>Apprenez en plus sur les différents scénarios du GIEC sur le <a class="outlink" href="https://www.ipcc.ch/" target="_BLANK">site officiel du GIEC</a>, sur le
+                <a class="outlink" href="http://www.drias-climat.fr/accompagnement/sections/339" target="_BLANK">site du DRIAS (Ministère de la transition écologique)</a>
+                ou dans <a class="outlink" href="https://www.i4ce.org/dou-viennent-les-cinq-nouveaux-scenarios-du-giec-climat/" target="_BLANK">cet article 
+                de L'Institut de l'Economie pour le Climat</a>.
+            </p>
+            <p><span class="bold">2. Choix de la date de début :</span> par défaut, la simulation débute le 1er janvier 2023. Vous pouvez cependant modifier cette date.
+                Pour cela, une liste déroulante vous permet de sélectionner le mois et un champ l'année de début. Les données du GIEC commencent en 1850 et donnent des 
+                prévisions jusqu'en 2100, il faut donc que l'année de début choisie soit comprise entre 1850 et 2100.
+                <br><span class="italic">Attention : Certaines données du passé, en particulier entre 1900 et 1950 ne sont pas disponibles. Elles peuvent créer des 
+                discontinuités dans les données calculées. Nous vous recommandons de choisir une année de début comprise entre 1980 et 2030.</span>
+            </p>
+        </section>
+
+        <section id="donnees">
+            <h2 class="section_title">Données</h2>
+            <p>
+                Nafrea, c'est avant tout de la manipulation d'un grand nombre de données. Cette section vous détaille quelles données sont utilisées dans 
+                le simulateur et où trouver vos propres données.
+            </p>
+            <h3 class="section_subtitle" id="sources_donnees">Sources de données</h3>
+            <p>
+                Une multitude de sources ont été analysées pour mettre au point le simulateur. La grande majorité des données utilisées sont des moyennes fournies
+                par diverses bases de données. Voici une liste non-exhaustive de nos principales sources.
+            </p>
+            <ul>
+                <p><span class="bold">1. Données climatiques</span></p>
+                <ol>
+                    <li>
+                        <a class="outlink" href="https://interactive-atlas.ipcc.ch/" target="_BLANK">Atlas du GIEC</a> :
+                        L'Atlas officiel du GIEC est une grande source de données climatiques, en particulier de prévisions,
+                        dont les précipitations et températures passées et futures qui sont utilisées dans Nafrea.
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://www.annuaire-mairie.fr/" target="_BLANK">Annuaire-Mairie</a> :
+                        La section <span class="italic">Ensoleillement et climat</span> donne des tables de données sur beaucoup de paramètres climatiques,
+                        dont l'irradiance que nous utilisons dans les préconfigurations de Nafrea.
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://fr.weatherspark.com/" target="_BLANK">Weather Spark</a> :
+                        Le site offre des tables de données sur beaucoup de paramètres climatiques et avec historique,
+                        dont les vitesses du vent que nous utilisons dans les préconfigurations de Nafrea.
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://fr.climate-data.org/" target="_BLANK">Climate Data</a> :
+                        Le site donne des tables de données moyennes sur plusieurs années,
+                        dont les humidités relatives mensuelles que nous utilisons dans les préconfigurations de Nafrea.
+                    </li>
+                </ol>
+
+                <p><span class="bold">2. Consommations</span></p>
+                <ol>
+                    <li>
+                        <a class="outlink" href="https://eau.selectra.info/consommation" target="_BLANK">Eau Selectra</a> :
+                        L'annuaire des services des eaux en France affiche des chiffres sur la consommation des habitants,
+                        dont les consommations domestiques par département que nous utilisons dans les préconfigurations de Nafrea.
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://www.onf.fr/onf" target="_BLANK">Office National des Fôrets</a> :
+                        L'organisme qui gère les fôrets publiques donne ici et là des consommations,
+                        dont les consommations des arbres que nous utilisons dans les préconfigurations de Nafrea.
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://chambres-agriculture.fr/" target="_BLANK">Les Chambre d'Agriculture</a> :
+                        Elles produisent souvent des rapports sur les consommations de l'irrigation, dont des données sur les
+                        besoins en eau des cultures (exemple : <a title="Téléchargement (pdf)" class="outlink" target="_BLANK" href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwit_NfxjO7-AhUiT6QEHdY9DrkQFnoECAsQAQ&url=https%3A%2F%2Fwww.irrigation84.fr%2Fmedias%2Fressources-documentaires%2Fcategory%2F28-communication%3Fdownload%3D45%3Acra-paca-referentiel-besoins-eau-paca-03-06-2014&usg=AOvVaw378pFk2fy-YXf9GS9AElC8"
+                        >Région PACA</a>).
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://www.fao.org/home/fr" target="_BLANK">FAO</a> :
+                        L'Organisation des Nations Unies pour l'alimentation et l'agriculture fournie de nombreux rapports sur les besoins en eau des cultures
+                        (exemple : <a class="outlink" href="https://www.fao.org/3/y4683f/y4683f00.htm" target="_BLANK">Contribution au rapport mondial de 2004</a>).
+                    </li>
+                </ol>
+            </ul>
+
+            <h3 class="section_subtitle" id="donnees_nafrea">Données produites avec Nafrea</h3>
+            <p>
+                Nafrea vous permet de produire originalement des données de remplissage ou niveau de la nappe. Un seul facteur aléatoire est
+                inclus dans le simulateur : faible probabilité de décès des fôrets dans des conditions défavorables. La probabilité reste toutefois
+                très faible et on peut donc considérer que toute simulation réalisée avec Nafrea peut être reproduite. Le simulateur vous offre la 
+                possibilité d'exploiter 5 données : 
+            </p>
+            <ul>
+                <ol>
+                    <li>
+                        <span class="bold">Le remplissage de la nappe :</span> exprimé en %, il caractérise l'état de remplissage actuel de la nappe.<br>
+                    </li>
+                    <li>
+                        <span class="bold">Le niveau ngf de la nappe :</span> exprimé en m, il a exactement la même allure que le remplissage de la nappe. Il est calculé à partir de 
+                        l'alitude du terrain et de la profondeur de la nappe à un instant t. Il est particulièrement utile pour comparer les données avec
+                        des relevés piézométriques.<br>
+                    </li>
+                    <li>
+                        <span class="bold">Les précipitations mensuelles :</span> exprimées en mm, ce sont par défaut les données issues des scénarios du GIEC.
+                        Toutefois, vous pouvez modifier l'intensité des précipitations dans la <a class="inlink" href="#fenetres">fenêtre des paramètres avancés</a>.
+                    </li>
+                    <li>
+                        <span class="bold">Les températures mensuelles :</span> exprimées en °C, ce sont par défaut les données issues des scénarios du GIEC.
+                        Toutefois, vous pouvez modifier l'intensité des températures dans la <a class="inlink" href="#fenetres">fenêtre des paramètres avancés</a>.
+                    </li>
+                    <li>
+                        <span class="bold">Les consommations :</span> exprimées en m³, ce sont les valeurs des différentes sources de consommation, humaine ou 
+                        naturelle. Elles sont très intéressantes à étudier, en particulier à comparer avec des <a class="inlink" href="#donnees_reelles">données réelles</a>.
+                        Elles ne sont malheureusement pas disponibles à l'export pour le moment.
+                    </li>
+                </ol>
+            </ul>
+            <p>Toutes ces variables sont liées entre elles par leur rôle dans l'état actuel de la nappe. Il peut être intéressant de les exporter, via
+            la <a class="inlink" href="#fenetres">fenêtre d'export</a> pour établir des corrélations entre elles, par exemple avec un tableur.
+            </p>
+            <h3 class="section_subtitle" id="donnees_reelles">Données réelles</h3>
+            <p>
+                Produire des données est très intéressant, mais ne présente pas grand intérêt sans comparaison avec des données réelles. Ces données sont des 
+                données passées observées ou mesurées. Il existe diverses sources de données, dont les API de <a class="outlink" href="https://hubeau.eaufrance.fr/" target="_BLANK">
+                Hubeau</a>. Nous vous recommandons les sources de données suivantes : 
+            </p>
+            <ul>
+                <ol>
+                    <li>
+                        <a class="outlink" href="https://hubeau.eaufrance.fr/sites/default/files/api/demo/piezo/piezo.htm" target="_BLANK">L'API Piézométrie de Hubeau :</a>
+                        il propose des données historiques de relevés piézométriques pour une multitude de communes à travers la France. Certaines stations ont 
+                        enregistré des relevés sur plus de 20 ans. Plus visuel, le <a class="outlink" href="https://hubeau.eaufrance.fr/sites/default/files/api/demo/piezo_tr.htm" target="_BLANK">
+                        démonstrateur en temps réel</a> vous propose une carte de ces stations et leur 
+                        niveau associé. Attention, les stations les plus intéressantes pour comparer avec des données produites avec Nafrea sont celles qui mesurent
+                        le niveau d'eau de bassins versants. Les autres masses d'eau ont des comportement potentiellement bien différents. 
+                        <br><span class="italic">Astuce : Lorsque vous sélectionner une station sur la carte, cliquer sur "plus d'informations sur le point de mesure"
+                        vous permet d'accéder aux niveaux passés, de la même façon que l'API.
+                        </span><br><br>
+                    </li>
+                    <li>
+                        <a class="outlink" href="https://bnpe.eaufrance.fr/" target="_BLANK">Le site de la BNPE :</a>
+                        il donne accès aux prélèvements d'eau sur une région, un département ou une commune donnée. On y retrouve le type d'eau prélevée 
+                        (eau de surface ou eau souterraine) et surtout les usages de cette eau. Nous vous recommandons d'étudier les données fournies à l'échelle
+                        du département, c'est ce qui se rapproche le plus des données produites avec Nafrea.
+                        </span>
+                    </li>
+                </ol>
+            </ul>
+        </section>
+
+        <section id="resultats">
+            <h2 class="section_title">Résultats</h2>
+            <h3 class="section_subtitle" id="hypotheses">Hypothèses du modèle</h3>
+            <p>Le simulateur est loin d'être parfait. Beaucoup de simplifications et approximations on été faites pour parvenir à un modèle mathématique
+            simplifié. Nombreux éléments sont négligés, nous vous proposons ainsi une liste des hypothèses du modèles. 
+            </p>
+            <p><span class="bold">1. Négligence de phénomènes physiques complexes :</span> Nafrea se concentre sur un nombre de phénomènes physiques limités. 
+            Ne sont pris en compte dans le modèle que les phénomènes suivants : 
+            </p>
+            <ul>
+                <ol>
+                    <li><span class="bold">Infiltration de l'eau dans le sol :</span> on prend en compte un déplacement (très simplifié) de l'eau de pluie dans le sol avant 
+                    d'arriver dans la nappe. Cela nous permet de calculer un délai, grâce à la 
+                    <a class="outlink" href="https://iast.univ-setif.dz/documents/Cours/Cours2Hydrodynamique2M1Hydro21.pdf" target="_BLANK">Loi de Darcy</a>. Initialement prévue 
+                    pour calculer l'infiltration de l'eau dans le sable, on étend cette loi à tout type de sol perméable. Bien que la nappe soit en pente, notamment pour 
+                    calculer l'écoulement latéral souterrain, on considère lors de l'application de la loi un sol parfaitement uniforme et on néglige l'inclinaison.
+                    </li><br>
+                    <li><span class="bold">Écoulement latéral souterrain :</span> notre nappe phréatique est en réalité un bassin versant. De ce fait, la nappe est 
+                    inclinée et une partie de l'eau souterrain s'écoule vers un exutoire. Il s'agit ainsi d'un flux d'eau sortant de la nappe. On applique une fois de 
+                    plus la Loi de Darcy pour calculer <a class="outlink" href="https://www.u-picardie.fr/beauchamp/cours.qge/du-7.htm" target="_BLANK">l'écoulement latéral souterrain</a>.
+                    </li><br>
+                    <li><span class="bold">Évapotranspiration :</span> avant de pouvoir s'infiltrer dans le sol, une bonne partie des précipitations retourne à 
+                    l'atmosphère par le phénomène d'évapotranspiration. Il combine évaporation de l'eau en surface et transpiration de l'eau par les végétaux.
+                    On utilise dans le modèle la loi la plus répandue et recommandée de 
+                    <a class="outlink" href="https://www.fao.org/3/x0490e/x0490e06.htm" target="_BLANK">Penman-Monteith FAO</a>. Elle nous permet de calculer
+                    l'<a class="outlink" href="https://www.drias-climat.fr/accompagnement/sections/310" target="_BLANK">évapotranspiration potentielle des plantes</a>.
+                    L'évapotranspiration concerne en moyenne 70% des précipitations, bien qu'elle dépende beaucoup de la saison. En hiver, elle est très faible, tandis qu'elle
+                    est intensive en été. Elle dépend de nombreux paramètres comme la température, l'humidité relative de l'air, la vitesse du vent ou le rayonnement solaire.
+                    Tous ces paramètres sont ajustables sur Nafrea.
+                    </li>
+                </ol>
+            </ul>
+            <p><span class="bold">2. Négligence des rivières :</span> bien qu'essentielles dans l'écosystème d'un bassin versant, on néglige les rivières dans le modèle. 
+            Elles sont beaucoup trop complexes à gérer. Il est donc important de noter qu'eau de surface et eau souterraine sont confondues dans Nafrea. 
+            Ce qui est décrit, par abus de langage, comme "capacité de la nappe" désigne en réalité l'intégralité des ressources en eau du terrain.
+            </p>
+            <p><span class="bold">3. Terrain uniforme :</span> la topologie du terrain a un grand rôle à jouer dans l'état de remplissage des nappes phréatiques. Toutefois, 
+            il est extrêmement variable localement et nous avons fait le choix de considérer un terrain intégralement plat.
+            </p>
+            <p><span class="bold">4. Négligence de sources de consommation :</span> vous aurez certainement remarqué l'absence d'industries dans Nafrea. Pourtant, ce sont de 
+            gros consommateurs d'eau douce. L'eau est essentiellement utilisée pour refroidir les centrales. Nous ne prenons pas en compte cette source de consommation car l'eau 
+            prélevée est dans la grande majorité des cas restituée à son environnement.
+            </p>
+            <p>En résumé, Nafrea c'est un monde parfait, dans lequel on peut simplifier grandement tout phénomène physique. Le niveau des nappes dépend en réalité de milliers de 
+            paramètres et aucune nappe ne se comporte de la même façon. On peut observer des tendances complètement opposées d'un bout à l'autre d'une même nappe. C'est ce qui 
+            a constitué la principale difficulté du projet. Il n'existe pas de nappe type. A l'heure actuelle, aucun outil n'est capable de prédir l'état d'une nappe phréatique sur la durée.
+            </p>
+            <p>Le simulateur Nafrea a été conçu dans un but ludique et pédagogique. Il touche du doigt un certains nombres de phénomènes importants pour comprendre l'exploitation des nappes phréatiques.
+            Il ne donne aucune prévision fiable, les données passées produites sont également fausses. Le simulateur tente simplement d'exprimer des tendances. Nafrea reste avant tout un outil de 
+            sensibilisation.
+            </p>
+
+            <h3 class="section_subtitle" id="consommations">Consommations</h3>
+            <p>En ouvrant la <a class="inlink" href="#fenetres">fenêtre de visualisation des données</a>, vous aurez accès à la répartition de la consommation d'eau de votre nappe. Cette consommation 
+            inclut les phénomènes physiques d'évapotranspiration, d'écoulement latéral souterrain et de consommations des fôrets, si vous en avez placé. Les autres sources de consommation dépendent 
+            des bâtiments placés sur la carte. Les villes sont une source importante de consommation. Les fermes également, via l'agriculture, et les élevages, via l'abreuvement du bétail. Enfin, 
+            les industries sont généralement une petite source de consommation. Vous pouvez comparer vos consommations avec les <a class="inlink" href="#donnees_reelles">données réelles</a> de la BNPE.
+            N'hésitez pas à jeter un coup d'oeil à <a class="outlink" href="https://www.eaufrance.fr/sites/default/files/2023-03/infographie_bnpe_2019_compressed_1.pdf" target="_BLANK">
+            cette infographie de la BNPE</a>, qui présente les diverses sources de consommation de l'eau prélevée à travers le territoire.
+            </p>
+
+            <h3 class="section_subtitle" id="niveau">Niveau de la nappe</h3>
+            <p>Le niveau de la nappe se présente par défaut sous forme de pourcentage de remplissage de la nappe. Vous pouvez toutefois l'afficher sous forme de niveau piézométrique, via la section 
+            <span class="italic">Affichage</span> du <a class="inlink" href="#sidebar">volet latéral</a>. Il est affiché dans la timeline située sous la grille et dans la 
+            <a class="inlink" href="#fenetres">fenêtre de visualisation des données</a>. Le niveau et le remplissage sont aussi exportables au format csv via la 
+            <a class="inlink" href="#fenetres">fenêtre d'export</a>.
+            </p>
+            <p>
+                Le niveau de la nappe est cyclique. Il est normalement élevé en hiver et bas en été. Cette tendance peut toutefois être décalée temporellement selon le coefficient de perméabilité 
+                du sol. Généralement, vous observerez deux parties dans les simulations. Lors de la premiere moitié du siècle, la nappe aura tendance à se remplir, voir à proposer de l'eau en abondance. Lors de la 
+                seconde moitié du siècle, il se peut que le niveau commence à baisser rapidement. C'est en partie dû aux <a class="inlink" href="#sources_donnees">données des prévisions climatiques du giec</a>.
+                N'hésitez pas à faire des simulations avec le même terrain mais des paramètres différents pour voir l'influence de ces paramètres sur le niveau de la nappe. Par exemple, modifier l'intensité 
+                des précipitations peut avoir un fort impact. Vous pouvez aussi changer ces paramètres en temps réel pour voir leur impact direct en temps réel.
+            </p>
+        </section>
+
+        <section id="optimisation">
+            <h2 class="section_title">Optimisation</h2>
+            <h3 class="section_subtitle" id="solutions_optimisation">Solutions d'optimisation</h3>
+            <p>
+                Le simulateur stocke un grand nombre de variables, en particulier les données historiques concernant le niveau ou remplissage de la nappe.
+                Les graphiques alourdissent eux-aussi le site. Il se peut que vous rencontriez des problèmes de performance, particulièrement en fin de simulation.
+                Voici une liste non-exhaustive de solutions pour accélerer les calculs et améliorer les performances générales de Nafrea : 
+            </p>
+            <ul>
+                <ol>
+                    <li>
+                        <span class="bold">Désactiver le calcul de certaines données :</span> il est vivement recommandé de ne demander le calcul que de 2 variables au 
+                        maximum. Sur Nafrea, vous avez le choix de faire calculer 4 variables différentes (remplissage de la nappe, niveau ngf de la nappe, précipitations et
+                        température). Lorsque ces variables sont calculées, vous pouvez les visualiser sur les graphiques et les télécharger. Plus il y a de variables calculées,
+                        plus le simulateur stocke un grand nombre de valeurs, et plus les performances sont ralenties. Pour apprendre comment choisir les variables qui sont 
+                        calculées, rendez-vous en section <span class="italic">Affichage</span> du <a class="inlink" href="#sidebar">volet latéral</a>. Vous pouvez recommencer les simulations avec le bouton
+                        <span class="italic">Recommencer la simulation</span> de la <a class="inlink" href="#topbar">barre du haut</a> et choisir à chaque fois une 
+                        variable calculée différente.<br><br>
+                    </li>
+                    <li>
+                        <span class="bold">Désactiver les animations :</span> très énergivores, les graphiques sont aussi une cause de ralentissement. Leurs animations sont 
+                        très jolies mais contribuent malheureusement à d'importants ralentissement. Désactiver les animations vous donne un rendu plus saccadé mais 
+                        allège les temps de calculs. Vous pouvez désactiver les animations depuis la <a class="inlink" href="#sidebar">volet latéral</a>, 
+                        section <span class="italic">Affichage</span>.<br><br>
+                    </li>
+                    <li>
+                        <span class="bold">Ne pas laisser ouverte la fenêtre de visualisation des données en cours de simulation :</span> les graphiques du 
+                        <a class="inlink" href="#fenetres">visualiseur de données</a> s'actualisent uniquement lorsque celui-ci est ouvert. Pour optimiser les 
+                        performances, fermer cette fenêtre quand la simulation est en cours peut s'avérer utile.
+                    </li>
+                </ol>
+            </ul>
+        </section>
+
+        <section id="raccourcis">
+            <h2 class="section_title">Raccourcis</h2>
+            <h3 class="section_subtitle" id="liste_raccourcis">Liste des raccourcis</h3>
+            <p>Nafrea, c'est un petit peu comme un jeu vidéo, alors on a évidemment pensé à ajouter des raccourcis claviers.
+            Voici la liste de ces raccourcis :</p>
+            <table cellspacing="0" id="table_raccourcis">
+                <thead>
+                    <tr>
+                        <th>Touche</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>C</td>
+                        <td>Copier le bâtiment sélectionné</td>
+                    </tr>
+                    <tr>
+                        <td>V</td>
+                        <td>Coller le bâtiment sélectionné</td>
+                    </tr>
+                    <tr>
+                        <td>Suppr</td>
+                        <td>Supprimer le bâtiment sélectionné</td>
+                    </tr>
+                    <tr>
+                        <td>Barre espace</td>
+                        <td>Résumer/Mettre en pause la simulation</td>
+                    </tr>
+                    <tr>
+                        <td>I</td>
+                        <td>Ouvrir le visualiseur de données</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <section id="a_propos">
+            <h2 class="section_title">A propos</h2>
+            <h3 class="section_subtitle" id="equipe">Notre équipe</h3>
+            <p>
+                Nous sommes un groupe d'élèves en classe préparatoire de l'école d'ingénieur Polytech. Dans l'équipe, il y a Julien, Lucas, Valentin, Evan, Baptiste, Maxime, Idir
+                et bien sûr Marie, notre cheffe de projet. Ensemble nous avons bâti ce site web et travaillé pendant plus de 6 mois sur le projet.
+            </p>
+            <h3 class="section_subtitle" id="projet">Le projet</h3>
+            <p>
+                Le projet s'inscrit dans le cadre de la conférence PEIP, une grande conférence de fin d'année pendant laquelle chaque groupe prend la parole 
+                pour parler de son projet. Le thème de cette année est la résilience. Certains ont travaillé sur la qualité de l'eau, d'autres sur l'environnement et les écosystèmes ou
+                sur la sobriété énergétique. Notre symposium à nous est l'irrigation et la sureté alimentaire. Nous nous sommes concentré sur cette dernière, tout en ciblant notre sujet sur 
+                les ressources en eau. Notre sujet final s'intitule : <span class="italic">Nafrea : un site ludique pour la compréhension des enjeux autour de l'exploitation de l'eau</span>.
+                <br> Notre projet s'est concretisé par la rédaction d'un rapport final d'une quarantaine de pages, dans lequel nous avons tenté de répondre à la problématique
+                suivante : Comment mettre en valeur les rouages d'une utilisation résiliente de nos ressources en eau ?   
+            </p>
+            <p>Voici le préambule de notre rapport final :</p>
+            <p id="abstract">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inscrits en 2015 par l'ONU dans les 17 objectifs de développement durable, la sûreté alimentaire 
+                et l'accès à l'eau sont aujourd'hui au cœur des enjeux contemporains. Les nappes phréatiques y sont intimement liées car ce sont nos plus vastes 
+                ressources en eau potable. Ces dernières années, elles sont pourtant menacées par les sécheresses, la surconsommation et la pollution des eaux. Les nappes
+                phréatiques françaises affichent en mars 2023 des niveaux sous la normale, qui confirment malheureusement les tendances observées depuis 
+                quelques années. Pourtant, elles sont essentielles pour l'irrigation des cultures, le bon fonctionnement des industries, la production 
+                d'énergie et bien sûr l'alimentation en eau potable. Les enjeux sont de taille mais trop souvent sous-estimés. Nous avons souhaité mettre en
+                lumière l'exploitation de nos ressources en eau, dans un but préventif et ludique. Notre projet a ainsi pris la forme d'un site web interactif :
+                NAFREA. Un tel site offre la possibilité de suivre l'évolution du niveau d'une nappe en fonction de multiples paramètres et infrastructures humaines, 
+                qui agissent sur la décharge de cette nappe. Dans un contexte de réchauffement climatique, notre site tente également d'illustrer les tendances d'évolution 
+                d'une nappe phréatique dans les prochaines décennies, grâce à l'utilisation de données du GIEC. Notre projet s'est ainsi articulé autour de la compréhension
+                des différents phénomènes physiques, que nous avons tentés de retranscrire au mieux à travers notre site. Ce présent rapport a pour visée de détailler 
+                les étapes du projet et partager nos connaissances acquises sur le sujet.
+            </p>
+            <h3 class="section_subtitle" id="licenses">Licenses</h3>
+            <p>Tout objet utilisé dans le site web Nafrea et non produit intégralement par l'équipe appartient à son propriétaire. Ces objets sont tous 
+                partagés par des licences de réutilisation libres de droit. L'équipe s'engage à respecter les conditions d'utilisation et de réutilisation des licenses respectives.
+            </p>
+            <ul>
+                <ol>
+                    <li>Données climatiques du GIEC : Creative Commons Attribution 4.0 International (CC BY 4.0) , trouvées sur 
+                    <a class="outlink" href="https://interactive-atlas.ipcc.ch/" target="_BLANK">https://interactive-atlas.ipcc.ch/</a>.
+                    </li>
+                    <li>
+                        Images des bâtiments : <a class="outlink" href="https://www.freepik.com/author/macrovector" target="_BLANK">macrovector</a> sur Freepik.
+                        Les images ont subi des modifications, dans le respect des <a class="outlink" href="https://www.freepikcompany.com/legal" target="_BLANK">conditions d'utilisation</a> de Freepik.
+                    </li>
+                    <li>
+                        Logo et icône : réalisés avec <a class="outlink" href="https://www.canva.com">Canva</a>. Utilisation dans le respect 
+                        <a class="outlink" href="https://www.canva.com/policies/content-license-agreement/" target="_BLANK">des conditions d'utilisation de Canva</a>.
+                    </li>
+                </ol>
+            </ul>
+            <p>Tout objet non cité ci-dessus est création de l'équipe.</p>
+            <p>Nafrea est sous license MIT. Le code est disponible publiquement à l'adresse <a class="outlink" href="https://github.com/Valalol/Nafrea" target="_BLANK">
+            https://github.com/Valalol/Nafrea</a>.
+            <br>Le site est hébergé avec <a class="outlink" href="https://docs.github.com/fr/pages/getting-started-with-github-pages/about-github-pages" target="_BLANK">
+            GitHub Pages</a>.
+            </p>
+            <p id="mit_license">
+                MIT License
+                <br>
+                Copyright (c) 2023 Valalol
+                <br><br>
+                Permission is hereby granted, free of charge, to any person obtaining a copy
+                of this software and associated documentation files (the "Software"), to deal
+                in the Software without restriction, including without limitation the rights
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                copies of the Software, and to permit persons to whom the Software is
+                furnished to do so, subject to the following conditions:
+                <br><br>
+                The above copyright notice and this permission notice shall be included in all
+                copies or substantial portions of the Software.
+                <br><br>
+                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                SOFTWARE.
+            </p>
+        </section>
+
+    </div>
+
+
+
+
+
+
+
+</body>
+
+
+</html>
