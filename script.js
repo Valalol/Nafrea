@@ -1028,14 +1028,14 @@ function calc_conso(date) {
     let animals_conso = 0;
 
     //Si pendant 3 mois pluie > etp alors etp2 sinon si 3 mois pluie < etr etp3
-    let etp 
-    etp = etp_formules[current_formula](date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
+    let etp_val 
+    etp_val = etp(date,(square_size ** 2) * (gridsize ** 2)); // mm/mois
     
     //On enregistre si y'a un manque ou pas
     check_etp_hist()
 
-    water_consumption[3] += etp/1000;
-    water_consumption_current[3] = etp/1000;
+    water_consumption[3] += etp_val/1000;
+    water_consumption_current[3] = etp_val/1000;
 
     for (var key of Object.keys(buildings)) {
         if (buildings[key].buildingtype === 'city') {
@@ -1043,8 +1043,8 @@ function calc_conso(date) {
         }
         if (buildings[key].buildingtype === 'farm') {
             agri_conso += conso_plantes[buildings[key].plante][mois_actuel] * buildings[key].cover * 10;
-            agri_conso += evapotranspiration2(date,buildings[key].cover * 10000) * kc[buildings[key].plante]/10000;
-            etp -= etp_formules[current_formula](date,buildings[key].cover * 10000);
+            agri_conso += etp(date,buildings[key].cover * 10000) * kc[buildings[key].plante]/10000;
+            //etp_val -= etp(date,buildings[key].cover * 10000);
         }
         if (buildings[key].buildingtype === 'forest') {
             switch (buildings[key].tree_type) {
@@ -1093,7 +1093,7 @@ function calc_conso(date) {
     water_consumption_current[5] = industry_conso;
     water_consumption_current[6] = animals_conso;
 
-    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp;
+    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp_val;
 
     total_city_conso = total_city_conso / capacity;
     agri_conso = agri_conso / capacity;
@@ -1101,9 +1101,9 @@ function calc_conso(date) {
     industry_conso = industry_conso / capacity;
     animals_conso = animals_conso / capacity;
 
-    etp = etp/(1000*capacity); // conversion en %/mois
+    etp_val = etp_val/(1000*capacity); // conversion en %/mois
 
-    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp;
+    var total_conso = total_city_conso + agri_conso + forets_conso + industry_conso + animals_conso + etp_val;
 
     // Affichage du flux sortant
     if(parseInt(total_conso*capacity*10**-9)>0){
