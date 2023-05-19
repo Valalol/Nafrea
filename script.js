@@ -1903,7 +1903,7 @@ document.addEventListener("keydown", (e) => {
             remove_building();
             break;
         case "i": //ouvre les stats via i
-            toggle_stats();
+            toggle_window(0);
             break;
     }
 });
