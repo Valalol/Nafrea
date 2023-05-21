@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ETP Calculateur</title>
+	<script src="etp.js"></script>
+	<link href="etp_style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../icons/josso.ico">
+</head>
+<body>
+	<h1 id="title">EVAPOTRANSPIRATION POTENTIELLE (FAO PENMAN-MONTEITH)</h1>
+	<h2 id="etp_label" title='ETP journalière'>val_etp journalière</h2>
+	<h4 id="etpmois_label" title='ETP mensuelle'>val_etp mensuelle</h4>
+	
+
+	<p id="error_label"></p>
+	
+
+	<div style="margin-left: 10%;">
+		
+
+		<p id="mois_label" class="parameter_name">Numéro du mois (m)</p>
+		<input class="settings_range" id="mois_slider" type="range" min="1" max="12" value="1" step="1" oninput="setting_changed('mois', this.value)">
+		<input class="box" id="mois_box" type="text" min="1" max="12" value="1" step="1" oninput="setting_changed('mois', this.value)">
+
+		<p id="NBJ_label" class="parameter_name">Nombre de jours (NBJ)</p>
+		<input class="settings_range" id="NBJ_slider" type="range" min="365" max="366" value="365" step="1" oninput="setting_changed('NBJ', this.value)">
+		<input class="box" id="NBJ_box" type="text" min="365" max="366" value="365" step="1" oninput="setting_changed('NBJ', this.value)">
+
+		<p id="phi_label" class="parameter_name">Latitude (phi)</p>
+		<input class="settings_range" id="phi_slider" type="range" min="-65" max="65" value="40" step="1" oninput="setting_changed('phi', this.value)">
+		<input class="box" id="phi_box" type="text" min="-65" max="65" value="40" step="0.01" oninput="setting_changed('phi', this.value)">
+		<label> °</label>
+
+		<p id="z_label" class="parameter_name">Altitude du site (z)</p>
+		<input class="settings_range" id="z_slider" type="range" min="0" max="100" value="30" step="1" oninput="setting_changed('z', this.value)">
+		<input class="box" id="z_box" type="text" min="0" max="100" value="30" step="0.01" oninput="setting_changed('z', this.value)">
+		<label> m</label>
+
+		<p id="Tn_label" class="parameter_name">Température minimum quotidienne (Tn)</p>
+		<input class="settings_range" id="Tn_slider" type="range" min="-10" max="40" value="6" step="1" oninput="setting_changed('Tn', this.value)">
+		<input class="box" id="Tn_box" type="text" min="-10" max="40" value="6" step="0.01" oninput="setting_changed('Tn', this.value)">
+		<label> °C</label>
+
+		<p id="Tx_label" class="parameter_name">Température maximum quotidienne (Tx)</p>
+		<input class="settings_range" id="Tx_slider" type="range" min="-10" max="40" value="10" step="1" oninput="setting_changed('Tx', this.value)">
+		<input class="box" id="Tx_box" type="text" min="-10" max="40" value="10" step="0.01" oninput="setting_changed('Tx', this.value)">
+		<label> °C</label>
+
+		<p id="HRmoy_label" class="parameter_name">Humidité relative moyenne quotidienne (HRmoy)</p>
+		<input class="settings_range" id="HRmoy_slider" type="range" min="0" max="100" value="80" step="1" oninput="setting_changed('HRmoy', this.value)">
+		<input class="box" id="HRmoy_box" type="text" min="0" max="100" value="80" step="0.01" oninput="setting_changed('HRmoy', this.value)">
+		<label> %</label>
+
+		<p id="Rg_label" class="parameter_name">Irradiation (Rg)</p>
+		<input class="settings_range" id="Rg_slider" type="range" min="0" max="10" value="5" step="0.1" oninput="setting_changed('Rg', this.value)">
+		<input class="box" id="Rg_box" type="text" min="0" max="10" value="5" step="0.01" oninput="setting_changed('Rg', this.value)">
+		<label> kWh/m²/jour &nbsp = &nbsp</label>
+		<input class="box" id="Rgmj_box" type="text" min="0" max="1.2" value="0.58" step="0.01" oninput="setting_changed('Rgmj', this.value)">
+		<label> MJ/m²/jour &nbsp = &nbsp</label>
+		<input class="box" id="Rgw_box" type="text" min="0" max="13.5" value="6.72" step="0.01" oninput="setting_changed('Rgw', this.value)">
+		<label> W/m²</label>
+
+		<p id="v10m_label" class="parameter_name">Vitesse du vent à 10m (v10m)</p>
+		<input class="settings_range" id="v10m_slider" type="range" min="0" max="100" value="10" step="1" oninput="setting_changed('v10m', this.value)">
+		<input class="box" id="v10m_box" type="text" min="0" max="100" value="10" step="0.01" oninput="setting_changed('v10m', this.value)">
+		<label> km/h &nbsp = &nbsp</label>
+		<input class="box" id="v10mms_box" type="text" min="0" max="27" value="2.7" step="0.01" oninput="setting_changed('v10mms', this.value)">
+		<label> m/s</label>
+
+	</div>
+
+	<div id="more">
+
+		<br style="margin-bottom: 10px;">
+		<button id="btndetails" onclick="showdetails()">Afficher les détails du calcul</button>
+		<button id="btndata" onclick="showdata()">Trouver des données</button>
+		<button id="btnconv" onclick="showconv()">Afficher la table de conversion</button>
+		<button id="btnex" onclick="showex()">Afficher l'exemple</button>
+
+		<!-- EXEMPLES -->
+		<div class="morewindow" id="exdiv">
+			<p id="ex_label" style="margin-bottom: 0px;">Loire-Atlantique (Nantes) : choisissez un mois avec le curseur</p>
+			<input class="settings_range" id="ex_slider" type="range" min="0" max="12" value="0" step="1" oninput="example(this.value-1)">	
+		</div>
+
+		<!-- DONNEES -->
+		<div class="morewindow" id="searchdiv">
+			<p> 
+				<a target='BLANK' href="https://fr.weatherspark.com/">weatherspark.com</a> &nbsp &nbsp &nbsp
+				<a target='_BLANK' href="https://www.annuaire-mairie.fr/">annuaire-mairie.fr</a> &nbsp &nbsp &nbsp
+				<a target='_BLANK' href="https://fr.climate-data.org/">climate-data.org</a>
+			<br><br>
+			<label>Rechercher des données de référence : </label>
+			<input id="searchinput" type="text" value="Nantes">
+			<button style="background-color:lightblue;" onclick="searchdata('open')">Ouvrir</button>
+			<button onclick="searchdata('show')" style="margin-right: 10px;">Montrer l'url</button>
+			<a id="searchresult" href="" target="_BLANK"></a>
+		</div>
+
+		<!-- CONVERSIONS -->
+		<div class="morewindow" id="convdiv">
+			<p>
+				<span style="color:blue; font-weight: bold;">W/m² en MJ/m²/jour &nbsp</span>
+				1 W/m² = 0.0864 MJ/m²/jour ←→ &nbsp 1 MJ/m²/jour = 1/0.0864 ≈ 11.574 W/m²
+			</p>
+			<p>
+				<span style="color:blue; font-weight: bold;">kWh/m²/jour en MJ/m²/jour &nbsp</span> 
+				1 kWh/m²/jour = 3.6 MJ/m²/jour &nbsp ←→ &nbsp 1 MJ/m²/jour = 1/3.6 ≈ 0.278 kWh/m²/jour
+			</p>
+			<p>
+				<span style="color:blue; font-weight: bold;">W/m² en kWh/m²/jour &nbsp</span>
+				1 W/m² = 0.0864/3.6 = 0.024 kWh/m²/jour &nbsp ←→ &nbsp 1 kWh/m²/jour = 3.6/0.0864 ≈ 41.667 W/m²
+			</p>
+			<p>
+				<span style="color:blue; font-weight: bold;">km/h en m/s &nbsp</span>
+				1 km/h = 1/3.6 ≈ 0.278 m/s &nbsp ←→ &nbsp 1 m/s = 3.6 km/h
+			</p>
+			<p>
+				<span style="color:blue; font-weight: bold;">rad en ° &nbsp</span>
+				1 rad = 180/π ≈ 57.296 ° &nbsp ←→ &nbsp 1 ° = π/180 ≈ 0.017 rad
+			</p>
+		</div>
+		
+		<!-- DETAILS CALCULS -->
+		<div class="morewindow" id="detailsdiv" style='display: none;'>
+			<a target='_BLANK' title='ouvrir dans un nouvel onglet' href="https://i.goopics.net/rcvh3l.png"><img id="imgdetails" src="https://i.goopics.net/rcvh3l.png" style="margin: auto; width: 50%; display: block;"></a>
+			
+			<p id="textdetails" style="text-align: center;">
+				sources : <a target='_BLANK' title='https://www.drias-climat.fr/accompagnement/sections/310' href="https://www.drias-climat.fr/accompagnement/sections/310">DRIAS</a> &nbsp | &nbsp 
+				<a target='_BLANK' title='https://www.fao.org/3/x0490e/x0490e00.htm#Contents' href="https://www.fao.org/3/x0490e/x0490e00.htm#Contents">FAO</a>
+			</p>
+		</div>
+
+
+	</div>
+	<footer style="text-align: center; margin-top: 20px;">
+		<a style="font-family: 'Arial Black'; text-decoration: none; color: blue;" href='../../index.html'>NAFREA</a>
+		|
+		<a style="font-family: 'Arial Black'; text-decoration: none; color: green;" href='../wiki.html'>WIKI.NAFREA</a>
+		| Calculateur d'évapotranspiration potentielle
+	</footer>
+	<p style="text-align: center; margin-top: 0px;">Evapotranspiration potentielle de référence pour les cultures (ET0) [hypothèses : culture=12cm ; résistance de surface=70s/m ; albedo=0.23]</p>
+
+
+</body>
+</html>
+
+

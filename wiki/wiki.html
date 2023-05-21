@@ -75,6 +75,9 @@
                     <li>
                         <a class="nav" href="#donnees_reelles">Données réelles</a>
                     </li>
+                    <li>
+                        <a class="nav" href="#etp_calculator">Calculateur d'évapotranspiration</a>
+                    </li>
                 </ul>
             </details>
 
@@ -140,7 +143,7 @@
             <p>
                 Vous êtes sur le guide de Nafrea. Naviguez à l'aide du menu latéral pour en apprendre plus sur le site et devenir un pro de la simulation.
                 <br> Tout <a class="inlink">lien bleu</a> est un lien interne au site, et tout <a class="outlink">lien vert</a> vous ouvrira une nouvelle fenêtre vers un site externe.
-                <br>Dernière mise à jour du Wiki : <input type="date" value="2023-05-13" disabled>
+                <br>Dernière mise à jour du Wiki : <input type="date" value="2023-05-21" disabled>
             </p>
         </section>
         <section id="avertissement">
@@ -652,7 +655,7 @@
                 </tbody>
             </table>
 
-            <p><span class="bold">3. Fôrets</span></p>
+            <p><span class="bold">3. forêts</span></p>
             <table cellspacing="0">
                 <thead>
                     <tr>
@@ -669,7 +672,7 @@
                 <tbody>
                     <tr>
                         <td>Type d'arbres</td>
-                        <td>Type d'arbres de la fôret (parmi : chêne, hêtre, épicéa)</td>
+                        <td>Type d'arbres de la forêt (parmi : chêne, hêtre, épicéa)</td>
                         <td>Forest.tree_type</td>
                         <td>/</td>
                         <td>Chêne</td>
@@ -678,8 +681,8 @@
                         <td>Consommation</td>
                     </tr>
                     <tr>
-                        <td>Densité de la fôret</td>
-                        <td>Densité de la fôret (occupation du terrain)</td>
+                        <td>Densité de la forêt</td>
+                        <td>Densité de la forêt (occupation du terrain)</td>
                         <td>Forest.density</td>
                         <td>%</td>
                         <td>50</td>
@@ -853,8 +856,8 @@
                         dont les consommations domestiques par département que nous utilisons dans les préconfigurations de Nafrea.
                     </li>
                     <li>
-                        <a class="outlink" href="https://www.onf.fr/onf" target="_BLANK">Office National des Fôrets</a> :
-                        L'organisme qui gère les fôrets publiques donne ici et là des consommations,
+                        <a class="outlink" href="https://www.onf.fr/onf" target="_BLANK">Office National des forêts</a> :
+                        L'organisme qui gère les forêts publiques donne ici et là des consommations,
                         dont les consommations des arbres que nous utilisons dans les préconfigurations de Nafrea.
                     </li>
                     <li>
@@ -874,7 +877,7 @@
             <h3 class="section_subtitle" id="donnees_nafrea">Données produites avec Nafrea</h3>
             <p>
                 Nafrea vous permet de produire originalement des données de remplissage ou niveau de la nappe. Un seul facteur aléatoire est
-                inclus dans le simulateur : faible probabilité de décès des fôrets dans des conditions défavorables. La probabilité reste toutefois
+                inclus dans le simulateur : faible probabilité de décès des forêts dans des conditions défavorables. La probabilité reste toutefois
                 très faible et on peut donc considérer que toute simulation réalisée avec Nafrea peut être reproduite. Le simulateur vous offre la 
                 possibilité d'exploiter 5 données : 
             </p>
@@ -934,6 +937,15 @@
                     </li>
                 </ol>
             </ul>
+
+            <h3 class="section_subtitle" id="etp_calculator">Calculateur d'évapotranspiration</h3>
+            <p>
+                Basé sur l'équation Penman-Monteith FAO, nous avons créé notre propre calculateur d'évapotranspiration. Le phénomène regroupe l'évaporation de l'eau 
+                en surface et la transpiration de l'eau par les végétaux. Entre 70 à 90% de l'eau de pluie retourne à l'atmosphère via l'évapotranspiration.
+                <br><br>Vous pouvez <a class="outlink" href="etp_calculator/etp.html" target="_BLANK">ouvrir le calculateur d'évapotranspiration</a> ou utiliser la 
+                fenêtre ci-dessous.
+            </p>
+            <iframe id="etp_calc_iframe" title="Calculateur d'évapotranspiration" width="99%" height="500px" src="etp_calculator/etp.html"></iframe>
         </section>
 
         <section id="resultats">
@@ -965,6 +977,7 @@
                     L'évapotranspiration concerne en moyenne 70% des précipitations, bien qu'elle dépende beaucoup de la saison. En hiver, elle est très faible, tandis qu'elle
                     est intensive en été. Elle dépend de nombreux paramètres comme la température, l'humidité relative de l'air, la vitesse du vent ou le rayonnement solaire.
                     Tous ces paramètres sont ajustables sur Nafrea.
+                    <br><br>Vous pouvez calculer vous même l'évapotranspiration en utilisant notre <a class="inlink" href="#etp_calculator">calculateur d'évapotranspiration</a>.
                     </li>
                 </ol>
             </ul>
@@ -990,7 +1003,7 @@
 
             <h3 class="section_subtitle" id="consommations">Consommations</h3>
             <p>En ouvrant la <a class="inlink" href="#fenetres">fenêtre de visualisation des données</a>, vous aurez accès à la répartition de la consommation d'eau de votre nappe. Cette consommation 
-            inclut les phénomènes physiques d'évapotranspiration, d'écoulement latéral souterrain et de consommations des fôrets, si vous en avez placé. Les autres sources de consommation dépendent 
+            inclut les phénomènes physiques d'évapotranspiration, d'écoulement latéral souterrain et de consommations des forêts, si vous en avez placé. Les autres sources de consommation dépendent 
             des bâtiments placés sur la carte. Les villes sont une source importante de consommation. Les fermes également, via l'agriculture, et les élevages, via l'abreuvement du bétail. Enfin, 
             les industries sont généralement une petite source de consommation. Vous pouvez comparer vos consommations avec les <a class="inlink" href="#donnees_reelles">données réelles</a> de la BNPE.
             N'hésitez pas à jeter un coup d'oeil à <a class="outlink" href="https://www.eaufrance.fr/sites/default/files/2023-03/infographie_bnpe_2019_compressed_1.pdf" target="_BLANK">
@@ -1167,13 +1180,6 @@
 
     </div>
 
-
-
-
-
-
-
 </body>
-
 
 </html>

@@ -1,0 +1,65 @@
+body{
+    font-family: "Verdana";
+}
+
+#title{
+    text-align: center;
+    font-family: 'Arial Black';
+    color: #2e5ca2;
+}
+
+#etp_label{
+    text-align: center;
+    color: green;
+    border-top: 2px solid green;
+    border-bottom: 2px solid green;
+}
+
+#etpmois_label{
+    text-align: center;
+}
+
+#error_label{
+    text-align: center;
+    color:red;
+    font-weight: bold;
+    position: absolute;
+    width: 99%;
+    height: 100px;
+    z-index: -1;
+}
+
+.parameter_name{
+    margin-bottom: 0px;
+}
+
+.box{
+    width: 40px;
+}
+
+#more{
+    margin-left: 10%;
+    margin-top: 60px;
+    margin-right: 10%;
+}
+
+.morewindow{
+    display: none;
+    text-align: center;
+    background-color: rgba(59, 147, 255, 0.2);
+}
+
+a{
+    cursor: url;
+    color: #00aa5a;
+    text-decoration: underline;
+}
+
+button{
+    cursor: url;
+    border: 2px solid #2e5ca2;
+    background-color: white;
+    font-size: 16px;
+    padding: 4px;
+    margin: 4px;
+}
