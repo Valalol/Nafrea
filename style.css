@@ -653,3 +653,8 @@ html {
 .city_size_choice {
     margin: 10px 0;
 }
+
+
+.tooltip, .parameter_name, .advanced_paramater_name, .compteur_div{
+    cursor: help;
+}
