@@ -1024,7 +1024,7 @@ function etp(date,cover){ //calcul l'evapotranspiration pour une date donnée et
 //conso des plantes par type de culture et selon la saison (m³)
 var conso_plantes = {"Blé" : {"1": 0, "2": 0, "3": 0, "4": 25, "5" : 90, "6": 60, "7": 0, "8": 0, "9": 0, "10": 0, "11":0, "12": 0},"Maïs" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 10, "6": 80, "7": 200, "8": 120, "9": 25, "10": 0, "11":0, "12": 0},"PDT" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 20, "7": 70, "8": 120, "9": 30, "10": 0, "11":0, "12": 0}, "Soja" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 35, "7": 110, "8": 120, "9": 35, "10": 0, "11":0, "12": 0},"Tournesol" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0, "6": 60, "7": 180, "8": 75, "9": 0, "10": 0, "11":0, "12": 0}} //mm / mois
 
-var kc = {"Blé" : 0.65, "Maïs" : 0.8, "PDT" : 0.85, "Soja" : 0.7, "Tournesol" : 0.9}; //coefficient cultural des cultures
+var kc = {"Blé" : {"1": 2/3, "2": 1, "3": 1, "4": 1.2, "5" : 1.2, "6": 1.1, "7": 0, "8": 0, "9": 0, "10": 0, "11":0, "12": 0.5},"Maïs" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0.4, "6": 1, "7": 1.1, "8": 1, "9": .8, "10": 0, "11":0, "12": 0},"PDT" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : .4, "6": .7, "7": .9, "8": 1.05, "9": 1, "10": 0.8, "11":0, "12": 0}, "Soja" : {"1": 0, "2": 0, "3": 0, "4": 0, "5" : 0.4, "6": 2/3, "7": 1, "8": 2/3, "9": 0.4, "10": 0, "11":0, "12": 0},"Tournesol" : {"1": 0, "2": 0, "3": 0, "4": 0.5, "5" : 2/3, "6": 1.05, "7": 0.9, "8": 0.6, "9": 0, "10": 0, "11":0, "12": 0}}//coefficient cultural des cultures
 
 var conso_animaux = {"Vache" : 80*30, "Cochon" : 10*30, "Cheval" : 30*30, "Brebis" : 6*30, "Poules" : 320*30} //conso par animal (m³)
 
@@ -1058,7 +1058,7 @@ function calc_conso(date) { //calcule la consommation mensuelle
         }
         if (buildings[key].buildingtype === 'farm') { //ferme
             agri_conso += conso_plantes[buildings[key].plante][mois_actuel] * buildings[key].cover * 10; //ajout de la conso de la ferme à la conso totale des fermes
-            agri_conso += etp(date,buildings[key].cover * 10000) * kc[buildings[key].plante]/10000; //ajout de l'etp de la culture à l'etp totale
+            agri_conso += etp(date,buildings[key].cover * 10000) * kc[buildings[key].plante][mois_actuel]/10000; //ajout de l'etp de la culture à l'etp totale
             //etp_val -= etp(date,buildings[key].cover * 10000);
         }
         if (buildings[key].buildingtype === 'forest') { //fôret
@@ -1271,7 +1271,7 @@ function forest_easter_egg(){ //mort d'une fôret
         if (buildings[key].buildingtype == 'forest') {
             let val = buildings[key].density ;
             if (old_value <= 0.1){ //niveau de la nappe < 10%
-                if (Math.floor(Math.random()*1000) == 1){ //proba 0.1%
+                if (Math.floor(Math.random()*10000) == 1){ //proba 0.1%
                     val = 0;
                     buildings[key].density = val;
                     document.getElementById(key).firstChild.src = sprites["dead forest"];
@@ -1947,7 +1947,7 @@ document.addEventListener("keydown", (e) => {
             remove_building();
             break;
         case "i": //ouvre les stats via i
-            toggle_stats();
+            toggle_window(0);
             break;
     }
 });
