@@ -26,6 +26,7 @@ html {
 
 #header {
     display: flex;
+    flex-wrap:wrap;
     padding: 0 15px;
     justify-content: space-between;
     align-items: center;
@@ -50,7 +51,9 @@ html {
 #infos {
     display: flex;
     justify-content: space-between;
+    height:80%;
 }
+
 
 .compteur_div {
     display: flex;
@@ -61,20 +64,40 @@ html {
     align-items: center;
     font-family: 'Roboto', sans-serif;
     font-size: 1em;
+    height:100%;
+}
+
+.compteurs_img_div {
+    height:100%
 }
 
 .compteurs_img {
-    width: 30px;
+    height: 100%;
     padding-top: 2px;
+}
+
+#top_buttons {
+    height:90%;
+    display:flex;
+    align-items:center;
+    justify-content: end;
 }
 
 .top_button {
     cursor: pointer;
+    height:90%;
+    aspect-ratio:1/1;
+    margin: 0 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .top_buttons_img {
     align-self: center;
-    width: 30px;
+    object-fit: contain;
+    height: 90%;
 }
 
 #info_top_button {
@@ -85,6 +108,7 @@ html {
     display: flex;
     height: 100%;
     flex: 1;
+    background-color: rgb(224, 224, 224);
 }
 
 #side_menu {
@@ -93,7 +117,7 @@ html {
     left: 0%;
     box-shadow: 3px 2px 5px 0px #a3a3a3;
     height: 94%;
-    width: 25%;
+    width: fit-content;
     background-color: rgb(200, 200, 200);
     justify-content: space-between;
     transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
@@ -104,7 +128,9 @@ html {
     display: flex;
     flex-direction: column;
     background-color: rgb(224, 224, 224);
-    width: 75%;
+    width: -moz-available;          /* WebKit-based browsers will ignore this. */
+    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    width: fill-available;
     margin-left: 25%;
     transition: 0.5s cubic-bezier(0.57, 0.13, 0.27, 0.76);
 }
@@ -263,7 +289,7 @@ html {
     justify-content: center;
     align-items: center;
     width: 7%;
-    z-index: 2;
+    z-index: 1;
 }
 
 #water_bar_quantity {

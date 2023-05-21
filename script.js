@@ -82,20 +82,32 @@ class Animals {
     }
 }
 
+
+var hidden_menu = true;
 function shrink_menu() {
-    if (side_menu.style.left == "-25%") {
+
+    let menu_width = (side_menu.clientWidth / main_window.clientWidth)*100;
+    let game_width = 100 - menu_width;
+    if (hidden_menu) {
         side_menu.style.left = "0";
         shrink_button.style.transform = "rotateY(0deg)"
-        game_window.style.width = "75%";
-        game_window.style.marginLeft = "25%";
+        game_window.style.width = game_width + "%";
+        game_window.style.marginLeft = menu_width + "%";
     } else {
-        side_menu.style.left = "-25%";
+        side_menu.style.left = "-" + menu_width + "%";
         game_window.style.width = "100%";
         game_window.style.marginLeft = "0";
         shrink_button.style.transform = "rotateY(180deg)"
     }
+    hidden_menu = !hidden_menu;
 }
+shrink_menu();
 
+window.addEventListener('resize', () => {
+    hidden_menu = !hidden_menu;
+    shrink_menu();
+    }
+);
 
 
 var temp_data, rain_data;
@@ -1461,8 +1473,6 @@ var simulation_speed = 1; //vitesse de la simulation
 var main_simulation = 0;
 var simulation_running = false; //simulation en cours
 var simulation_ended = false; //simulation terminée (année > 2100)
-var simulation_started = false;
-var start_buildings = {}; //enregistre la grille initiale avant simulation pour pouvoir recommencer la simulation
 
 function slow_down() { //ralentit la fréquence de maj des données
     if (simulation_speed > 0.125) {
@@ -1481,12 +1491,7 @@ function speed_up() { //accélère la fréquence de maj des données
 }
 
 function play_pause() { //change l'état de la simulation (pause/en cours)
-    if(!simulation_started) {
-        lock_parameters(true); //verrouillage des parametres initiaux
-        restart_sim_button.disabled = false;
-        start_buildings = JSON.parse(JSON.stringify(buildings)); //start_buildings fait une copie de buildings
-        simulation_started = true;
-    }
+    lock_parameters(true);
     if (!simulation_running) {resume()} else {pause()}
 }
 
@@ -1666,7 +1671,7 @@ function export_config() { //exporte la config actuelle au format json
 
 
 function import_sub_function(data) { //importe les données d'un fichier config
-    initialisation(true);
+    initialisation();
     //importation des paramètres
     setting_changed("size", data["gridsize"]);
     setting_changed("depth", data["depth"]);
@@ -1700,9 +1705,7 @@ function import_sub_function(data) { //importe les données d'un fichier config
     //importation des batiments
     buildings = {};
     data["buildings"].forEach(function(building_data) {
-        //selected_case = building_data["position"];
-        div = document.getElementById(building_data["position"]);
-        div_selected(div);
+        selected_case = building_data["position"];
 
         var template
         switch (building_data["buildingtype"]) {
@@ -1726,34 +1729,33 @@ function import_sub_function(data) { //importe les données d'un fichier config
     });
 }
 
-function initialisation(importation=true){
-    // appelée par import_sub_function() ou restart_sim()
+function initialisation(){
+    // appelée par import_sub_function()
     //réinitialise certains paramètres, notamment graphiques
+    square_size = 10000 //m de côté
 
-    if(importation){
-        square_size = 10000 //m de côté
+    water_data_rain = [0];
+    water_data_temperature = [0];
+    record_rain_checkbox.checked = false;
+    record_data_temperature.checked = false;
+    change_record_parameters("");
 
-        water_data_rain = [0];
-        water_data_temperature = [0];
-        record_rain_checkbox.checked = false;
-        record_data_temperature.checked = false;
-        change_record_parameters("");
-
-        water_consumption_current = [0, 0, 0, 0, 0, 0,0];
-        setting_changed("etp_limit",0);
-        displayed_data = "per";
-        change_chart_var("per");
-
-        update_all_charts();
-
-    }
-
-    restart_sim_button.disabled = true;
+    water_consumption_current = [0, 0, 0, 0, 0, 0,0];
 
     selected_case = null;
+    setting_changed("etp_limit",0);
+
+    displayed_data = "per";
+    change_chart_var("per");
+
+    update_all_charts();
+
     copied_building = false;
+
     secheresse = false;
+
     future_rain = {};
+
     redraw_grid(gridsize); //on vide la grille
     occupied_list = [];
 
@@ -1762,7 +1764,6 @@ function initialisation(importation=true){
     simulation_running = false;
     pause();
     simulation_ended = false;
-    simulation_started = false;
 
     close_all_windows();
 }
@@ -1827,7 +1828,7 @@ function new_session(){
 
 function restart_sim(){ 
     //recommencer la simulation
-    let check = confirm("La timeline sera réinitialisée et la grille reviendra à son état post-simulation. Tout bâtiment rajouté pendant la simulation sera supprimé.");
+    let check = confirm("La timeline sera réinitialisée.");
     if(check){
         pause();
         //reinitialisation des données de la simulation
@@ -1843,39 +1844,6 @@ function restart_sim(){
     
         update_all_charts();
         lock_parameters(false);
-
-        console.log(start_buildings);
-        initialisation(false);
-        console.log(start_buildings)
-        //importation des batiments
-        buildings = {};
-        Object.entries(start_buildings).forEach(function(building) { //building_data = [case, propriétés du batiment]
-            div = document.getElementById(building[0]);
-            div_selected(div);
-
-            let building_data = building[1];
-            console.log(building_data);
-            var template
-            switch (building_data["buildingtype"]) {
-                case "city":
-                    template = new City(building_data["nb_hab"], building_data["conso_hab"], building_data["density"], building_data["category"], building_data["green_cover"]);
-                    break;
-                case "farm":
-                    template = new Farm(building_data["plante"], building_data["cover"]);
-                    break;
-                case "forest":
-                    template = new Forest(building_data["tree_type"], building_data["density"]);
-                    break;
-                case "industrial_area":
-                    template = new Industrial_area(building_data["conso"], building_data["size"], building_data["nb_industries"]);
-                    break;
-                case "animals":
-                    template = new Animals(building_data["animal_type"], building_data["nb_animals"]);
-                    break;
-            }
-            place_building(building_data["buildingtype"], template);
-            console.log("bbjeb")
-        });
     }
 }
 
@@ -1947,7 +1915,7 @@ document.addEventListener("keydown", (e) => {
             remove_building();
             break;
         case "i": //ouvre les stats via i
-            toggle_window(0);
+            toggle_stats();
             break;
     }
 });
