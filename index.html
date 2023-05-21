@@ -49,9 +49,7 @@
     <div id="advanced_window_div">
         <img src="Images/close.svg" id="close_advanced_img" onclick="close_window(1)">
         <div class="advanced_side_div">
-            <h2 class="advanced_paramater_title">Paramètres avancés</h2>
-            <p class="advanced_paramater_name" title="Longueur de chaque case de la grille">Longueur d'une case (m)</p>
-            <input class="advanced_box" id="square_size_box" type="number" min="500" max="100000" value="10000" step="1" oninput="setting_changed('square_size', this.value)">
+            <h2 class="advanced_paramater_title window_title">Paramètres avancés</h2>
             <p class="advanced_paramater_name" title="Altitude moyenne à laquelle est situé le terrain">Altitude du site (m)</p>
             <input class="advanced_box" id="altitude_box" type="text" min="0" max="600" value="30" step="0.01" oninput="setting_changed('altitude', this.value)">
             <p class="advanced_paramater_name" title="Latitude moyenne du terrain">Latitude du site (deg)</p>
@@ -80,7 +78,7 @@
             <input class="advanced_box" id="wind_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('wind_intensity', this.value)">
             <p class="advanced_paramater_name" title="Intensité de l'irradiance renseignée en tabRg">Intensité du rayonnement solaire (%)</p>
             <input class="advanced_box" id="solar_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('solar_intensity', this.value)">
-            <p class="advanced_paramater_name" title="Intensité des températures prévues par le GIEC">Intensité de la température (%)</p>
+            <p class="advanced_paramater_name" title="Intensité des températures prévues par le GIEC">Intensité des température (%)</p>
             <input class="advanced_box" id="temperature_intensity_box" type="number" min="0" max="300" value="100" step="0.01" oninput="setting_changed('temperature_intensity', this.value)">
             <p class="advanced_paramater_name" title="Limitation de l'évapotranspiration à un certain pourcentage des précipitations du jour. 0=aucune">Limite d'évapotranspiration (% des précipitations) (0=aucune)</p>
             <input class="advanced_box" id="etp_limit_box" type="number" min="0" max="300" value="0" step="0.01" oninput="setting_changed('etp_limit', this.value)">
@@ -89,7 +87,7 @@
 
     <div id="export_window_div">
         <img src="Images/close.svg" id="close_stats_img" onclick="close_window(2)">
-        <h2 class="export_paramater_name tooltip" title="Format table csv">Exporter des données</h2>
+        <h2 class="export_paramater_name tooltip window_title" title="Format table csv">Exporter des données</h2>
         <button class="export_button" id="export_per_button" onclick="export_data('per','Remplissage de la nappe')">
             Remplissage de la nappe (%)
         </button>
@@ -125,13 +123,13 @@
             </div>
         </div>
         <div id="top_buttons">
-            <button class="top_button" onclick="window.open('wiki/wiki.html', '_blank')"><img class="top_buttons_img" src="Images/info.svg" title="Documentation"></button>
-            <button class="top_button" id="info_top_button" onclick="toggle_window(0)"><img class="top_buttons_img" src="Images/stats.svg" title="Graphiques"></button>
-            <button class="top_button" id="advanced_top_button" onclick="toggle_window(1)"><img class="top_buttons_img" src="Images/settings.svg" title="Paramètres avancés"></button>
-            <button class="top_button" id="restart_sim_button" onclick="restart_sim()" disabled><img class="top_buttons_img" src="Images/rewind.svg" title="Recommencer la simulation"></button>
-            <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add.svg" title="Nouvelle session"></button>
-            <button class="top_button" onclick="import_config()"><img class="top_buttons_img" src="Images/upload.svg" title="Importer une config"></button>
-            <button class="top_button" onclick="toggle_window(2)"><img class="top_buttons_img" src="Images/download.svg" title="Télécharger les données"></button>
+            <button class="top_button" onclick="window.open('wiki/wiki.html', '_blank')"><img class="top_buttons_img" src="Images/info_blue.svg" title="Documentation"></button>
+            <button class="top_button" id="info_top_button" onclick="toggle_window(0)"><img class="top_buttons_img" src="Images/stats_blue.svg" title="Graphiques"></button>
+            <button class="top_button" id="advanced_top_button" onclick="toggle_window(1)"><img class="top_buttons_img" src="Images/settings_blue.svg" title="Paramètres avancés"></button>
+            <button class="top_button" id="restart_sim_button" onclick="restart_sim()" disabled><img class="top_buttons_img" src="Images/rewind_blue.svg" title="Recommencer la simulation"></button>
+            <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add_blue.svg" title="Nouvelle session"></button>
+            <button class="top_button" onclick="import_config()"><img class="top_buttons_img" src="Images/upload_blue.svg" title="Importer une config"></button>
+            <button class="top_button" onclick="toggle_window(2)"><img class="top_buttons_img" src="Images/download_blue.svg" title="Télécharger les données"></button>
         </div>
     </div>
     <div id="main_window">
@@ -215,6 +213,10 @@
                         <p class="parameter_name"  id="rain_intensity_label" title="Intensité des précipitations prévues par le GIEC">Intensité des précipitations (100%)</p>
                         <input class="settings_range" id="rain_intensity_input" type="range" min="25" max="200" value="100" step="5" oninput="setting_changed('rain_intensity', this.value)">
                     </div>
+                    <div class="parameter_div">
+                        <p class="parameter_name"  id="temperature_intensity_label" title="Intensité des températures prévues par le GIEC">Intensité des températures (100%)</p>
+                        <input class="settings_range" id="temperature_intensity_input" type="range" min="25" max="200" value="100" step="5" oninput="setting_changed('temperature_intensity', this.value)">
+                    </div>
                 </details>
 
                 <details class="category" open>
@@ -275,12 +277,12 @@
                             <button class="buildings_button copy_paste_button" id="copy_button" onclick="copy_building()">Copier</button>
                             <button class="buildings_button copy_paste_button" id="paste_button" onclick="paste_building()">Coller</button>
                         </div>
-                        <button class="buildings_button" onclick="place_building('city')">Placer une ville</button>
-                        <button class="buildings_button" onclick="place_building('farm')">Placer une ferme</button>
-                        <button class="buildings_button" onclick="place_building('forest')">Placer une forêt</button>
-                        <button class="buildings_button" onclick="place_building('industrial_area')">Placer une zone industrielle</button>
-                        <button class="buildings_button" onclick="place_building('animals')">Placer un élevage</button>
-                        <button class="buildings_button" onclick="remove_building()">Supprimer le bâtiment</button>
+                        <button class="buildings_button" onclick="place_building('city')" style="background-image: url('Images/bg_city.png');">Placer une ville</button>
+                        <button class="buildings_button" onclick="place_building('farm')" style="background-image: url('Images/bg_farm.png');">Placer une ferme</button>
+                        <button class="buildings_button" onclick="place_building('forest')" style="background-image: url('Images/bg_forest.png');">Placer une forêt</button>
+                        <button class="buildings_button" onclick="place_building('industrial_area')" style="background-image: url('Images/bg_industry2.png');">Placer une zone industrielle</button>
+                        <button class="buildings_button" onclick="place_building('animals')" style="background-image: url('Images/bg_animals.png');">Placer un élevage</button>
+                        <button class="buildings_button" id="delete_building" onclick="remove_building()">Supprimer le bâtiment</button>
                     </div>
                 </details>
                 

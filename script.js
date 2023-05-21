@@ -101,7 +101,10 @@ function shrink_menu() {
     }
     hidden_menu = !hidden_menu;
 }
-shrink_menu();
+
+window.onload = (event) => {
+    shrink_menu();
+};
 
 window.addEventListener('resize', () => {
     hidden_menu = !hidden_menu;
@@ -491,7 +494,8 @@ function setting_changed(setting, value) { //mise à jour de paramètre (depuis 
             solar_intensity = parseFloat(value);
             break;
         case "temperature_intensity": //intensité des températures (%)
-            //advanced only
+            temperature_intensity_label.textContent = "Intensité des températures (" + value + "%)";
+            temperature_intensity_input.value = value;
             temperature_intensity_box.value = value;
             temperature_intensity = parseFloat(value);
             break;
@@ -1756,6 +1760,7 @@ function initialisation(importation=true){
         update_all_charts();
 
     }
+    restart_sim_button.disabled = true;
     
     selected_case = null;
     copied_building = false;
@@ -1896,7 +1901,6 @@ function lock_parameters(status){
     record_temperature_checkbox.disabled = status;
 
     //Paramètres avancés
-    square_size_box.disabled = status;
     altitude_box.disabled = status;
     latitude_box.disabled = status;
     depth_box.disabled = status;
