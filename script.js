@@ -635,7 +635,7 @@ function setting_changed(setting, value) { //mise à jour de paramètre (depuis 
             }
             break;
         case "industry_number": //[zone industrielle] nombre d'industries
-            nb_industries_label.textContent = "Nombre d'industrie (" + value + ")";
+            nb_industries_label.textContent = "Nombre d'industries (" + value + ")";
             buildings[selected_case].nb_industries = parseInt(value);
             break;
         case "animal_type": //[élevage] type d'animal (vache, cochon, cheval, brebis, poules)
