@@ -128,7 +128,7 @@
             <button class="top_button" onclick="window.open('wiki/wiki.html', '_blank')"><img class="top_buttons_img" src="Images/info.svg" title="documentation"></button>
             <button class="top_button" id="info_top_button" onclick="toggle_window(0)"><img class="top_buttons_img" src="Images/stats.svg" title="graphiques"></button>
             <button class="top_button" id="advanced_top_button" onclick="toggle_window(1)"><img class="top_buttons_img" src="Images/settings.svg" title="paramètres avancés"></button>
-            <button class="top_button" onclick="restart_sim()"><img class="top_buttons_img" src="Images/rewind.svg" title="recommencer la simulation"></button>
+            <button class="top_button" id="restart_sim_button" onclick="restart_sim()" disabled><img class="top_buttons_img" src="Images/rewind.svg" title="recommencer la simulation"></button>
             <button class="top_button" onclick="new_session()"><img class="top_buttons_img" src="Images/add.svg" title="nouvelle session"></button>
             <button class="top_button"><img class="top_buttons_img" src="Images/upload.svg" title="importer une config"></button>
             <button class="top_button" onclick="toggle_window(2)"><img class="top_buttons_img" src="Images/download.svg" title="télécharger les données"></button>
@@ -191,7 +191,7 @@
                     </div>
                     <div class="parameter_div">
                         <p class="parameter_name"  id="altitude_label">Atltitude du site (30 m)</p>
-                        <input class="settings_range" id="altitude_input" type="range" min="0" max="200" value="30" step="5" oninput="setting_changed('altitude', this.value)">
+                        <input class="settings_range" id="altitude_input" type="range" min="0" max="300" value="30" step="5" oninput="setting_changed('altitude', this.value)">
                     </div>
                     <div class="parameter_div">
                         <p class="parameter_name"  id="depth_label">Profondeur de la nappe (10 m)</p>
